@@ -1,0 +1,20 @@
+# Local environment
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+node_modules/
+
+# Build and test output
+dist/
+build/
+coverage/
+.pytest_cache/
+__pycache__/
+
+# Editor and operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

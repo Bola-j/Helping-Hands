@@ -7,6 +7,8 @@ venv/
 node_modules/
 
 # Build and test output
+bin/
+obj/
 dist/
 build/
 coverage/
@@ -15,6 +17,7 @@ __pycache__/
 
 # Editor and operating system files
 .vscode/
+.vs/
 .idea/
 .DS_Store
 Thumbs.db

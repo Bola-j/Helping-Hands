@@ -1,0 +1,34 @@
+# Proposed monolithic architecture and technology compatibility
+
+Status: supporting design proposal for the finalized [SRS](SRS.md); only the API health scaffold exists. The project direction is .NET 10, SQL Server, database-first, Docker, and React Native with web support. The client, database, and business workflows have not been implemented or tested.
+
+## System design
+
+One ASP.NET Core Web API serves an eventual React Native Web client over HTTPS/JSON. A small monolith can organize code by features as needed: participant approvals; requests and referrals; evidence and review; authentication/authorization and audit. Introduce folders and services only with actual behavior. SQL Server is the future persistent system of record; protected file storage holds evidence bytes and SQL Server holds metadata. See [models](models.md) and [database design](database-design.md).
+
+Authentication and session/token approach are open. Regardless of the chosen mechanism, server-side authorization checks both role and involvement on every request, referral, and evidence operation. Administrators review charity registration; coordinators manage referrals and review evidence. Use DTO validation and consistent problem responses; do not expose sensitive details in errors or operational logs. Browser authentication, CORS and any CSRF protections depend on the eventual deployment and auth choice. Decisions and their actors belong in business history; request diagnostics belong in operational logs without beneficiary data.
+
+Transactions serialize assignment, accepted outcomes, releases and their history per request, preserving remaining versus unassigned need; see the explicit lock protocol in the data design. Store evidence outside the public web root and mediate downloads through authorized API endpoints. Because file storage and SQL do not share a transaction, use staged files and reconcile or remove orphans after a failed metadata operation. File size/type policies, malware checks, retention and recovery must be decided before real use. Back up and restore-test SQL and protected files together; configure persistent volumes when containerized. The API liveness endpoint checks only the process; a later readiness check can assess dependencies when they actually exist.
+
+Provide connection configuration and secrets through environment-specific secure configuration; never commit secrets. The initial scaffold has no database provider or connection and does not contact SQL Server. For future authorized development, review and version schema scripts, create an isolated database, and only then use EF Core reverse engineering. Regenerate into a separate generated area and review diffs; keep custom code outside generated files and avoid embedding connection strings (for example, use `--no-onconfiguring`). [Microsoft's EF scaffolding guide](https://learn.microsoft.com/en-us/ef/core/managing-schemas/scaffolding/) and [SQL Server provider documentation](https://learn.microsoft.com/en-us/ef/core/providers/sql-server/) describe these mechanisms; compatible provider/tool versions and SQL Server version must be verified when chosen.
+
+Deploy one API container and a separate SQL Server instance or container only when required. Use a secured reverse proxy with HTTPS, environment-based configuration, basic structured logs and health monitoring, and tested backups. Database locks, evidence upload size, storage, and manual reviews may limit throughput; measure before scaling. No message broker, distributed cache, microservices, or cloud service is required for this proposal. An outage should yield a clear error and preserve existing committed state; do not claim offline completion or success after a failed write.
+
+## React Native Web and PWA feasibility
+
+[Expo's web documentation](https://docs.expo.dev/workflow/web/) describes React Native for Web and web-specific dependencies and export; Expo is a candidate, not a selected or implemented dependency. [Expo's PWA guide](https://docs.expo.dev/guides/progressive-web-apps/) documents separate web manifest and service-worker considerations. Neither React Native nor the scaffold automatically provides installability, offline business operations, or push notifications. The eventual web app needs a manifest, appropriate icons, HTTPS or a development secure context, and platform-specific installation testing. A service worker, if chosen, may cache non-sensitive static assets only; do not cache beneficiary data or evidence. Offline access to business records and offline writes are out of scope; show a connection error and do not claim an unconfirmed action succeeded. Push is not required.
+
+### Proposed browser/device test matrix — not a support promise
+
+| Environment | Responsive interaction | Install behavior to test |
+| --- | --- | --- |
+| Current stable Chrome, Android phone and tablet | Touch, forms, upload, accessibility | Browser installation UI depends on manifest, platform and browser criteria; test a real device. |
+| Current stable Safari, iPhone and iPad | Touch, forms, upload, accessibility | Add to Home Screen uses platform UI; behavior varies with iOS/iPadOS version. |
+| Current stable Chrome and Edge, Windows desktop | Keyboard, forms, zoom, upload | Browser-provided app installation where supported. |
+| Current stable Firefox, desktop | Keyboard, forms, zoom, upload | Usable website; do not promise native PWA install. |
+
+Exact OS/browser versions, minimums, and supported-device coverage are decisions for the team after device testing. [Chrome's installability guidance](https://developer.chrome.com/docs/lighthouse/pwa/installable-manifest) explains Chrome-specific criteria and differing browser behavior. [WebKit's iOS Home Screen article](https://webkit.org/blog/13878/) and [Safari 26 notes](https://webkit.org/blog/17333/webkit-features-in-safari-26-0/) show that add-to-home-screen behavior changes across versions. Installation and prompt availability must be checked rather than assumed; compatibility in this document is not a test result.
+
+## Open decisions
+
+Authentication mechanism; participant identity and review procedures; exact target browser/OS versions; evidence formats, limits, private storage, retention and correction; hosting and restore procedures; PWA service-worker strategy; notification needs; and SQL Server version are not fixed. Proposed schema lengths and status codes require review against user workflows. Stakeholder and applicable local operational review remain prerequisites to a real launch.

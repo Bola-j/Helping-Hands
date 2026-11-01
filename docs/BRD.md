@@ -121,7 +121,7 @@ For the first version, the responsible referral recipient submits an outcome des
 | BR-09 | The project team needs feedback from potential participants on usefulness, operating arrangements, and sustainability. | BO-05 |
 | BR-10 | Coordinators need to approve individual contributors before referral and review evidence before marking a referral complete. | BO-02, BO-03 |
 
-Detailed system behavior, account access, and acceptance criteria belong in the later PRD + SRS.
+Detailed product behavior and account access are developed in the [PRD](PRD.md) and [SRS](SRS.md).
 
 ## 10. Business rules
 

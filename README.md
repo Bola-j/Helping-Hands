@@ -15,15 +15,42 @@ Individual contributors register and need coordinator approval before referral. 
 
 ## First version
 
-The course project aims to demonstrate charity registration and approval, request submission and review, splitting and referrals, evidence, progress tracking, and role-appropriate access using fictional people and sample data. Real donations, payment processing, subscription billing, detailed service delivery management, and live operations are outside the demonstration.
+The full first-version scope covers charity and contributor approvals, request submission and review, splitting and referrals, evidence, progress tracking, and role-appropriate access using fictional people and sample data. The course delivery sequence demonstrates the core charity-to-referral workflow first, then adds contributor approval, partial fulfillment, and mixed-request splitting; sequencing does not remove them from scope. Real donations, payment processing, subscription billing, detailed service delivery management, and live operations are outside the demonstration.
 
 The potential service model may be supported by subscriptions, grants, or sponsorships; adoption and funding require validation. A real launch also requires partner input and appropriate local review.
 
 ## Project documents
 
 - [Business Requirements Document (version 1.3)](docs/BRD.md)
+- [Product Requirements Document](docs/PRD.md)
+- [Software Requirements Specification](docs/SRS.md)
+- [System models](docs/models.md), [database design proposal](docs/database-design.md), and [architecture and compatibility](docs/architecture.md)
 - [Full idea and business model — original reference](docs/references/helping-hands-full-idea.md). The current BRD supersedes its inventory, financial management, and direct service-coordination model.
+
+## API foundation
+
+`src/HelpingHands.Api` is the only ASP.NET Core .NET 10 project in `HelpingHands.sln`. It uses a minimal API for its sole process-liveness endpoint. No business workflows, authentication, frontend, database connection, or EF-generated models are implemented yet.
+
+With the .NET 10 SDK installed, run from the repository root:
+
+```powershell
+dotnet build HelpingHands.sln
+dotnet run --project src/HelpingHands.Api --no-launch-profile --urls http://127.0.0.1:5087
+```
+
+Visit `http://127.0.0.1:5087/health` to see `{"status":"ok"}`. This confirms only that the API process can answer; it does not check SQL Server or dependency readiness. Stop the application with Ctrl+C.
+
+With Docker installed and its engine running:
+
+```powershell
+docker build -t helping-hands-api .
+docker run --rm -p 8080:8080 helping-hands-api
+```
+
+Then visit `http://localhost:8080/health`. No SQL Server container is required for the scaffold. Future sensitive settings should use environment-based or secure external configuration, not committed files. The [database design](docs/database-design.md) describes the proposed database-first workflow; no schema has been created or scaffolded in this task.
 
 ## Repository status
 
-The repository contains the project concept and business baseline. The owner validated the direction and delegated remaining decisions to practical judgment; version 1.3 incorporates subsequent clarifications. Detailed system requirements and the implementation stack remain to be determined.
+The BRD is the business baseline. The PRD and SRS are finalized working requirements baselines, subject to normal change control; their supporting models and database design remain design proposals until implemented and verified. The API foundation is runnable, but its planned business capabilities are not implemented.
+
+The Git commit dates in the initial project sequence were reconstructed at the project owner's request; they do not establish when work or validation actually occurred. Recorded stakeholder and owner validation dates in the documents retain their actual meaning.

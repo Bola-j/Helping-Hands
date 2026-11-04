@@ -88,7 +88,7 @@ The proposed late-dispute handling also applies after an outcome has been accept
 sequenceDiagram
  actor C as Coordinator
  participant API as API
- participant DB as SQL Server
+ participant DB as PostgreSQL
  C->>API: Assign quantity to approved recipient
  API->>DB: Begin transaction; lock request allocation
  API->>DB: Read need, accepted fulfillment and active assignments
@@ -110,7 +110,7 @@ sequenceDiagram
  actor C as Coordinator
  participant API as API
  participant Files as Protected evidence storage
- participant DB as SQL Server
+ participant DB as PostgreSQL
  P->>API: Submit reported portion and evidence
  API->>Files: Validate and store protected file
  API->>DB: Record outcome and evidence metadata
@@ -220,7 +220,7 @@ flowchart LR
  Evidence[Evidence and outcome review]
  Audit[Decision history and logging]
  end
- API --> SQL[(SQL Server - future)]
+ API --> SQL[(PostgreSQL - future)]
  API --> Files[Protected file storage - future]
 ```
 

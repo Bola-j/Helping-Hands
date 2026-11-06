@@ -19,6 +19,14 @@ The full first-version scope covers charity and contributor approvals, request s
 
 The potential service model may be supported by subscriptions, grants, or sponsorships; adoption and funding require validation. A real launch also requires partner input and appropriate local review.
 
+## Project team
+
+- **Bola Ghaly** — backend development.
+- **Ziad Walid** — database and architecture design.
+- **hussien okely** and **ali fathy** — web application UI.
+
+These are areas of responsibility; the team collaborates on planning, integration, reviews, and testing. Scrum roles have not been assigned.
+
 ## Project documents
 
 - [Business Requirements Document (version 1.3)](docs/BRD.md)
@@ -32,23 +40,23 @@ The potential service model may be supported by subscriptions, grants, or sponso
 
 `src/HelpingHands.Api` is the only ASP.NET Core .NET 10 project in `HelpingHands.sln`. It uses a minimal API for its sole process-liveness endpoint. No business workflows, authentication, frontend, database connection, or EF-generated models are implemented yet.
 
-With the .NET 10 SDK installed, run from the repository root:
+With the .NET 10 SDK installed, copy the example once and edit the local settings:
 
 ```powershell
-dotnet build HelpingHands.sln
-dotnet run --project src/HelpingHands.Api --no-launch-profile --urls http://127.0.0.1:5087
+Copy-Item .env.example .env
+./scripts/run-api.ps1
 ```
 
-Visit `http://127.0.0.1:5087/health` to see `{"status":"ok"}`. This confirms only that the API process can answer; it does not check PostgreSQL or dependency readiness. Stop the application with Ctrl+C.
+The PowerShell launcher reads root `.env` as plain, unquoted `KEY=VALUE` lines, skips blank lines and `#` comments, and passes them as process environment variables to the API. Values can contain `=`. It restores any previous process values on exit. The default URL in the example is `http://127.0.0.1:5087`; visit `/health` to see `{"status":"ok"}`. The endpoint checks only the process, not PostgreSQL. To stop the application, press Ctrl+C. `dotnet run` by itself does not load `.env`; use the launcher or supply operating-system environment variables yourself. Build separately with `dotnet build HelpingHands.sln`.
 
-With Docker installed and its engine running:
+For Docker, edit `.env` to use `ASPNETCORE_URLS=http://+:8080` inside the container, then run:
 
 ```powershell
 docker build -t helping-hands-api .
-docker run --rm -p 8080:8080 helping-hands-api
+docker run --rm --env-file .env -p 8080:8080 helping-hands-api
 ```
 
-Then visit `http://localhost:8080/health`. No PostgreSQL container is required for the scaffold. Future sensitive settings should use environment-based or secure external configuration, not committed files. The [database design](docs/database-design.md) describes the proposed code-first migration workflow; no schema has been created or models implemented in this task.
+Visit `http://localhost:8080/health`. The scaffold does not require PostgreSQL; the commented connection string in `.env.example` is a future placeholder, not an active database integration. `.env` and its variants are Git-ignored and excluded from Docker build context. Keep real credentials out of `.env.example` and source control; production secrets should come from the deployment environment or secret manager. Docker and the launcher read `.env` separately; avoid quoted values, variable expansion, and inline comments for portability. See the [database design](docs/database-design.md) for planned migrations.
 
 ## Repository status
 

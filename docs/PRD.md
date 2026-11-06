@@ -6,7 +6,7 @@
 | --- | --- |
 | Version | 1.0 |
 | Status | Final working product baseline; identified proposals and external validation remain open |
-| Authors | Helping Hands project team (individual names to be supplied) |
+| Authors | Bola Ghaly, Ziad Walid, hussien okely and ali fathy |
 | Business source | [Business Requirements Document v1.3](BRD.md), final baseline with owner delegation |
 | Related specification | [Software Requirements Specification](SRS.md); detailed system requirements and models are maintained there |
 
@@ -17,7 +17,7 @@
 
 This working baseline applies the project owner’s request to finalize the requirements and delegation of remaining decisions. The owner validated an earlier BRD; this does not mean each product rule was individually approved. No instructor, charity, or other stakeholder approval, field validation, implementation, or test result is implied by this document.
 
-Course reference locations below are PDF page numbers, not necessarily printed slide numbers: `D:/Downloads/Lecture 1.pdf`, `Lecture 2.pdf`, `Lecture 3.pdf`, and `Lecture 5_new (Part1 and Part2).pdf` (also supplied as `(1)`); the latter copies have the same page count and extracted content. These are local source materials, not deliverables. Lecture 4 and a separate instructor submission rubric were not supplied; no missing content is inferred.
+Course reference locations below are PDF page numbers, not necessarily printed slide numbers: `D:/Downloads/swe/Lecture 1.pdf`, `Lecture 2.pdf`, `Lecture 3.pdf`, and `Lecture 5_new (Part1 and Part2).pdf` (also supplied as `(1)`); the latter copies have the same page count and extracted content. These are local source materials, not deliverables. Lecture 4 and a separate instructor submission rubric were not supplied; no missing content is inferred.
 
 ## 2. Product overview
 
@@ -132,7 +132,7 @@ The following is an illustrative ordered backlog, not a commitment or estimate. 
 | E7 Mixed needs | Split mixed categories into linked requests and track their progress. | F-05, F-09 |
 | E8 Validation and readiness | Review fictional demonstrations, representative access tests, usability and stakeholder feedback; identify remaining launch decisions. | F-01–F-10, BO-05 |
 
-Illustrative cycle: maintain a single ordered product backlog; at sprint planning choose a small coherent increment based on the team's actual capacity and dependencies, agree a sprint goal and acceptance checks, and break stories into tasks. During a sprint hold brief coordination meetings and update progress and blockers. At review, demonstrate working behavior against acceptance criteria with available stakeholders and record feedback without inventing it. At retrospective, select practical improvements to team process. Refine and re-prioritize the backlog between cycles. One-week sprint goals and candidates are forecast in the [full-app Scrum roadmap](scrum-roadmap.md); staffing and dates are not set. A proposed definition of done for a business story is reviewed requirements, implemented behavior, relevant passing checks including access and error paths, updated documentation and a demonstrable fictional-data scenario; adapt it with the team.
+Illustrative cycle: maintain a single ordered product backlog; at sprint planning choose a small coherent increment based on the team's actual capacity and dependencies, agree a sprint goal and acceptance checks, and break stories into tasks. During a sprint hold brief coordination meetings and update progress and blockers. At review, demonstrate working behavior against acceptance criteria with available stakeholders and record feedback without inventing it. At retrospective, select practical improvements to team process. Refine and re-prioritize the backlog between cycles. One-week sprint goals and candidates are forecast in the [full-app Scrum roadmap](scrum-roadmap.md); individual specialties are recorded in the roadmap; Scrum roles, capacity and dates are not set. A proposed definition of done for a business story is reviewed requirements, implemented behavior, relevant passing checks including access and error paths, updated documentation and a demonstrable fictional-data scenario; adapt it with the team.
 
 **Illustrative first sprint:** A possible goal is to establish a runnable foundation and agree the first thin charity-to-referral slice. Candidate items are the local API health endpoint and development instructions, refinement of charity application and request-intake stories, and an initial role and access review using fictional examples. At planning, select only items the team judges feasible and define their acceptance checks; during the sprint, discuss progress and blockers and refine the slice. At review, demonstrate whichever foundation items are actually complete and walk through the proposed fictional workflow, recording feedback and gaps. The retrospective identifies a process improvement for the next cycle. This example is not a delivery commitment and does not imply the business workflow has been implemented.
 

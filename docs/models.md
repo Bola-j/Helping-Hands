@@ -1,8 +1,8 @@
 # Helping Hands system models
 
-Status: supporting models for the finalized [SRS](SRS.md), not implemented. BRD 1.3 remains the business authority. State labels below are proposed analysis states, not a final API contract. Mermaid diagrams are editable text; the EER specialization constraints and physical mappings are explained in [database design](database-design.md).
+Status: supporting models for the [SRS](SRS.md). The Phase 1 roadmap takes priority over earlier delivery sequencing. Models describe target behavior, not proof of implementation; see the [capability assessment](SRS.md#appendix-phase-1-implementation-baseline-and-verification). State labels are proposed analysis states, not a final API contract. Mermaid diagrams are editable text; the EER specialization constraints and physical mappings are explained in [database design](database-design.md).
 
-Editable draw.io files: [conceptual EER](diagrams/conceptual-eer.drawio) and [relational schema](diagrams/relational-schema.drawio). Their XML and connectors were checked, but their layout has not been visually verified in draw.io.
+The following draw.io files depict the earlier baseline and do not yet model the Phase 1 service standards, capacity or reminder additions; do not treat them as the complete Phase 1 schema. Editable draw.io files: [conceptual EER](diagrams/conceptual-eer.drawio) and [relational schema](diagrams/relational-schema.drawio). Their XML and connectors were checked, but their layout has not been visually verified in draw.io.
 
 ## System context
 
@@ -10,8 +10,8 @@ Editable draw.io files: [conceptual EER](diagrams/conceptual-eer.drawio) and [re
 flowchart LR
  B[Beneficiary] -->|request and updates| H[Helping Hands coordination platform]
  T[Third-party requester] -->|request and updates| H
- A[Platform administrator] -->|registration decisions| H
- C[Platform coordinator] -->|review and referrals| H
+ A[Platform administrator] -->|platform access administration| H
+ C[Platform coordinator] -->|charity approval, review and referrals| H
  H <-->|assigned referrals and evidence| P[Approved charity or individual contributor]
  P -.->|goods money or services outside platform| B
 ```
@@ -23,7 +23,7 @@ flowchart LR
  requester[Beneficiary / third-party requester] --> submit([UC-003 Submit and review request])
  coordinator[Coordinator] --> submit
  charity[Charity applicant] --> registration([UC-001 Review charity registration])
- admin[Administrator] --> registration([UC-001 Review charity registration])
+ coordinator --> registration
  individual[Individual contributor applicant] --> contributor([UC-002 Review contributor registration])
  coordinator --> contributor
  coordinator --> review([UC-004 Split mixed request])
@@ -46,9 +46,11 @@ flowchart TD
  C -->|Leave pending| B
 ```
 
-Administrator reviews charities; coordinator reviews individual contributors. Administration of accounts is not evidence of beneficiary verification.
+The coordinator reviews charities in Phase 1 and individual contributors in the later full-app scope. Administration of accounts is not evidence of beneficiary verification.
 
 ## Activity: review, referral and follow-up
+
+This full-product view includes release, dispute and unresolved closure paths planned after Phase 1. The demo covers initial split allocations, acceptance and explicit closure when all needs are fulfilled; the exact mapping of separately tracked needs is still to be designed.
 
 ```mermaid
 flowchart TD
@@ -74,7 +76,7 @@ flowchart TD
  Q --> G
  L -->|No| G
  K --> N{All needs fulfilled?}
- N -->|Yes| O[Complete request]
+ N -->|Yes| O[Coordinator explicitly closes completed request]
  N -->|No| P
 ```
 
@@ -177,10 +179,10 @@ stateDiagram-v2
  UnderReview --> Declined: reason recorded
  UnderReview --> Accepted
  UnderReview --> Split: mixed needs separated
- Split --> Completed: all linked child needs fulfilled and accepted
+ Split --> Completed: coordinator closes after all child needs fulfilled and accepted
  Split --> ClosedUnresolved: work stops with unmet child need and reason
  Accepted --> InProgress: referral made
- InProgress --> Completed: all required need fulfilled and accepted
+ InProgress --> Completed: coordinator closes after all need fulfilled and accepted
  Accepted --> ClosedUnresolved: work stops with reason
  InProgress --> ClosedUnresolved: work stops with unmet need and reason
 ```
@@ -224,4 +226,4 @@ flowchart LR
  API --> Files[Protected file storage - future]
 ```
 
-The current scaffold has only `/health`; none of these business components or external dependencies is implemented. See [architecture and compatibility](architecture.md).
+API source includes business workflow and dependency integrations; the client and complete Phase 1 workflow remain planned. See [architecture and compatibility](architecture.md) and the [capability assessment](SRS.md#appendix-phase-1-implementation-baseline-and-verification) for verification limits.

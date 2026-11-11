@@ -1,6 +1,6 @@
 # API v1 implementation plan
 
-Status: **planned contracts and requirements; implementation varies and requires verification**. The repository contains an API, migrations and tests, but route presence does not prove complete behavior; consult the [Phase 1 assessment](phase1-assessment-and-reconciliation-plan.md) and its resulting evidence. The [Phase 1 Scrum roadmap](api-demo-scrum-roadmap.md) defines the fictional-data demo, including mixed needs and split referrals. The [database design](database-design.md) distinguishes the original confirmed structure from proposed Phase 1 extensions. Late-dispute behavior remains a proposed later increment subject to validation.
+Status: **planned contracts and requirements; implementation varies and requires verification**. The repository contains an API, migrations and tests, but route presence does not prove complete behavior; consult the [Phase 1 assessment](phase1-assessment-and-reconciliation-plan.md) and its resulting evidence. The [Phase 1 Scrum roadmap](api-demo-scrum-roadmap.md) defines the fictional-data demo, including mixed needs and split referrals. The [database design](database-design.md) describes the proposed Phase 1 mapping and links to the earlier full-product proposal. Late-dispute behavior remains a proposed later increment subject to validation.
 
 ## Platform and delivery
 
@@ -42,7 +42,7 @@ Implement integration tests against isolated PostgreSQL, not an in-memory substi
 
 ## Phase 1 catalog, capacity and reminders
 
-These are planned capabilities; exact route shapes and schemas require feature design rather than an inferred contract. A coordinator manages versioned service categories and unit standards with structured component names, quantities and units (P1-12–P1-15, P1-51). New activity uses current versions; historical needs, capacity and referrals retain their versions. P1-33 must decide how outstanding needs on earlier versions are fulfilled; do not silently substitute an incompatible version.
+These are planned capabilities; exact route shapes and schemas require feature design rather than an inferred contract. A coordinator manages versioned service categories and unit standards with structured component names, quantities and units (P1-12–P1-15, P1-51). New requests use current versions; historical needs, capacity and referrals retain their versions. The interim P1-33 decision allows only an exact-version match for outstanding needs until reviewed; incompatible substitution is prohibited and an unmatched need stays open.
 
 An approved charity selects services and records nonnegative **available-from-now** capacity in platform-standard units (P1-18–P1-23). An update replaces the available balance without rewriting prior commitments; subsequent assignments deduct capacity. At the Africa/Cairo calendar-day boundary, a service/version without a current update is frozen for new referrals, independently of other services. A current zero is distinct from a stale value. Eligible matching and split assignments must respect charity approval, service and compatible standard versions, freshness, available capacity and remaining need (P1-32–P1-35, P1-53).
 

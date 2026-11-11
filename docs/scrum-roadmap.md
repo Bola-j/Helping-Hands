@@ -17,7 +17,7 @@ Status: forecast for the complete documented first version, not a delivery promi
 | 11 — Follow-up and disputes | Follow-up, reasoned unresolved closure, optional confirmation; validate and, if accepted, implement proposed later-dispute freezes and corrections. | Unmet need can close only with reason; an accepted dispute scenario is demonstrated only if its proposal has been validated. |
 | 12 — Full-app readiness | Responsive and accessibility checks, end-to-end regression, deployment, backup/restore exercise, documentation and stakeholder review. | Full fictional-data workflows pass agreed checks; recovery is exercised and unresolved launch decisions are recorded. |
 
-Live deployment and automated CI/CD are tracked separately in the [Phase 2 deployment project](https://github.com/users/Bola-j/projects/5). Phase 1 workstream views remain in the [Phase 1 Scrum backlog](api-demo-scrum-roadmap.md).
+API CI is pulled forward into Phase 1; live deployment and frontend CI remain in the [Phase 2 deployment project](https://github.com/users/Bola-j/projects/5). Phase 1 workstream views remain in the [Phase 1 Scrum backlog](api-demo-scrum-roadmap.md). The [backend delivery breakdown](phase1-backend-delivery-breakdown.md) and [foundation milestone](phase1-foundation-milestone.md) describe the 12 November forecast; capacity and dependencies may require replanning.
 
 ## Team and collaboration
 

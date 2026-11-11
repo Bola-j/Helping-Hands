@@ -6,7 +6,7 @@
 | --- | --- |
 | Version | 1.4 |
 | Updated | 2026-11-09 |
-| Status | Working business baseline; Phase 1 changes pending team review |
+| Status | Working business baseline; Phase 1 review accepted by the Scrum Master |
 | Prepared by | Helping Hands project team |
 
 | Version | Change |
@@ -18,9 +18,9 @@
 | 1.1 | Clarified terminology, completion, scope priorities, and proposed partial-fulfillment rules following BRD feedback. |
 | 1.2 | Adopted practical first-version rules and recorded delegation of remaining decisions. |
 | 1.3 | Distinguished unresolved from unassigned needs and partial outcomes from referral completion. |
-| 1.4 | Reconciled the latest Phase 1 scope and coordinator charity approval; team review remains pending. |
+| 1.4 | Reconciled the latest Phase 1 scope and coordinator charity approval; Scrum Master review accepted on 11 November 2026. |
 
-The [original idea and business model](references/helping-hands-full-idea.md) is background. This document supersedes its direct inventory, finance, and organizational-help management model. The project owner validated the earlier BRD, requested finalization, and delegated the remaining decisions to practical business judgment. Version 1.3 adopted those decisions as the earlier baseline; version 1.4 records the later Phase 1 project direction, subject to team review. This records delegation, not separate approval of every rule; no instructor, charity, or other stakeholder approval is implied.
+The [original idea and business model](references/helping-hands-full-idea.md) is background. This document supersedes its direct inventory, finance, and organizational-help management model. The project owner validated the earlier BRD, requested finalization, and delegated the remaining decisions to practical business judgment. Version 1.3 adopted those decisions as the earlier baseline; version 1.4 records the later Phase 1 project direction; the Scrum Master accepted its review. This records delegation, not separate approval of every rule; no instructor, charity, or other stakeholder approval is implied.
 
 ## 2. Executive summary
 
@@ -76,7 +76,9 @@ The platform does not collect or hold donations, operate a warehouse, manage a c
 
 The complete scope above remains the first-version goal. The Phase 1 course demo uses fictional data and includes charity registration and coordinator approval, beneficiary self-submission of multiple needs, coordinator review and matching, split allocations to eligible charities, private outcome evidence, coordinator review, progress and explicit closure. Coordinators manage versioned service categories and structured unit standards; charities provide daily available-from-now capacity and receive an in-app task and 08:00 Africa/Cairo reminder for stale services. These are planned capabilities, not implementation evidence.
 
-Third-party or coordinator-on-behalf intake, contributor onboarding and live operational deployment are later scope. Explicit release/reassignment after an accepted partial outcome remains a later first-version increment; partial assignment among charities and separately tracked need balances are included in Phase 1. The handling of outstanding requests after a standard changes remains open in [P1-33](https://github.com/Bola-j/Helping-Hands/issues/33); no incompatible version may be silently substituted.
+The team is planning an expedited backend, PostgreSQL, local-container and API CI increment with **12 November 2026** as a forecast target, not a delivery commitment. The first proposed milestone establishes a reproducible local API, database, private evidence storage and a CI baseline; later milestones deliver the Phase 1 business workflow and its integration checks. The complete [backend delivery breakdown](phase1-backend-delivery-breakdown.md) identifies dependencies and a fallback if the forecast is not achievable. This scheduling decision does not remove the web client or any full-product capability from scope.
+
+Third-party or coordinator-on-behalf intake, contributor onboarding and live operational deployment are later scope. Explicit release/reassignment after an accepted partial outcome remains a later first-version increment; partial assignment among charities and separately tracked need balances are included in Phase 1. For outstanding requests after a standard changes, the Scrum Master selected exact-version matches only until review in [P1-33](https://github.com/Bola-j/Helping-Hands/issues/33); no incompatible version may be substituted, and unmatched needs remain open.
 
 ### Out of scope
 
@@ -207,4 +209,4 @@ The category **organizational referral** includes referrals to individuals as we
 | Instructor | Not recorded | Course requirements apply; no instructor approval is represented here. |
 | Prospective charity and users | Not recorded | No external operational validation is represented here. |
 
-Version 1.4 is the working business baseline for subsequent requirements and project work; the Phase 1 reconciliation requires team review. External feedback and launch readiness remain separate from the project owner's validation and delegation.
+Version 1.4 is the working business baseline for subsequent requirements and project work; the Phase 1 review was accepted by the Scrum Master; diagram reconciliation remains open. External feedback and launch readiness remain separate from the project owner's validation and delegation.

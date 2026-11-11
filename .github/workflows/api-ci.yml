@@ -1,0 +1,60 @@
+name: API checks
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  api:
+    name: Build, test and verify PostgreSQL migration
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: helping_hands_ci
+          POSTGRES_USER: postgres
+          POSTGRES_HOST_AUTH_METHOD: trust
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d helping_hands_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    env:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__HelpingHands: Host=127.0.0.1;Port=5432;Database=helping_hands_ci;Username=postgres
+      EvidenceStorage__ServiceUrl: http://127.0.0.1:9000
+      EvidenceStorage__Bucket: helping-hands-ci
+      EvidenceStorage__AccessKey: local-test
+      EvidenceStorage__SecretKey: local-test
+      PGHOST: 127.0.0.1
+      PGPORT: 5432
+      PGDATABASE: helping_hands_ci
+      PGUSER: postgres
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v7.0.1
+      - name: Install .NET 10
+        uses: actions/setup-dotnet@v6.1.0
+        with:
+          dotnet-version: 10.0.x
+      - name: Restore
+        run: dotnet restore HelpingHands.slnx
+      - name: Build
+        run: dotnet build HelpingHands.slnx --configuration Release --no-restore
+      - name: Run API tests
+        run: dotnet test HelpingHands.slnx --configuration Release --no-build --no-restore
+      - name: Install EF Core tools
+        run: dotnet tool install dotnet-ef --version 10.0.0 --tool-path "$RUNNER_TEMP/dotnet-tools"
+      - name: Check migration model and apply to isolated database
+        run: |
+          "$RUNNER_TEMP/dotnet-tools/dotnet-ef" migrations has-pending-model-changes --project src/HelpingHands.Api --configuration Release --no-build
+          "$RUNNER_TEMP/dotnet-tools/dotnet-ef" database update --project src/HelpingHands.Api --configuration Release --no-build
+      - name: Verify PostgreSQL schema
+        run: psql -v ON_ERROR_STOP=1 -f .github/scripts/verify-postgres-schema.sql

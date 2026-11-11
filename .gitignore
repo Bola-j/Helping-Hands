@@ -6,6 +6,9 @@
 venv/
 node_modules/
 
+# Local development certificates
+.local/
+
 # Build and test output
 bin/
 obj/
@@ -21,3 +24,4 @@ __pycache__/
 .idea/
 .DS_Store
 Thumbs.db
+AGENTS.md

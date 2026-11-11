@@ -14,6 +14,10 @@
 - [Local services PR #73](https://github.com/Bola-j/Helping-Hands/pull/73) makes host ports configurable and bounds storage initialization. Docker is running; the configured S3 images returned registry authorization errors and alternative pulls did not complete. A uniquely named Compose PostgreSQL instance preserved a fictional marker across restart; only the isolated test resources were removed. Full stack startup, container certificate readability, bucket connectivity, storage persistence and backup/restore remain unverified.
 - An independent host-process check observed `/health` returning 200 and `/ready` returning 503 with PostgreSQL deliberately unreachable. This is not a containerized end-to-end check.
 
+## Resumption evidence — 11 November 2026
+
+A pinned alternative S3-compatible image was obtainable but allowed anonymous object reads in two isolated tests; it was not adopted. The configured images remain unavailable, so private bucket and full-stack checks are blocked. The API reached PostgreSQL in an isolated host test with its password supplied separately and a semicolon in the fictional password. GitGuardian still reports a finding on the local-services PR; its dashboard detail has not been verified, and the check has not passed. Diagram layout remains visually unverified because a local renderer could not be obtained.
+
 ## Migration review and recovery approach
 
 The generated initial migration SQL was inspected for the current candidate: it declares 16 tables including EF migration history, five business-reference sequences, 13 unique indexes, 25 foreign keys and 17 check constraints. The isolated PostgreSQL assertion script verified UUID primary keys on application tables and the expected sequences and unique reference indexes; those checks do not prove all application authorization or concurrency behavior.

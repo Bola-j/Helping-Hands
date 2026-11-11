@@ -1,6 +1,6 @@
 # API v1 implementation plan
 
-Status: **planned contracts and requirements; implementation varies and requires verification**. The repository contains an API, migrations and tests, but route presence does not prove complete behavior; consult the [Phase 1 assessment](phase1-assessment-and-reconciliation-plan.md) and its resulting evidence. The [Phase 1 Scrum roadmap](api-demo-scrum-roadmap.md) defines the fictional-data demo, including mixed needs and split referrals. The [database design](database-design.md) distinguishes the original confirmed structure from proposed Phase 1 extensions. Late-dispute behavior remains a proposed later increment subject to validation.
+Status: **planned contracts and requirements; implementation varies and requires verification**. The repository contains an API, migrations and tests, but route presence does not prove complete behavior; consult the [Phase 1 assessment](phase1-assessment-and-reconciliation-plan.md) and its resulting evidence. The [Phase 1 Scrum roadmap](api-demo-scrum-roadmap.md) defines the fictional-data demo, including mixed needs and split referrals. The [database design](database-design.md) describes the proposed Phase 1 mapping and links to the earlier full-product proposal. Late-dispute behavior remains a proposed later increment subject to validation.
 
 ## Platform and delivery
 

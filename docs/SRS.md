@@ -151,7 +151,7 @@ BRD BRule-01 through BRule-14 remain authoritative. Particularly, eligibility pr
 | DR-005 | Quantity-based assignments and accepted fulfillment shall not exceed the relevant available or assigned amount. | Core | C | BRule-14 | Boundary and concurrent tests | Proposed |
 | DR-006 | Personal data and evidence retention, deletion, access recovery and consent policies shall be resolved with appropriate local review before real use. | Cross-cutting | Team | BRule-12, D-03 | Policy review | Open |
 
-The confirmed database structure, conceptual model, PostgreSQL mapping, integrity constraints and code-first migration approach are in [database-design.md](database-design.md). The deployed database state and enforcement require verification; the presence of code or migrations does not establish a working database. Each table has a UUID primary key, and user-facing business records receive server-generated references as described in the [API plan](api-v1-plan.md).
+The Phase 1 database design proposal, conceptual model, candidate PostgreSQL mapping, integrity considerations and code-first migration approach are in [database-design.md](database-design.md). The deployed database state and enforcement require verification; the presence of code or migrations does not establish a working database. Each table has a UUID primary key, and user-facing business records receive server-generated references as described in the [API plan](api-v1-plan.md).
 
 ## 8. Use cases and models
 
@@ -335,7 +335,7 @@ These are acceptance scenarios, not executed test results.
 ## Open decisions and review
 
 - [P1-33](https://github.com/Bola-j/Helping-Hands/issues/33): implement and test the interim exact-version rule for an outstanding old-standard need; further conversion policy awaits review.
-- Physical mapping of needs, versioned standards and capacity is to be designed and validated through the linked database tickets; existing draw.io models represent the earlier baseline, not the complete Phase 1 model.
+- Physical mapping of needs, versioned standards and capacity remains to be designed and validated through the linked database tickets; the draw.io models depict the proposed Phase 1 design and identify unresolved mappings.
 - Scrum Master review: **accepted orally in conversation on 11 November 2026**. This does not establish a separate team review or resolve outstanding diagram and design work.
 
 # Appendix: Phase 1 implementation baseline and verification

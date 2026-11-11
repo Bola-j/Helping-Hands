@@ -32,7 +32,7 @@ These are areas of responsibility; the team collaborates on planning, integratio
 - [Business Requirements Document (version 1.3)](docs/BRD.md)
 - [Product Requirements Document](docs/PRD.md)
 - [Software Requirements Specification](docs/SRS.md)
-- [System models](docs/models.md), [confirmed database structure and PostgreSQL mapping](docs/database-design.md), and [architecture and compatibility](docs/architecture.md)
+- [System models](docs/models.md), [Phase 1 database design proposal](docs/database-design.md), and [architecture and compatibility](docs/architecture.md)
 - [API v1 plan](docs/api-v1-plan.md) and [full-app Scrum roadmap](docs/scrum-roadmap.md)
 - [Full idea and business model — original reference](docs/references/helping-hands-full-idea.md). The current BRD supersedes its inventory, financial management, and direct service-coordination model.
 

@@ -40,12 +40,23 @@ BEGIN
 
     SELECT string_agg(expected.name, ', ' ORDER BY expected.name)
       INTO missing_names
-      FROM (VALUES ('IX_AssistanceRequest_Reference'), ('IX_Beneficiary_Reference'),
-                   ('IX_Outcome_Reference'), ('IX_Referral_Reference'),
-                   ('IX_ReferralRecipient_Reference')) AS expected(name)
-     WHERE NOT EXISTS (SELECT 1 FROM pg_indexes
-                       WHERE schemaname = 'public' AND indexname = expected.name
-                         AND indexdef LIKE 'CREATE UNIQUE INDEX%');
+      FROM (VALUES ('IX_AssistanceRequest_Reference', 'AssistanceRequest'),
+                   ('IX_Beneficiary_Reference', 'Beneficiary'),
+                   ('IX_Outcome_Reference', 'Outcome'),
+                   ('IX_Referral_Reference', 'Referral'),
+                   ('IX_ReferralRecipient_Reference', 'ReferralRecipient'))
+                   AS expected(name, table_name)
+     WHERE NOT EXISTS (
+           SELECT 1
+             FROM pg_index i
+             JOIN pg_class idx ON idx.oid = i.indexrelid
+             JOIN pg_class tbl ON tbl.oid = i.indrelid
+             JOIN pg_namespace n ON n.oid = tbl.relnamespace
+             JOIN pg_attribute a ON a.attrelid = tbl.oid AND a.attnum = i.indkey[0]
+            WHERE n.nspname = 'public' AND idx.relname = expected.name
+              AND tbl.relname = expected.table_name AND a.attname = 'Reference'
+              AND i.indisunique AND i.indisvalid AND i.indnkeyatts = 1
+              AND i.indpred IS NULL AND i.indexprs IS NULL);
     IF missing_names IS NOT NULL THEN
         RAISE EXCEPTION 'Missing unique reference indexes: %', missing_names;
     END IF;

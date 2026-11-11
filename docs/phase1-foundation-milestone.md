@@ -4,7 +4,15 @@
 
 **Goal:** establish a repeatable, isolated development foundation for the Phase 1 API: .NET build and tests, reviewed PostgreSQL migration, API/PostgreSQL/private S3-compatible storage through Docker Compose, and API CI. The target is the team's 12 November 2026 backend forecast, not a delivery commitment. This milestone prepares subsequent identity and workflow work; it does not claim a complete charity-to-closure demo or live deployment.
 
-**Status:** planned. Existing API, tests, migration, Dockerfile and Compose files are uncommitted in the local working tree. A 9 November assessment recorded nine passing tests and an isolated empty-database migration; repeat checks on the eventual reviewed candidate. During this planning pass Docker's Linux engine was unreachable, and the configured S3 image previously returned HTTP 401. No current end-to-end stack or CI result is claimed. See the [backend delivery breakdown](phase1-backend-delivery-breakdown.md) and [SRS assessment appendix](SRS.md#appendix-phase-1-implementation-baseline-and-verification).
+**Status:** in progress. The API baseline, local services, design and CI are open as separate draft pull requests; source changes also remain uncommitted in the original working tree. A 9 November assessment recorded nine passing tests and an isolated empty-database migration; repeat checks on the eventual reviewed candidate. During this planning pass Docker's Linux engine was unreachable, and the configured S3 image previously returned HTTP 401. No current end-to-end stack or CI result is claimed. See the [backend delivery breakdown](phase1-backend-delivery-breakdown.md) and [SRS assessment appendix](SRS.md#appendix-phase-1-implementation-baseline-and-verification).
+
+## Execution evidence — 11 November 2026
+
+- [API baseline PR #70](https://github.com/Bola-j/Helping-Hands/pull/70) includes the reviewed working-tree foundation. Local .NET 10 build and nine tests passed, and EF reports no pending model changes. An isolated PostgreSQL 17 migration and schema assertions passed. These are not an upgrade or recovery test.
+- [API CI PR #71](https://github.com/Bola-j/Helping-Hands/pull/71) passed [GitHub Actions run 43036336578](https://github.com/Bola-j/Helping-Hands/actions/runs/43036336578) for commit `6b152416769f0d0174532e645a86a721d48ed83d`, including isolated PostgreSQL migration/schema checks. It remains a draft pending review and merge.
+- [Design PR #72](https://github.com/Bola-j/Helping-Hands/pull/72) contains editable diagrams; XML/edge checks passed, but rendered visual review remains outstanding.
+- [Local services PR #73](https://github.com/Bola-j/Helping-Hands/pull/73) makes host ports configurable and bounds storage initialization. Docker is running; the configured S3 images returned registry authorization errors and alternative pulls did not complete. Full stack startup, container certificate readability, bucket connectivity and persistent restart remain unverified.
+- An independent host-process check observed `/health` returning 200 and `/ready` returning 503 with PostgreSQL deliberately unreachable. This is not a containerized end-to-end check.
 
 ## Deliverables and single-responsibility tickets
 

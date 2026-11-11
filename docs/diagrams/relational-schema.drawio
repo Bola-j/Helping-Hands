@@ -1,2 +1,450 @@
-<?xml version='1.0' encoding='utf-8'?>
-<mxGraphModel adaptiveColors="auto" page="1" pageScale="1" pageWidth="2100" pageHeight="2100" grid="1" gridSize="10"><root><mxCell id="0" /><mxCell id="1" parent="0" /><mxCell id="title" value="&lt;b&gt;Helping Hands — proposed relational schema&lt;/b&gt;&lt;br&gt;Editable proposed model; PK/FK indicated in fields. See database-design.md for types, constraints and transactional invariants." style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=middle;fontSize=16;" vertex="1" parent="1"><mxGeometry x="40" y="20" width="1900" height="65" as="geometry" /></mxCell><mxCell id="UserAccount" value="&lt;b&gt;UserAccount&lt;/b&gt;&lt;br&gt;UserId uuid PK&lt;br&gt;DisplayName varchar(200)!&lt;br&gt;Email varchar(320)?&lt;br&gt;Phone varchar(40)?&lt;br&gt;AccountStatus varchar(20)!&lt;br&gt;CreatedAt timestamptz!&lt;br&gt;Version uuid!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="40" y="120" width="340" height="240" as="geometry" /></mxCell><mxCell id="Role" value="&lt;b&gt;Role&lt;/b&gt;&lt;br&gt;RoleId uuid PK&lt;br&gt;Code varchar(40)!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="530" y="120" width="340" height="240" as="geometry" /></mxCell><mxCell id="UserRole" value="&lt;b&gt;UserRole&lt;/b&gt;&lt;br&gt;UserRoleId uuid PK&lt;br&gt;UserId uuid! FK UserAccount&lt;br&gt;RoleId uuid! FK Role&lt;br&gt;GrantedAt timestamptz!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="1020" y="120" width="340" height="240" as="geometry" /></mxCell><mxCell id="Beneficiary" value="&lt;b&gt;Beneficiary&lt;/b&gt;&lt;br&gt;Reference varchar(32)! UQ&lt;br&gt;BeneficiaryId uuid PK&lt;br&gt;LinkedUserId uuid? FK UserAccount&lt;br&gt;DisplayName varchar(200)!&lt;br&gt;ContactDetails varchar(500)?&lt;br&gt;IsFamily boolean!&lt;br&gt;CreatedAt timestamptz!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="1510" y="120" width="340" height="240" as="geometry" /></mxCell><mxCell id="ReferralRecipient" value="&lt;b&gt;ReferralRecipient&lt;/b&gt;&lt;br&gt;Reference varchar(32)! UQ&lt;br&gt;RecipientId uuid PK&lt;br&gt;RecipientType varchar(20)!&lt;br&gt;DisplayName varchar(200)!&lt;br&gt;ContactDetails varchar(500)!&lt;br&gt;ApprovalStatus varchar(20)!&lt;br&gt;Active boolean!&lt;br&gt;CreatedAt timestamptz!&lt;br&gt;Version uuid!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="40" y="420" width="340" height="240" as="geometry" /></mxCell><mxCell id="Charity" value="&lt;b&gt;Charity&lt;/b&gt;&lt;br&gt;RecipientId uuid PK/FK ReferralRecipient&lt;br&gt;RegistrationInformation varchar(1000)?" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="530" y="420" width="340" height="240" as="geometry" /></mxCell><mxCell id="Contributor" value="&lt;b&gt;Contributor&lt;/b&gt;&lt;br&gt;RecipientId uuid PK/FK ReferralRecipient" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="1020" y="420" width="340" height="240" as="geometry" /></mxCell><mxCell id="RecipientMember" value="&lt;b&gt;RecipientMember&lt;/b&gt;&lt;br&gt;RecipientMemberId uuid PK&lt;br&gt;RecipientId uuid! FK ReferralRecipient&lt;br&gt;UserId uuid! FK UserAccount&lt;br&gt;IsActive boolean!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="1510" y="420" width="340" height="240" as="geometry" /></mxCell><mxCell id="RecipientDecision" value="&lt;b&gt;RecipientDecision&lt;/b&gt;&lt;br&gt;RecipientDecisionId uuid PK&lt;br&gt;RecipientId uuid! FK ReferralRecipient&lt;br&gt;ActorUserId uuid! FK UserAccount&lt;br&gt;Decision varchar(20)!&lt;br&gt;Reason varchar(2000)?&lt;br&gt;DecidedAt timestamptz!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="40" y="720" width="340" height="240" as="geometry" /></mxCell><mxCell id="ApplicationAttachment" value="&lt;b&gt;ApplicationAttachment&lt;/b&gt;&lt;br&gt;ApplicationAttachmentId uuid PK&lt;br&gt;RecipientId uuid! FK ReferralRecipient&lt;br&gt;StorageKey varchar(500)!&lt;br&gt;OriginalName varchar(255)!&lt;br&gt;MediaType varchar(150)!&lt;br&gt;SizeBytes bigint!&lt;br&gt;UploadedByUserId uuid! FK UserAccount&lt;br&gt;UploadedAt timestamptz!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="530" y="720" width="340" height="240" as="geometry" /></mxCell><mxCell id="AssistanceRequest" value="&lt;b&gt;AssistanceRequest&lt;/b&gt;&lt;br&gt;Reference varchar(32)! UQ&lt;br&gt;RequestId uuid PK&lt;br&gt;BeneficiaryId uuid! FK Beneficiary&lt;br&gt;SubmittedByUserId uuid! FK UserAccount&lt;br&gt;Category varchar(30)?&lt;br&gt;ServiceSubtype varchar(100)?&lt;br&gt;Description varchar(4000)!&lt;br&gt;RequiredQuantity decimal(18,3)?&lt;br&gt;Unit varchar(50)?&lt;br&gt;Status varchar(30)!&lt;br&gt;AuthorityConfirmed boolean!&lt;br&gt;SharingAgreed boolean!&lt;br&gt;CreatedAt timestamptz!&lt;br&gt;Version uuid!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="1020" y="720" width="340" height="240" as="geometry" /></mxCell><mxCell id="RequestLink" value="&lt;b&gt;RequestLink&lt;/b&gt;&lt;br&gt;RequestLinkId uuid PK&lt;br&gt;ParentRequestId uuid! FK AssistanceRequest&lt;br&gt;ChildRequestId uuid! FK AssistanceRequest&lt;br&gt;CreatedByUserId uuid! FK UserAccount&lt;br&gt;CreatedAt timestamptz!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="1510" y="720" width="340" height="240" as="geometry" /></mxCell><mxCell id="Referral" value="&lt;b&gt;Referral&lt;/b&gt;&lt;br&gt;Reference varchar(32)! UQ&lt;br&gt;ReferralId uuid PK&lt;br&gt;RequestId uuid! FK AssistanceRequest&lt;br&gt;RecipientId uuid! FK ReferralRecipient&lt;br&gt;AssignedQuantity decimal(18,3)!&lt;br&gt;ScopeDescription varchar(2000)!&lt;br&gt;Status varchar(30)!&lt;br&gt;CreatedByUserId uuid! FK UserAccount&lt;br&gt;CreatedAt timestamptz!&lt;br&gt;Version uuid!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="40" y="1020" width="340" height="240" as="geometry" /></mxCell><mxCell id="Outcome" value="&lt;b&gt;Outcome&lt;/b&gt;&lt;br&gt;Reference varchar(32)! UQ&lt;br&gt;OutcomeId uuid PK&lt;br&gt;ReferralId uuid! FK Referral&lt;br&gt;ReportedByUserId uuid! FK UserAccount&lt;br&gt;ReportedQuantity decimal(18,3)!&lt;br&gt;Description varchar(4000)!&lt;br&gt;Status varchar(30)!&lt;br&gt;SubmittedAt timestamptz?&lt;br&gt;Version uuid!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="530" y="1020" width="340" height="240" as="geometry" /></mxCell><mxCell id="EvidenceAttachment" value="&lt;b&gt;EvidenceAttachment&lt;/b&gt;&lt;br&gt;EvidenceId uuid PK&lt;br&gt;OutcomeId uuid! FK Outcome&lt;br&gt;StorageKey varchar(500)!&lt;br&gt;OriginalName varchar(255)!&lt;br&gt;MediaType varchar(150)!&lt;br&gt;SizeBytes bigint!&lt;br&gt;UploadedByUserId uuid! FK UserAccount&lt;br&gt;UploadedAt timestamptz!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="1020" y="1020" width="340" height="240" as="geometry" /></mxCell><mxCell id="OutcomeReview" value="&lt;b&gt;OutcomeReview&lt;/b&gt;&lt;br&gt;ReviewId uuid PK&lt;br&gt;OutcomeId uuid! FK Outcome&lt;br&gt;ActorUserId uuid! FK UserAccount&lt;br&gt;Decision varchar(30)!&lt;br&gt;Reason varchar(2000)?&lt;br&gt;ReviewedAt timestamptz!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="1510" y="1020" width="340" height="240" as="geometry" /></mxCell><mxCell id="ReferralRelease" value="&lt;b&gt;ReferralRelease&lt;/b&gt;&lt;br&gt;ReleaseId uuid PK&lt;br&gt;ReferralId uuid! FK Referral&lt;br&gt;ReleasedQuantity decimal(18,3)!&lt;br&gt;Reason varchar(2000)!&lt;br&gt;ActorUserId uuid! FK UserAccount&lt;br&gt;ReleasedAt timestamptz!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="40" y="1320" width="340" height="240" as="geometry" /></mxCell><mxCell id="Confirmation" value="&lt;b&gt;Confirmation&lt;/b&gt;&lt;br&gt;ConfirmationId uuid PK&lt;br&gt;ReferralId uuid! FK Referral&lt;br&gt;RecordedByUserId uuid! FK UserAccount&lt;br&gt;SourceDescription varchar(300)!&lt;br&gt;Kind varchar(20)!&lt;br&gt;Details varchar(2000)!&lt;br&gt;RecordedAt timestamptz!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="530" y="1320" width="340" height="240" as="geometry" /></mxCell><mxCell id="DecisionHistory" value="&lt;b&gt;DecisionHistory&lt;/b&gt;&lt;br&gt;DecisionId uuid PK&lt;br&gt;RequestId uuid? FK AssistanceRequest&lt;br&gt;ReferralId uuid? FK Referral&lt;br&gt;ActorUserId uuid! FK UserAccount&lt;br&gt;Action varchar(50)!&lt;br&gt;Reason varchar(2000)?&lt;br&gt;OccurredAt timestamptz!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="1020" y="1320" width="340" height="240" as="geometry" /></mxCell><mxCell id="edge0" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="UserRole" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge1" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="Role" target="UserRole" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge2" value="0..1 : 0..1" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="Beneficiary" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge3" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="RecipientMember" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge4" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="ReferralRecipient" target="RecipientMember" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge5" value="1 : 0..1" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="ReferralRecipient" target="Charity" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge6" value="1 : 0..1" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="ReferralRecipient" target="Contributor" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge7" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="ReferralRecipient" target="RecipientDecision" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge8" value="1 : 0..* actor" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="RecipientDecision" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge9" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="ReferralRecipient" target="ApplicationAttachment" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge10" value="1 : 0..* uploader" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="ApplicationAttachment" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge11" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="Beneficiary" target="AssistanceRequest" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge12" value="1 : 0..* submitter" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="AssistanceRequest" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge13" value="1 : 0..* parent" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="AssistanceRequest" target="RequestLink" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge14" value="1 : 0..1 child" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="AssistanceRequest" target="RequestLink" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge15" value="1 : 0..* creator" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="RequestLink" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge16" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="AssistanceRequest" target="Referral" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge17" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="ReferralRecipient" target="Referral" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge18" value="1 : 0..* creator" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="Referral" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge19" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="Referral" target="Outcome" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge20" value="1 : 0..* reporter" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="Outcome" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge21" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="Outcome" target="EvidenceAttachment" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge22" value="1 : 0..* uploader" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="EvidenceAttachment" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge23" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="Outcome" target="OutcomeReview" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge24" value="1 : 0..* reviewer" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="OutcomeReview" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge25" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="Referral" target="ReferralRelease" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge26" value="1 : 0..* actor" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="ReferralRelease" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge27" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="Referral" target="Confirmation" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge28" value="1 : 0..* recorder" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="Confirmation" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge29" value="0..1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="AssistanceRequest" target="DecisionHistory" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge30" value="0..1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="Referral" target="DecisionHistory" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="edge31" value="1 : 0..* actor" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="DecisionHistory" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="OutcomeAdjustment" value="&lt;b&gt;OutcomeAdjustment&lt;/b&gt;&lt;br&gt;AdjustmentId uuid PK&lt;br&gt;OutcomeId uuid! FK Outcome&lt;br&gt;QuantityDelta decimal(18,3)!&lt;br&gt;Reason varchar(2000)!&lt;br&gt;ActorUserId uuid! FK UserAccount&lt;br&gt;CreatedAt timestamptz!" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="1510" y="1320" width="340" height="240" as="geometry" /></mxCell><mxCell id="OutcomeDispute" value="&lt;b&gt;OutcomeDispute&lt;/b&gt;&lt;br&gt;DisputeId uuid PK&lt;br&gt;OutcomeId uuid! FK Outcome&lt;br&gt;RaisedByUserId uuid! FK UserAccount&lt;br&gt;Details varchar(2000)!&lt;br&gt;RaisedAt timestamptz!&lt;br&gt;ResolvedByUserId uuid? FK UserAccount&lt;br&gt;Resolution varchar(2000)?&lt;br&gt;ResolvedAt timestamptz?" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="40" y="1620" width="340" height="240" as="geometry" /></mxCell><mxCell id="newedge0" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="Outcome" target="OutcomeAdjustment" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="newedge1" value="1 : 0..* actor" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="OutcomeAdjustment" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="newedge2" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="Outcome" target="OutcomeDispute" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="newedge3" value="1 : 0..* raises" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="OutcomeDispute" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="newedge4" value="0..1 : 0..* resolves" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="OutcomeDispute" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="Constraints" value="&lt;b&gt;Constraints&lt;/b&gt;&lt;br&gt;Intake / split parent: Category, quantity and unit may be null.&lt;br&gt;Allocatable request: one category, quantity &gt; 0, nonblank unit.&lt;br&gt;Adjustment: nonzero, audited, corrected accepted amount between 0 and original.&lt;br&gt;Dispute: resolution fields all null or all present; one open per outcome.&lt;br&gt;Open dispute freezes allocation, acceptance, release and completion.&lt;br&gt;See database-design.md for transactional invariants and all constraints." style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="530" y="1620" width="340" height="240" as="geometry" /></mxCell><mxCell id="RequestDispute" value="&lt;b&gt;RequestDispute&lt;/b&gt;&lt;br&gt;RequestDisputeId uuid PK&lt;br&gt;RequestId uuid! FK AssistanceRequest&lt;br&gt;ConfirmationId uuid! FK Confirmation&lt;br&gt;Details varchar(2000)!&lt;br&gt;RaisedByUserId uuid! FK UserAccount&lt;br&gt;RaisedAt timestamptz!&lt;br&gt;ResolvedByUserId uuid? FK UserAccount&lt;br&gt;Resolution varchar(2000)?&lt;br&gt;ResolvedAt timestamptz?" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="1020" y="1620" width="340" height="240" as="geometry" /></mxCell><mxCell id="ConfirmationOutcomeDispute" value="&lt;b&gt;ConfirmationOutcomeDispute&lt;/b&gt;&lt;br&gt;ConfirmationOutcomeDisputeId uuid PK&lt;br&gt;ConfirmationId uuid! FK Confirmation&lt;br&gt;DisputeId uuid! FK OutcomeDispute" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=8;fontSize=11;fillColor=#f5f8ff;strokeColor=#5677a5;" vertex="1" parent="1"><mxGeometry x="1510" y="1620" width="340" height="240" as="geometry" /></mxCell><mxCell id="disputeEdge0" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="AssistanceRequest" target="RequestDispute" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="disputeEdge1" value="1 : 0..* source" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="Confirmation" target="RequestDispute" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="disputeEdge2" value="1 : 0..* raises" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="RequestDispute" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="disputeEdge3" value="0..1 : 0..* resolves" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="UserAccount" target="RequestDispute" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="disputeEdge4" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="Confirmation" target="ConfirmationOutcomeDispute" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="disputeEdge5" value="1 : 0..*" style="edgeStyle=entityRelationEdgeStyle;rounded=0;html=1;endArrow=none;startArrow=none;fontSize=10;labelBackgroundColor=#ffffff;" edge="1" source="OutcomeDispute" target="ConfirmationOutcomeDispute" parent="1"><mxGeometry relative="1" as="geometry" /></mxCell></root></mxGraphModel>
+<mxfile host="Electron">
+  <diagram id="phase1" name="Phase 1 relational">
+    <mxGraphModel grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="0" page="0" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="UserAccount" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;UserAccount&lt;/b&gt;&lt;hr&gt;UserId uuid PK&lt;br&gt;DisplayName varchar(200)!&lt;br&gt;Email varchar(320)?&lt;br&gt;Phone varchar(40)?&lt;br&gt;AccountStatus varchar(20)!&lt;br&gt;CreatedAt timestamptz!&lt;br&gt;Version uuid!" vertex="1">
+          <mxGeometry height="175" width="1003" x="895" y="844.67" as="geometry" />
+        </mxCell>
+        <mxCell id="Role" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;Role&lt;/b&gt;&lt;hr&gt;RoleId uuid PK&lt;br&gt;Code varchar(40)!" vertex="1">
+          <mxGeometry height="90" width="340" x="1558" y="1599.58" as="geometry" />
+        </mxCell>
+        <mxCell id="UserRole" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;UserRole&lt;/b&gt;&lt;hr&gt;UserRoleId uuid PK&lt;br&gt;UserId uuid! FK UserAccount&lt;br&gt;RoleId uuid! FK Role&lt;br&gt;GrantedAt timestamptz!" vertex="1">
+          <mxGeometry height="118" width="651" x="2170" y="1565.92" as="geometry" />
+        </mxCell>
+        <mxCell id="Beneficiary" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;Beneficiary&lt;/b&gt;&lt;hr&gt;BeneficiaryId uuid PK&lt;br&gt;Reference varchar(32)! UQ&lt;br&gt;CreatedByUserId uuid! FK UserAccount&lt;br&gt;LinkedUserId uuid? FK UserAccount&lt;br&gt;DisplayName varchar(200)!&lt;br&gt;ContactDetails varchar(500)?&lt;br&gt;IsFamily boolean!&lt;br&gt;CreatedAt timestamptz!" vertex="1">
+          <mxGeometry height="194" width="1466" x="2214.33" y="1175.58" as="geometry" />
+        </mxCell>
+        <mxCell id="ReferralRecipient" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;ReferralRecipient&lt;/b&gt;&lt;hr&gt;RecipientId uuid PK&lt;br&gt;Reference varchar(32)! UQ&lt;br&gt;RecipientType varchar(20)!&lt;br&gt;DisplayName varchar(200)!&lt;br&gt;ContactDetails varchar(500)!&lt;br&gt;ApprovalStatus varchar(20)!&lt;br&gt;Active boolean!&lt;br&gt;CreatedAt timestamptz!&lt;br&gt;Version uuid!" vertex="1">
+          <mxGeometry height="213" width="1426" x="472" y="448.98" as="geometry" />
+        </mxCell>
+        <mxCell id="Charity" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;Charity&lt;/b&gt;&lt;hr&gt;RecipientId uuid PK/FK ReferralRecipient&lt;br&gt;RegistrationInformation varchar(1000)?" vertex="1">
+          <mxGeometry height="90" width="557" x="2864.67" y="446.58" as="geometry" />
+        </mxCell>
+        <mxCell id="RecipientMember" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;RecipientMember&lt;/b&gt;&lt;hr&gt;RecipientMemberId uuid PK&lt;br&gt;RecipientId uuid! FK ReferralRecipient&lt;br&gt;UserId uuid! FK UserAccount&lt;br&gt;IsActive boolean!" vertex="1">
+          <mxGeometry height="118" width="822" x="2170" y="566.58" as="geometry" />
+        </mxCell>
+        <mxCell id="RecipientDecision" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;RecipientDecision&lt;/b&gt;&lt;hr&gt;RecipientDecisionId uuid PK&lt;br&gt;RecipientId uuid! FK ReferralRecipient&lt;br&gt;ActorUserId uuid! FK UserAccount&lt;br&gt;Decision varchar(20)!&lt;br&gt;Reason varchar(2000)?&lt;br&gt;DecidedAt timestamptz!" vertex="1">
+          <mxGeometry height="156" width="1181" x="2170" y="929.58" as="geometry" />
+        </mxCell>
+        <mxCell id="ApplicationAttachment" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;ApplicationAttachment&lt;/b&gt;&lt;hr&gt;ApplicationAttachmentId uuid PK&lt;br&gt;RecipientId uuid! FK ReferralRecipient&lt;br&gt;StorageKey varchar(500)!&lt;br&gt;OriginalName varchar(255)!&lt;br&gt;MediaType varchar(150)!&lt;br&gt;SizeBytes bigint!&lt;br&gt;UploadedByUserId uuid! FK UserAccount&lt;br&gt;UploadedAt timestamptz!" vertex="1">
+          <mxGeometry height="194" width="1599" x="2170" y="714.58" as="geometry" />
+        </mxCell>
+        <mxCell id="AssistanceRequest" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#fff2cc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;AssistanceRequest&lt;/b&gt;&lt;hr&gt;RequestId uuid PK&lt;br&gt;Reference varchar(32)! UQ&lt;br&gt;BeneficiaryId uuid! FK Beneficiary&lt;br&gt;SubmittedByUserId uuid! FK UserAccount&lt;br&gt;Category varchar(30)?&lt;br&gt;ServiceSubtype varchar(100)?&lt;br&gt;Description varchar(4000)!&lt;br&gt;RequiredQuantity decimal(18,3)?&lt;br&gt;Unit varchar(50)?&lt;br&gt;Status varchar(30)!&lt;br&gt;AuthorityConfirmed boolean!&lt;br&gt;SharingAgreed boolean!&lt;br&gt;CreatedAt timestamptz!&lt;br&gt;Version uuid!" vertex="1">
+          <mxGeometry height="308" width="2371" x="3940" y="1027.92" as="geometry" />
+        </mxCell>
+        <mxCell id="DecisionHistory" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#fff2cc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;DecisionHistory&lt;/b&gt;&lt;hr&gt;DecisionId uuid PK&lt;br&gt;RequestId uuid? FK AssistanceRequest&lt;br&gt;ReferralId uuid? (legacy target; mapping open)&lt;br&gt;ActorUserId uuid! FK UserAccount&lt;br&gt;Action varchar(50)!&lt;br&gt;Reason varchar(2000)?&lt;br&gt;OccurredAt timestamptz!" vertex="1">
+          <mxGeometry height="175" width="1283" x="6492" y="1180.58" as="geometry" />
+        </mxCell>
+        <mxCell id="ServiceCategory" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#d5e8d4;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;ServiceCategory&lt;/b&gt;&lt;hr&gt;CategoryId PK&lt;br&gt;Code UQ&lt;br&gt;Name" vertex="1">
+          <mxGeometry height="99" width="340" x="12" y="21.5" as="geometry" />
+        </mxCell>
+        <mxCell id="ServiceVersion" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#d5e8d4;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;ServiceVersion&lt;/b&gt;&lt;hr&gt;ServiceVersionId PK&lt;br&gt;CategoryId FK ServiceCategory&lt;br&gt;VersionNumber&lt;br&gt;Name" vertex="1">
+          <mxGeometry height="118" width="564" x="1046.67" y="12" as="geometry" />
+        </mxCell>
+        <mxCell id="StandardVersion" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#d5e8d4;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;StandardVersion&lt;/b&gt;&lt;hr&gt;StandardVersionId PK&lt;br&gt;ServiceVersionId FK ServiceVersion&lt;br&gt;VersionNumber&lt;br&gt;EffectiveAt" vertex="1">
+          <mxGeometry height="118" width="641" x="2888.5" y="96.33" as="geometry" />
+        </mxCell>
+        <mxCell id="StandardComponent" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#d5e8d4;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;StandardComponent&lt;/b&gt;&lt;hr&gt;ComponentId PK&lt;br&gt;StandardVersionId FK StandardVersion&lt;br&gt;Name&lt;br&gt;Quantity&lt;br&gt;Unit" vertex="1">
+          <mxGeometry height="137" width="607" x="3940" y="57.33" as="geometry" />
+        </mxCell>
+        <mxCell id="CharityService" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#e1d5e7;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;CharityService&lt;/b&gt;&lt;hr&gt;CharityServiceId PK&lt;br&gt;CharityId FK Charity&lt;br&gt;ServiceVersionId FK ServiceVersion&lt;br&gt;StandardVersionId FK StandardVersion&lt;br&gt;Enabled" vertex="1">
+          <mxGeometry height="137" width="874" x="4688.5" y="224.33" as="geometry" />
+        </mxCell>
+        <mxCell id="DailyCapacity" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#e1d5e7;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;DailyCapacity&lt;/b&gt;&lt;hr&gt;CapacityId PK&lt;br&gt;CharityServiceId FK CharityService&lt;br&gt;CairoDate&lt;br&gt;Available&lt;br&gt;UpdatedAt" vertex="1">
+          <mxGeometry height="137" width="591" x="6838" y="357.08" as="geometry" />
+        </mxCell>
+        <mxCell id="CapacityUpdate" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#e1d5e7;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;CapacityUpdate&lt;/b&gt;&lt;hr&gt;CapacityUpdateId PK&lt;br&gt;CapacityId FK DailyCapacity&lt;br&gt;ActorId FK UserAccount&lt;br&gt;Available&lt;br&gt;UpdatedAt" vertex="1">
+          <mxGeometry height="137" width="696" x="7905" y="379.92" as="geometry" />
+        </mxCell>
+        <mxCell id="ReminderIntent" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#e1d5e7;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;ReminderIntent&lt;/b&gt;&lt;hr&gt;ReminderId PK&lt;br&gt;CharityId FK Charity&lt;br&gt;CairoDate&lt;br&gt;Status" vertex="1">
+          <mxGeometry height="118" width="431" x="5233.33" y="550.75" as="geometry" />
+        </mxCell>
+        <mxCell id="ReminderService" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#e1d5e7;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;ReminderService&lt;/b&gt;&lt;hr&gt;ReminderServiceId PK&lt;br&gt;ReminderId FK ReminderIntent&lt;br&gt;CharityServiceId FK CharityService" vertex="1">
+          <mxGeometry height="99" width="674" x="6492" y="524.08" as="geometry" />
+        </mxCell>
+        <mxCell id="ReminderAttempt" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#e1d5e7;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;ReminderAttempt&lt;/b&gt;&lt;hr&gt;AttemptId PK&lt;br&gt;ReminderId FK ReminderIntent&lt;br&gt;Result&lt;br&gt;AttemptedAt" vertex="1">
+          <mxGeometry height="118" width="514" x="6492" y="653.08" as="geometry" />
+        </mxCell>
+        <mxCell id="RequestNeed" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#fff2cc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;RequestNeed&lt;/b&gt;&lt;hr&gt;NeedId PK&lt;br&gt;RequestId FK AssistanceRequest&lt;br&gt;StandardVersionId FK StandardVersion&lt;br&gt;Quantity&lt;br&gt;Status" vertex="1">
+          <mxGeometry height="137" width="710" x="6683" y="1013.58" as="geometry" />
+        </mxCell>
+        <mxCell id="ReferralPortion" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#f8cecc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;ReferralPortion&lt;/b&gt;&lt;hr&gt;PortionId PK&lt;br&gt;NeedId FK RequestNeed&lt;br&gt;CharityServiceId FK CharityService&lt;br&gt;Reference UQ&lt;br&gt;AssignedQuantity" vertex="1">
+          <mxGeometry height="137" width="760" x="7905" y="212.92" as="geometry" />
+        </mxCell>
+        <mxCell id="PortionOutcome" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#f8cecc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;PortionOutcome&lt;/b&gt;&lt;hr&gt;OutcomeId PK&lt;br&gt;PortionId FK ReferralPortion&lt;br&gt;Reference UQ&lt;br&gt;Quantity&lt;br&gt;Status" vertex="1">
+          <mxGeometry height="137" width="561" x="8775" y="212.92" as="geometry" />
+        </mxCell>
+        <mxCell id="PortionEvidence" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#f8cecc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;PortionEvidence&lt;/b&gt;&lt;hr&gt;EvidenceId PK&lt;br&gt;OutcomeId FK PortionOutcome&lt;br&gt;StorageKey UQ" vertex="1">
+          <mxGeometry height="99" width="499" x="9460" y="209.08" as="geometry" />
+        </mxCell>
+        <mxCell id="PortionReview" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#f8cecc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;PortionReview&lt;/b&gt;&lt;hr&gt;ReviewId PK&lt;br&gt;OutcomeId FK PortionOutcome&lt;br&gt;ActorId FK UserAccount&lt;br&gt;Decision&lt;br&gt;OccurredAt" vertex="1">
+          <mxGeometry height="137" width="652" x="9460" y="338.08" as="geometry" />
+        </mxCell>
+        <mxCell id="RequestClosure" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#fff2cc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;RequestClosure&lt;/b&gt;&lt;hr&gt;ClosureId PK&lt;br&gt;RequestId FK AssistanceRequest&lt;br&gt;ActorId FK UserAccount&lt;br&gt;ClosedAt" vertex="1">
+          <mxGeometry height="118" width="610" x="6492" y="1391.92" as="geometry" />
+        </mxCell>
+        <mxCell id="e0" edge="1" parent="1" source="UserAccount" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.8333;entryX=0;entryY=0.3333;" target="UserRole" value="UserId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="145" y="88.7" as="offset" />
+            <Array as="points">
+              <mxPoint x="1924" y="990.5" />
+              <mxPoint x="1924" y="1496.58" />
+              <mxPoint x="2134" y="1496.58" />
+              <mxPoint x="2134" y="1605.25" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e1" edge="1" parent="1" source="Role" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.5;entryX=0;entryY=0.6666;" target="UserRole" value="RoleId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="35" as="offset" />
+            <Array as="points">
+              <mxPoint x="2034" y="1644.58" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e2" edge="1" parent="1" source="UserAccount" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.5833;entryX=0;entryY=0.6667;" target="Beneficiary" value="CreatedByUserId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="115" y="52.25" as="offset" />
+            <Array as="points">
+              <mxPoint x="1954" y="946.75" />
+              <mxPoint x="1954" y="1280.25" />
+              <mxPoint x="2134" y="1280.25" />
+              <mxPoint x="2134" y="1304.92" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e3" edge="1" parent="1" source="UserAccount" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERzeroToOne;startFill=0;endArrow=ERzeroToOne;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.5;entryX=0;entryY=0.3334;" target="Beneficiary" value="LinkedUserId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="105" y="61.88" as="offset" />
+            <Array as="points">
+              <mxPoint x="1964" y="932.17" />
+              <mxPoint x="1964" y="1240.25" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="ReferralRecipient" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToOne;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.2;entryX=0;entryY=0.5;" target="Charity" value="RecipientId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-312.34" as="offset" />
+            <Array as="points">
+              <mxPoint x="2381.34" y="491.58" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e5" edge="1" parent="1" source="ReferralRecipient" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.4;entryX=0;entryY=0.3334;" target="RecipientMember" value="RecipientId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="70.87" as="offset" />
+            <Array as="points">
+              <mxPoint x="1934" y="534.18" />
+              <mxPoint x="1934" y="605.92" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" edge="1" parent="1" source="UserAccount" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.0833;entryX=0;entryY=0.6667;" target="RecipientMember" value="UserId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-65" y="7" as="offset" />
+            <Array as="points">
+              <mxPoint x="2134" y="859.25" />
+              <mxPoint x="2134" y="645.25" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e7" edge="1" parent="1" source="ReferralRecipient" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.8;entryX=0;entryY=0.3333;" target="RecipientDecision" value="RecipientId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="53.77" as="offset" />
+            <Array as="points">
+              <mxPoint x="1914" y="619.38" />
+              <mxPoint x="1914" y="819.25" />
+              <mxPoint x="2154" y="819.25" />
+              <mxPoint x="2154" y="981.58" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="UserAccount" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.4166;entryX=0;entryY=0.6667;" target="RecipientDecision" value="ActorUserId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="93" as="offset" />
+            <Array as="points">
+              <mxPoint x="1974" y="917.58" />
+              <mxPoint x="1974" y="1033.58" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="ReferralRecipient" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.6;entryX=0;entryY=0.3334;" target="ApplicationAttachment" value="RecipientId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="136.24" as="offset" />
+            <Array as="points">
+              <mxPoint x="1924" y="576.78" />
+              <mxPoint x="1924" y="779.25" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="UserAccount" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.3333;entryX=0;entryY=0.6667;" target="ApplicationAttachment" value="UploadedByUserId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="5.46" as="offset" />
+            <Array as="points">
+              <mxPoint x="1984" y="903" />
+              <mxPoint x="1984" y="955.58" />
+              <mxPoint x="2144" y="955.58" />
+              <mxPoint x="2144" y="843.92" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="Beneficiary" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.5;entryX=0;entryY=0.6667;" target="AssistanceRequest" value="BeneficiaryId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="29.67" as="offset" />
+            <Array as="points">
+              <mxPoint x="3924" y="1272.58" />
+              <mxPoint x="3924" y="1233.25" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e12" edge="1" parent="1" source="UserAccount" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.25;entryX=0;entryY=0.3333;" target="AssistanceRequest" value="SubmittedByUserId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="171.58" as="offset" />
+            <Array as="points">
+              <mxPoint x="1994" y="888.42" />
+              <mxPoint x="1994" y="929.58" />
+              <mxPoint x="2134" y="929.58" />
+              <mxPoint x="2134" y="1130.58" />
+              <mxPoint x="3859.5" y="1130.58" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="AssistanceRequest" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERzeroToOne;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.5;entryX=0;entryY=0.6667;" target="DecisionHistory" value="RequestId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="52.66" as="offset" />
+            <Array as="points">
+              <mxPoint x="6337" y="1181.92" />
+              <mxPoint x="6337" y="1297.25" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="UserAccount" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.1666;entryX=0;entryY=0.3334;" target="DecisionHistory" value="ActorUserId">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-473.3" as="offset" />
+            <Array as="points">
+              <mxPoint x="2004" y="873.83" />
+              <mxPoint x="2004" y="918.58" />
+              <mxPoint x="6456" y="918.58" />
+              <mxPoint x="6456" y="1238.92" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e15" edge="1" parent="1" source="ServiceCategory" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;dashed=1;" target="ServiceVersion" value="CategoryId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-287.34" as="offset" />
+            <Array as="points">
+              <mxPoint x="699.34" y="71" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e16" edge="1" parent="1" source="ServiceVersion" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.6667;entryX=0;entryY=0.5;dashed=1;" target="StandardVersion" value="ServiceVersionId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-148.26" as="offset" />
+            <Array as="points">
+              <mxPoint x="1914" y="90.67" />
+              <mxPoint x="1914" y="155.33" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e17" edge="1" parent="1" source="StandardVersion" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.25;entryX=0;entryY=0.5;dashed=1;" target="StandardComponent" value="StandardVersionId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="124.75" as="offset" />
+            <Array as="points">
+              <mxPoint x="3734.75" y="125.83" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e18" edge="1" parent="1" source="Charity" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.3333;entryX=0;entryY=0.75;dashed=1;" target="CharityService" value="CharityId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-120.84" y="149.5" as="offset" />
+            <Array as="points">
+              <mxPoint x="3924" y="476.58" />
+              <mxPoint x="3924" y="327.08" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e19" edge="1" parent="1" source="ServiceVersion" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.3333;entryX=0;entryY=0.25;dashed=1;" target="CharityService" value="ServiceVersionId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-283.71" as="offset" />
+            <Array as="points">
+              <mxPoint x="2069" y="51.33" />
+              <mxPoint x="3924" y="51.33" />
+              <mxPoint x="3924" y="258.58" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e20" edge="1" parent="1" source="StandardVersion" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;dashed=1;" target="CharityService" value="StandardVersionId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-180.75" as="offset" />
+            <Array as="points">
+              <mxPoint x="3795" y="155.33" />
+              <mxPoint x="3795" y="292.83" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e21" edge="1" parent="1" source="CharityService" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.75;entryX=0;entryY=0.5;dashed=1;" target="DailyCapacity" value="CharityServiceId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="147" y="98.5" as="offset" />
+            <Array as="points">
+              <mxPoint x="6327" y="327.08" />
+              <mxPoint x="6327" y="425.58" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e22" edge="1" parent="1" source="DailyCapacity" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.5;entryX=0;entryY=0.3333;dashed=1;" target="CapacityUpdate" value="CapacityId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="167" as="offset" />
+            <Array as="points">
+              <mxPoint x="7667" y="425.58" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e23" edge="1" parent="1" source="UserAccount" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.6666;entryX=0;entryY=0.6666;dashed=1;" target="CapacityUpdate" value="ActorId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-21.04" as="offset" />
+            <Array as="points">
+              <mxPoint x="1944" y="961.33" />
+              <mxPoint x="1944" y="1380.92" />
+              <mxPoint x="7889" y="1380.92" />
+              <mxPoint x="7889" y="471.25" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e24" edge="1" parent="1" source="Charity" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.6667;entryX=0;entryY=0.5;dashed=1;" target="ReminderIntent" value="CharityId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-416.41" as="offset" />
+            <Array as="points">
+              <mxPoint x="3785" y="506.58" />
+              <mxPoint x="3785" y="609.75" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e25" edge="1" parent="1" source="ReminderIntent" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.3333;entryX=0;entryY=0.6667;dashed=1;" target="ReminderService" value="ReminderId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="318.34" as="offset" />
+            <Array as="points">
+              <mxPoint x="6078.17" y="590.08" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e26" edge="1" parent="1" source="CharityService" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.5;entryX=0;entryY=0.3333;dashed=1;" target="ReminderService" value="CharityServiceId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="237.13" as="offset" />
+            <Array as="points">
+              <mxPoint x="6476" y="292.83" />
+              <mxPoint x="6476" y="557.08" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e27" edge="1" parent="1" source="ReminderIntent" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.6667;entryX=0;entryY=0.5;dashed=1;" target="ReminderAttempt" value="ReminderId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="277.01" y="82.66" as="offset" />
+            <Array as="points">
+              <mxPoint x="6327" y="629.42" />
+              <mxPoint x="6327" y="712.08" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e28" edge="1" parent="1" source="AssistanceRequest" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.25;entryX=0;entryY=0.6667;dashed=1;" target="RequestNeed" value="RequestId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-100.5" as="offset" />
+            <Array as="points">
+              <mxPoint x="6497" y="1104.92" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e29" edge="1" parent="1" source="StandardVersion" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.75;entryX=0;entryY=0.3334;dashed=1;" target="RequestNeed" value="StandardVersionId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-152.21" as="offset" />
+            <Array as="points">
+              <mxPoint x="3785" y="184.83" />
+              <mxPoint x="3785" y="450.58" />
+              <mxPoint x="6466" y="450.58" />
+              <mxPoint x="6466" y="1059.25" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e30" edge="1" parent="1" source="RequestNeed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.5;entryX=0;entryY=0.6666;dashed=1;" target="ReferralPortion" value="NeedId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-45" y="158.91" as="offset" />
+            <Array as="points">
+              <mxPoint x="7879" y="1082.08" />
+              <mxPoint x="7879" y="304.25" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e31" edge="1" parent="1" source="CharityService" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.25;entryX=0;entryY=0.3333;dashed=1;" target="ReferralPortion" value="CharityServiceId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="399.75" as="offset" />
+            <Array as="points">
+              <mxPoint x="6396.5" y="258.58" />
+              <mxPoint x="7834" y="258.58" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e32" edge="1" parent="1" source="ReferralPortion" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;dashed=1;" target="PortionOutcome" value="PortionId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="8720" y="281.42" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e33" edge="1" parent="1" source="PortionOutcome" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.3333;entryX=0;entryY=0.5;dashed=1;" target="PortionEvidence" value="OutcomeId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="9398" y="258.58" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e34" edge="1" parent="1" source="PortionOutcome" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.6666;entryX=0;entryY=0.3334;dashed=1;" target="PortionReview" value="OutcomeId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="39.75" as="offset" />
+            <Array as="points">
+              <mxPoint x="9352" y="304.25" />
+              <mxPoint x="9352" y="383.75" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e35" edge="1" parent="1" source="UserAccount" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.9166;entryX=0;entryY=0.6667;dashed=1;" target="PortionReview" value="ActorId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="1166.67" as="offset" />
+            <Array as="points">
+              <mxPoint x="1914" y="1005.08" />
+              <mxPoint x="1914" y="1554.92" />
+              <mxPoint x="9444" y="1554.92" />
+              <mxPoint x="9444" y="429.42" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e36" edge="1" parent="1" source="AssistanceRequest" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.75;entryX=0;entryY=0.3333;dashed=1;" target="RequestClosure" value="RequestId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-12.84" as="offset" />
+            <Array as="points">
+              <mxPoint x="6327" y="1258.92" />
+              <mxPoint x="6327" y="1337.25" />
+              <mxPoint x="6456" y="1337.25" />
+              <mxPoint x="6456" y="1431.25" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e37" edge="1" parent="1" source="UserAccount" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.75;entryX=0;entryY=0.6666;dashed=1;" target="RequestClosure" value="ActorId (?)">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-88.17" as="offset" />
+            <Array as="points">
+              <mxPoint x="1934" y="975.92" />
+              <mxPoint x="1934" y="1470.58" />
+              <mxPoint x="6396.5" y="1470.58" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="title" value="&lt;b&gt;Phase 1 relational model — proposed&lt;/b&gt;&lt;br&gt;Candidate cardinalities and mapping require review. See database-design.md for open decisions.&lt;br&gt;Bar = one; circle = zero; crow’s foot = many. Colors group related concepts.&lt;br&gt;Dashed line and (?) = candidate FK; cardinality or nullability remains open." style="text;html=1;whiteSpace=wrap;align=left;verticalAlign=top;fontSize=17;fontColor=#111827;" vertex="1" parent="1">
+          <mxGeometry x="12" y="-130" width="1050" height="110" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

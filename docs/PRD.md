@@ -5,16 +5,16 @@
 | Field | Value |
 | --- | --- |
 | Version | 1.1 |
-| Status | Working product baseline; Phase 1 reconciliation and external validation require review |
+| Status | Working product baseline; Phase 1 review accepted by the Scrum Master; diagram reconciliation and external validation remain open |
 | Authors | Bola Ghaly, Ziad Walid, hussien okely and ali fathy |
-| Business source | [Business Requirements Document v1.4](BRD.md), working baseline with owner delegation, pending team review |
+| Business source | [Business Requirements Document v1.4](BRD.md), working baseline with owner delegation; Scrum Master review accepted |
 | Related specification | [Software Requirements Specification](SRS.md); detailed system requirements and models are maintained there |
 
 | Version | Change |
 | --- | --- |
 | 0.1 | Initial traceable product requirements and proposed Agile plan. |
 | 1.0 | Finalized the working product baseline from BRD 1.3; retained open decisions and proposed validation and planning details. |
-| 1.1 | Reconciled current Phase 1 scope and coordinator charity approval, pending team review. |
+| 1.1 | Reconciled current Phase 1 scope and coordinator charity approval; Scrum Master review accepted on 11 November 2026. |
 
 This working baseline applies the project owner’s request to finalize the requirements and delegation of remaining decisions. The owner validated an earlier BRD; this does not mean each product rule was individually approved. No instructor, charity, or other stakeholder approval, field validation, implementation, or test result is implied by this document.
 
@@ -47,9 +47,13 @@ Role access is constrained by involvement and minimum necessary information, not
 
 ## 4. Scope and priorities
 
-The full first version includes all ten feature groups below and BRD IS-01–IS-08. Priorities are delivery order, not removal from scope. The Phase 1 demonstration includes charity registration and coordinator approval, beneficiary self-submission of multiple needs, review, split referrals to approved charities, versioned standards, daily charity capacity and reminders, private evidence and review, authorized progress and explicit closure. Contributor approval, third-party intake and release/reassignment are later scope. A split allocation in Phase 1 does not imply release or reassignment is implemented. The team and instructor should validate the feasible demonstration; no delivery date, team capacity, or approval is assumed.
+The full first version includes all ten feature groups below and BRD IS-01–IS-08. Priorities are delivery order, not removal from scope. The Phase 1 demonstration includes charity registration and coordinator approval, beneficiary self-submission of multiple needs, review, split referrals to approved charities, versioned standards, daily charity capacity and reminders, private evidence and review, authorized progress and explicit closure. Contributor approval, third-party intake and release/reassignment are later scope. A split allocation in Phase 1 does not imply release or reassignment is implemented. The team and instructor should validate the feasible demonstration. The team is targeting 12 November 2026 for the Phase 1 backend, PostgreSQL, local containers and API CI, as a forecast rather than a delivery commitment; capacity and dependency availability remain unconfirmed.
 
 Excluded: custody, purchasing, processing, storage or distribution of money or goods; warehouse and inventory management; delivery logistics; charity accounting; taking a percentage of assistance; subscription billing and payment integration in the course version; detailed service scheduling, staffing or supervision; real operations or real donations in the course demonstration; and public listings or dashboards of requests. Existing implementation and verification must be assessed against the capability matrix; this scope is not a claim that the full workflow is implemented.
+
+### Backend delivery milestones
+
+The first proposed milestone is a reproducible local API foundation: reviewed PostgreSQL migrations, protected S3-compatible storage, development configuration and an API CI baseline. It is a prerequisite for complete workflow and integration verification, not proof of a finished demonstration. Later milestones cover identity and approvals; standards, capacity and requests; allocation, evidence, reminders and closure; and final verification. See the [backend delivery breakdown](phase1-backend-delivery-breakdown.md) for ticket dependencies, checks, the 12 November forecast and the explicitly partial fallback. The existing [demo roadmap](api-demo-scrum-roadmap.md) retains the web and overall Phase 1 scope.
 
 ## 5. Product capabilities and acceptance criteria
 
@@ -71,7 +75,7 @@ Priorities: **Core** = first demonstration slice; **Next** = later first-version
 ### Phase 1-specific product requirements
 
 - A beneficiary submits their own request with one or more separately tracked needs; third-party and coordinator-on-behalf intake remain full-product capabilities after Phase 1. Requests retain authority and necessary-sharing confirmations.
-- Coordinators create and version service categories and unit standards with structured component names, quantities and measurement units. New activity uses the current version; historical records retain their original version. [P1-33](https://github.com/Bola-j/Helping-Hands/issues/33) will decide how outstanding needs on older versions can be fulfilled; never silently substitute incompatible versions.
+- Coordinators create and version service categories and unit standards with structured component names, quantities and measurement units. New requests use the current version; historical records retain their original version. For an outstanding need on older versions, [P1-33](https://github.com/Bola-j/Helping-Hands/issues/33) requires an exact-version match until the policy is reviewed; leave the need open when none is eligible.
 - Charities select supported services and provide nonnegative platform-unit availability from now; an update replaces available balance without changing earlier commitments. A service/version without an update for the current Africa/Cairo date is frozen for new referrals; a current zero is distinct from stale.
 - At 08:00 Cairo, create one daily reminder intent per charity with stale services; expose an in-app task, record outcomes and handle retries or ambiguous SMTP sends without claiming mailbox delivery or exactly-once external delivery.
 - Coordinators match approved active charities by compatible service/version and available capacity, assign needs in portions without double assignment or oversubscription, and retain progress and decision history. Assigned recipients submit a report and private attachment; coordinators review and explicitly close only when all required needs are fulfilled and accepted.

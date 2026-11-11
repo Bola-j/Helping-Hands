@@ -1,8 +1,8 @@
 # Helping Hands system models
 
-Status: supporting models for the [SRS](SRS.md). The Phase 1 roadmap takes priority over earlier delivery sequencing. Models describe target behavior, not proof of implementation; see the [capability assessment](SRS.md#appendix-phase-1-implementation-baseline-and-verification). State labels are proposed analysis states, not a final API contract. Mermaid diagrams are editable text; the EER specialization constraints and physical mappings are explained in [database design](database-design.md).
+Status: supporting models for the [SRS](SRS.md). The Phase 1 roadmap takes priority over earlier delivery sequencing. Models describe target behavior, not proof of implementation; see the [capability assessment](SRS.md#appendix-phase-1-implementation-baseline-and-verification). State labels are proposed analysis states, not a final API contract. Mermaid diagrams are editable text; the proposed relationships and physical mappings are explained in [database design](database-design.md).
 
-The following draw.io files depict the earlier baseline and do not yet model the Phase 1 service standards, capacity or reminder additions; do not treat them as the complete Phase 1 schema. Editable draw.io files: [conceptual EER](diagrams/conceptual-eer.drawio) and [relational schema](diagrams/relational-schema.drawio). Their XML and connectors were checked, but their layout has not been visually verified in draw.io.
+The [conceptual EER](diagrams/conceptual-eer.drawio) and [relational schema](diagrams/relational-schema.drawio) show the planned Phase 1 design on one canvas each. The physical mapping, fields and cardinalities remain proposals; see [database design](database-design.md) for rules and open decisions. The earlier full-product proposal is [archived](archive/database-proposal/).
 
 ## System context
 
@@ -131,42 +131,7 @@ File/database failures must not falsely mark an outcome complete; the design mus
 
 ## Conceptual domain / EER overview
 
-```mermaid
-classDiagram
- class Participant {
-  identity and contact
- }
- class ReferralRecipient
- class Charity {
-  registration information
- }
- class Contributor
- class Beneficiary
- class Request {
-  category and need
- }
- class Referral {
-  assigned portion
- }
- class Outcome {
-  reported and accepted result
- }
- class Evidence {
-  protected file metadata
- }
- ReferralRecipient <|-- Charity : subtype
- ReferralRecipient <|-- Contributor : subtype
- Participant "0..*" --> "0..*" ReferralRecipient : represents
- Participant "1" --> "0..*" Request : submits
- Beneficiary "1" --> "0..*" Request : concerns
- Request "1" --> "0..*" Referral : has
- ReferralRecipient "1" --> "0..*" Referral : assigned to
- Referral "1" --> "0..*" Outcome : reports
- Outcome "1" --> "0..*" Evidence : supports
- Request "0..1" --> "0..*" Request : split into linked requests
-```
-
-The proposed referral-recipient specialization comprises charity and individual contributor; it is disjoint for a particular recipient profile and total for a referral target. A person can separately participate in other roles. Other participants in the conceptual diagram are not required to be referral recipients. Physical integrity and the mapping of this conceptual distinction are in [database design](database-design.md). Evidence may be collected in multiple attachments. Submitted evidence alone does not establish completion.
+The [Phase 1 conceptual model](diagrams/conceptual-eer.drawio) is the single database-domain overview. It depicts beneficiary requests and needs, charity approval and capacity, versioned standards, referral portions, reports, evidence, review and closure. It is a proposal; see [database design](database-design.md) for constraints and unresolved mappings.
 
 ## Request state model
 

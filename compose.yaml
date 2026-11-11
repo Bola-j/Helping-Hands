@@ -12,10 +12,10 @@ services:
       ConnectionStrings__HelpingHands: Host=postgres;Port=5432;Database=helping_hands
       PGUSER: ${POSTGRES_USER:-helping_hands}
       PGPASSWORD: ${POSTGRES_PASSWORD:?}
-      EvidenceStorage__ServiceUrl: http://minio:9000
+      EvidenceStorage__ServiceUrl: http://storage:8333
       EvidenceStorage__Bucket: ${EVIDENCE_BUCKET:-helping-hands-evidence}
-      EvidenceStorage__AccessKey: ${MINIO_ROOT_USER:?}
-      EvidenceStorage__SecretKey: ${MINIO_ROOT_PASSWORD:?}
+      EvidenceStorage__AccessKey: ${S3_ACCESS_KEY:?}
+      EvidenceStorage__SecretKey: ${S3_SECRET_KEY:?}
       DemoSeed__AdminEmail: ${DemoSeed__AdminEmail:-}
       DemoSeed__AdminPassword: ${DemoSeed__AdminPassword:-}
       DemoSeed__CoordinatorEmail: ${DemoSeed__CoordinatorEmail:-}
@@ -27,7 +27,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-      minio-init:
+      storage-init:
         condition: service_completed_successfully
   postgres:
     image: postgres:17
@@ -45,35 +45,47 @@ services:
       interval: 5s
       timeout: 5s
       retries: 12
-  minio:
-    image: quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z
+  storage:
+    image: chrislusf/seaweedfs:3.90
     restart: unless-stopped
-    command: server /data --console-address :9001
+    working_dir: /data
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?}
+      S3_ACCESS_KEY: ${S3_ACCESS_KEY:?}
+      S3_SECRET_KEY: ${S3_SECRET_KEY:?}
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        case "$$S3_ACCESS_KEY$$S3_SECRET_KEY" in
+          *[!a-zA-Z0-9]*) echo "S3 credentials must contain only letters and digits" >&2; exit 1 ;;
+        esac
+        printf '{"identities":[{"name":"client","credentials":[{"accessKey":"%s","secretKey":"%s"}],"actions":["Admin","Read","Write","List","Tagging"]}]}' "$$S3_ACCESS_KEY" "$$S3_SECRET_KEY" > /run/storage/s3.json
+        exec weed server -dir=/data -s3 -s3.config=/run/storage/s3.json -volume.max=1
     ports:
-      - "127.0.0.1:${MINIO_API_HOST_PORT:-9000}:9000"
-      - "127.0.0.1:${MINIO_CONSOLE_HOST_PORT:-9001}:9001"
+      - "127.0.0.1:${S3_API_HOST_PORT:-9000}:8333"
     volumes:
-      - evidence_data:/data
-  minio-init:
-    image: quay.io/minio/mc:RELEASE.2025-04-16T18-13-26Z
+      - seaweed_data:/data
+    tmpfs:
+      - /run/storage
+  storage-init:
+    image: amazon/aws-cli:2.27.49
     depends_on:
-      - minio
+      - storage
     environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER:?}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?}
+      AWS_ACCESS_KEY_ID: ${S3_ACCESS_KEY:?}
+      AWS_SECRET_ACCESS_KEY: ${S3_SECRET_KEY:?}
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_EC2_METADATA_DISABLED: "true"
       EVIDENCE_BUCKET: ${EVIDENCE_BUCKET:-helping-hands-evidence}
-    entrypoint: >-
-      /bin/sh -c 'attempt=0;
-      until mc alias set local http://minio:9000 "$$MINIO_ROOT_USER" "$$MINIO_ROOT_PASSWORD"; do
-        attempt=$$((attempt + 1));
-        if [ "$$attempt" -ge 30 ]; then echo "Storage service did not become ready" >&2; exit 1; fi;
-        sleep 2;
-      done;
-      mc mb --ignore-existing "local/$$EVIDENCE_BUCKET" && mc anonymous set none "local/$$EVIDENCE_BUCKET"'
+    entrypoint: ["/bin/sh", "-ec"]
+    command:
+      - |
+        attempt=0
+        until aws --endpoint-url http://storage:8333 s3api head-bucket --bucket "$$EVIDENCE_BUCKET" >/dev/null 2>&1 || aws --endpoint-url http://storage:8333 s3api create-bucket --bucket "$$EVIDENCE_BUCKET" >/dev/null 2>&1; do
+          attempt=$$((attempt + 1))
+          if [ "$$attempt" -ge 60 ]; then echo "Storage bucket initialization failed" >&2; exit 1; fi
+          sleep 2
+        done
     restart: "no"
 volumes:
   postgres_data:
-  evidence_data:
+  seaweed_data:

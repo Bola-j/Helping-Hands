@@ -41,7 +41,7 @@ These are areas of responsibility; the team collaborates on planning, integratio
 
 The .NET 10 API implements an initial charity-to-referral workflow and uses PostgreSQL plus S3-compatible evidence storage. It is **not yet a verified complete demo**: evidence storage, recovery, concurrency and end-to-end checks remain incomplete. Use fictional records only; do not use this build for real operations. See the [API demo roadmap](docs/api-demo-scrum-roadmap.md).
 
-For local development, install the .NET 10 SDK, a compatible `dotnet-ef` tool and Docker with its engine running. Copy `.env.example` to `.env` and choose local credentials. PostgreSQL and the S3-compatible service bind to loopback ports 55432 and 9000; make sure they are available. Add distinct development-only `DemoSeed__...` values and `DEV_CERT_PASSWORD` in `.env`. Passwords must satisfy ASP.NET Identity password policy.
+For local development, install the .NET 10 SDK, a compatible `dotnet-ef` tool and Docker with its engine running. Copy `.env.example` to `.env` and choose local credentials. PostgreSQL and the S3-compatible SeaweedFS service bind to loopback ports 55432 and 9000; make sure they are available. Set matching S3 access and secret keys using ASCII letters and digits only. Add distinct development-only `DemoSeed__...` values and `DEV_CERT_PASSWORD` in `.env`. Passwords must satisfy ASP.NET Identity password policy.
 
 Create a local HTTPS certificate using the same password as `DEV_CERT_PASSWORD`. Do not commit this file or password:
 
@@ -52,19 +52,26 @@ New-Item -ItemType Directory -Force .local/https | Out-Null
 # Substitute the value you chose for DEV_CERT_PASSWORD; avoid storing it in shell history.
 dotnet dev-certs https -ep .local/https/dev.pfx -p '<local-certificate-password>'
 dotnet dev-certs https --trust
-docker compose up -d postgres minio minio-init
+docker compose up -d --wait postgres
+docker compose up -d storage storage-init
+# Wait until storage-init exits successfully before continuing.
+docker compose ps -a
 ./scripts/run-api.ps1 -Migrate
 docker compose run --rm api --seed-demo
 docker compose up -d api
 ```
 
-For an isolated second stack, use a distinct Compose project name and set unique loopback `API_HOST_PORT`, `POSTGRES_HOST_PORT`, `MINIO_API_HOST_PORT` and `MINIO_CONSOLE_HOST_PORT` values in its separate environment file. Update the host-side `ConnectionStrings__HelpingHands` and `EvidenceStorage__ServiceUrl` to match those host ports, and keep the host connection username aligned with `POSTGRES_USER`; containers continue to use internal service names and ports. A project name isolates Compose-managed volumes but does not by itself prevent host-port collisions. Keep existing volumes intact.
+For an isolated second stack, use a distinct Compose project name and set unique loopback `API_HOST_PORT`, `POSTGRES_HOST_PORT`, `S3_API_HOST_PORT` values in its separate environment file. Update the host-side `ConnectionStrings__HelpingHands` and `EvidenceStorage__ServiceUrl` to match those host ports, and keep the host connection username aligned with `POSTGRES_USER`; containers continue to use internal service names and ports. A project name isolates Compose-managed volumes but does not by itself prevent host-port collisions. Keep existing volumes intact.
+
+If you have an existing `.env`, preserve it and rename `MINIO_ROOT_USER`, `MINIO_ROOT_PASSWORD`, and `MINIO_API_HOST_PORT` to `S3_ACCESS_KEY`, `S3_SECRET_KEY`, and `S3_API_HOST_PORT`; update the matching `EvidenceStorage__...` host settings. Remove the obsolete console-port setting. Do not overwrite the existing file.
+
+SeaweedFS uses a private S3 identity generated from the local environment. Its volume format is distinct from MinIO: do not reuse an existing MinIO volume without a separately verified migration. The service is for local development.
 
 Inside the development container, the API receives the PostgreSQL password separately from the connection string through its environment. The migration command runs on the host using the loopback connection from `.env`. The API container uses Compose service names for PostgreSQL and the S3 service; it does not run migrations automatically. The explicit seed command works only in Development and does not promote an existing unrelated account. The launcher reads unquoted `KEY=VALUE` entries from `.env` into the process, restores previous values on exit, and supports values containing `=`. `.env` and `.local` are ignored by Git and excluded from the Docker build context. Never commit credentials; use a secret manager or deployment environment for real deployments.
 
 Use `https://localhost:8443/health` for liveness, `/ready` for PostgreSQL readiness, and `/openapi/v1.json` for the development OpenAPI document. Authentication uses secure cookies: an HTTP client must retain cookies, request `/api/v1/auth/antiforgery`, and send its token in the `X-CSRF-TOKEN` header on each unsafe request. If a requester creates a charity application, sign out and in again to refresh the representative role in the cookie. The future web UI should call the API through a same-origin HTTPS proxy; there is no frontend project or frontend container in the repository yet. To run the API directly on the host instead, use `./scripts/run-api.ps1` and `https://localhost:5087`.
 
-Build with `dotnet build HelpingHands.slnx`. Stop the API with Ctrl+C and local services with `docker compose stop`; stopping retains volumes. Do not delete volumes containing data you need. The current file-processing policy is intended only for fictional demo evidence and is not approved for production.
+Build with `dotnet build HelpingHands.slnx`. For a containerized API, use `docker compose stop` to stop local services and `docker compose up -d` to restart them; stopping retains volumes. For an API running directly on the host, press Ctrl+C. If startup fails, inspect `docker compose ps -a` and `docker compose logs storage storage-init api`; confirm credentials, available ports, certificate access and image pulls before retrying. Do not delete volumes containing data you need. The current file-processing policy is intended only for fictional demo evidence and is not approved for production.
 
 ## Repository status
 

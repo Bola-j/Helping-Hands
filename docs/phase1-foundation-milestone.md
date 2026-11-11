@@ -14,6 +14,12 @@
 - [Local services PR #73](https://github.com/Bola-j/Helping-Hands/pull/73) makes host ports configurable and bounds storage initialization. Docker is running; the configured S3 images returned registry authorization errors and alternative pulls did not complete. Full stack startup, container certificate readability, bucket connectivity and persistent restart remain unverified.
 - An independent host-process check observed `/health` returning 200 and `/ready` returning 503 with PostgreSQL deliberately unreachable. This is not a containerized end-to-end check.
 
+## Migration review and recovery approach
+
+The generated initial migration SQL was inspected for the current candidate: it declares 16 tables including EF migration history, five business-reference sequences, 13 unique indexes, 25 foreign keys and 17 check constraints. The isolated PostgreSQL assertion script verified UUID primary keys on application tables and the expected sequences and unique reference indexes; those checks do not prove all application authorization or concurrency behavior.
+
+For a later upgrade, take a timestamped PostgreSQL custom-format backup and a coordinated backup of private evidence, verify their provenance, review the new migration SQL, and restore both into isolated test services before applying the upgrade there. Compare migration history and representative records and exercise the relevant workflow. Apply an approved change to a shared environment only under its own authorization and documented recovery procedure. Only the initial migration exists now, so a preceding-to-newer migration test is **not yet applicable**; no restore or recovery exercise has been performed in this milestone.
+
 ## Deliverables and single-responsibility tickets
 
 Owners are proposed by specialty, not GitHub assignments. Preserve the dirty working tree and use reviewed feature branches; no local cleanup, reset or shared database changes are part of this milestone.

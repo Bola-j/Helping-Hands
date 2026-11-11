@@ -4,9 +4,9 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 1.3 |
-| Updated | 2026-11-04 |
-| Status | Final business baseline — owner delegated remaining decisions on 2026-11-04 |
+| Version | 1.4 |
+| Updated | 2026-11-09 |
+| Status | Working business baseline; Phase 1 changes pending team review |
 | Prepared by | Helping Hands project team |
 
 | Version | Change |
@@ -18,8 +18,9 @@
 | 1.1 | Clarified terminology, completion, scope priorities, and proposed partial-fulfillment rules following BRD feedback. |
 | 1.2 | Adopted practical first-version rules and recorded delegation of remaining decisions. |
 | 1.3 | Distinguished unresolved from unassigned needs and partial outcomes from referral completion. |
+| 1.4 | Reconciled the latest Phase 1 scope and coordinator charity approval; team review remains pending. |
 
-The [original idea and business model](references/helping-hands-full-idea.md) is background. This document supersedes its direct inventory, finance, and organizational-help management model. The project owner validated the earlier BRD, requested finalization, and delegated the remaining decisions to practical business judgment. Version 1.3 adopts those decisions as the baseline. This records delegation, not separate approval of every rule; no instructor, charity, or other stakeholder approval is implied.
+The [original idea and business model](references/helping-hands-full-idea.md) is background. This document supersedes its direct inventory, finance, and organizational-help management model. The project owner validated the earlier BRD, requested finalization, and delegated the remaining decisions to practical business judgment. Version 1.3 adopted those decisions as the earlier baseline; version 1.4 records the later Phase 1 project direction, subject to team review. This records delegation, not separate approval of every rule; no instructor, charity, or other stakeholder approval is implied.
 
 ## 2. Executive summary
 
@@ -49,8 +50,8 @@ The platform does not collect or hold donations, operate a warehouse, manage a c
 | --- | --- |
 | Beneficiary | Requests or receives assistance; needs appropriate privacy and a way to understand progress. |
 | Third-party requester | Submits a request for another person, such as a relative, neighbor, or teacher. |
-| Platform administrator | Reviews charity registrations and manages platform access. |
-| Platform coordinator | Reviews requests, divides needs when appropriate, makes referrals, and follows outcomes. An administrator may also act as coordinator. |
+| Platform administrator | Manages platform access; may act as coordinator only when separately authorized for that role. |
+| Platform coordinator | Reviews charity applications and requests, divides needs when appropriate, makes referrals, and follows outcomes. An administrator may also act as coordinator when authorized. |
 | Charity | Self-registers and, after approval, handles requests referred to it and supplies evidence of assistance. |
 | Individual donor or contributor | Registers an account, may handle a referred portion after coordinator approval, and supplies evidence of assistance. |
 | Project team and instructor | Build and assess the course project. |
@@ -62,10 +63,10 @@ The platform does not collect or hold donations, operate a warehouse, manage a c
 
 | ID | Capability |
 | --- | --- |
-| IS-01 | Charities self-register; a platform administrator leaves an application pending, approves it to activate its account, or rejects it. |
+| IS-01 | Charities self-register; an authorized coordinator leaves an application pending, approves it to activate its account, or rejects it. |
 | IS-02 | Beneficiaries and third parties submit requests; a coordinator can also enter a request on their behalf. |
 | IS-03 | Coordinators review requests and classify them as goods, money, or organizational referral. Other needs, such as tutoring, repairs, and transport, are subtypes of organizational referral; they may be fulfilled by an organization or an individual contributor. |
-| IS-04 | A coordinator can split a request involving different kinds of support into linked requests and refer any request type to approved charities or individual contributors. |
+| IS-04 | A coordinator can separately track the different kinds of support within a request and refer any request type to approved charities or individual contributors. |
 | IS-05 | A coordinator can divide a request among multiple referral recipients, track each assigned portion separately, and see any remaining need. |
 | IS-06 | The responsible charity or donor provides evidence that its assigned help was delivered and received; the platform keeps the evidence and reported outcome with the relevant referral. |
 | IS-07 | Authorized users can follow request and referral progress and see a history of significant decisions. |
@@ -73,13 +74,9 @@ The platform does not collect or hold donations, operate a warehouse, manage a c
 
 ### Course delivery priorities
 
-The complete scope above remains the first-version goal. Build and demonstrate the core workflow first; use team capacity and course requirements to sequence the remaining capabilities. This priority order does not remove an agreed feature.
+The complete scope above remains the first-version goal. The Phase 1 course demo uses fictional data and includes charity registration and coordinator approval, beneficiary self-submission of multiple needs, coordinator review and matching, split allocations to eligible charities, private outcome evidence, coordinator review, progress and explicit closure. Coordinators manage versioned service categories and structured unit standards; charities provide daily available-from-now capacity and receive an in-app task and 08:00 Africa/Cairo reminder for stale services. These are planned capabilities, not implementation evidence.
 
-| Priority | Capability |
-| --- | --- |
-| Core demonstration | Charity registration and approval; request submission and review; referral to an approved participant; outcome evidence and coordinator review; access restrictions and decision history. |
-| Next | Individual contributor registration and approval; separate portions, partial fulfillment, and remaining-need tracking. |
-| Next | Splitting mixed needs into linked requests. |
+Third-party or coordinator-on-behalf intake, contributor onboarding and live operational deployment are later scope. Explicit release/reassignment after an accepted partial outcome remains a later first-version increment; partial assignment among charities and separately tracked need balances are included in Phase 1. The handling of outstanding requests after a standard changes remains open in [P1-33](https://github.com/Bola-j/Helping-Hands/issues/33); no incompatible version may be silently substituted.
 
 ### Out of scope
 
@@ -95,14 +92,14 @@ Requests and offers may be communicated through several channels, with organizat
 
 ## 8. Proposed business process
 
-1. A charity registers. An administrator keeps the application pending, approves it and activates the account, or rejects it.
+1. A charity registers. An authorized coordinator keeps the application pending, approves it and activates the account, or rejects it.
 2. A beneficiary or third party submits a request, or a coordinator records it on their behalf.
-3. A coordinator reviews the request, requests clarification, declines it with a reason, or accepts it for referral. When different types of support are needed, the coordinator splits the original into linked requests.
+3. A coordinator reviews the request, requests clarification, declines it with a reason, or accepts it for referral. When different types of support are needed, the coordinator separately tracks the needs while retaining their relationship to the original.
 4. A coordinator refers a request or a defined portion to one or more approved charities or individual contributors. Each portion has its own responsible referral recipient and progress record.
 5. The referral recipient handles the assistance outside the platform and supplies evidence that it was delivered and received, including for monetary assistance.
 6. The outcome and evidence are recorded against the referral. The coordinator follows up on partial, declined, or unsuccessful referrals and records the next action. The original request remains visible while a need is unresolved.
 
-A coordinator reviews submitted evidence and either accepts the reported outcome, requests clarification, or records the referral as unresolved. A referral is completed only after acceptance. Acceptance records a review decision; it is not a guarantee of independent verification.
+A coordinator reviews submitted evidence and either accepts the reported outcome, requests clarification, or records the referral as unresolved. A referral is completed only after acceptance. The coordinator explicitly closes a completed request only after all required needs are fulfilled and accepted. Acceptance records a review decision; it is not a guarantee of independent verification.
 
 For the first version, the responsible referral recipient submits an outcome description and supporting attachment(s) that together address both delivery and receipt. For money this includes the amount and evidence of transfer and receipt; for goods or services it identifies the assistance and evidence of its provision and receipt. The coordinator judges whether the evidence supports the assigned portion and may request more information. Demonstrations use fictional evidence.
 
@@ -110,10 +107,10 @@ For the first version, the responsible referral recipient submits an outcome des
 
 | ID | Requirement | Objective |
 | --- | --- | --- |
-| BR-01 | The platform needs to accept charity registrations and allow an administrator to approve, reject, or leave them pending. | BO-02, BO-03 |
+| BR-01 | The platform needs to accept charity registrations and allow an authorized coordinator to approve, reject, or leave them pending. | BO-02, BO-03 |
 | BR-02 | Only approved and activated charities are eligible to handle referrals made to them. | BO-02, BO-04 |
 | BR-03 | The platform needs to receive and track requests submitted by beneficiaries, third parties, or coordinators. | BO-01 |
-| BR-04 | Coordinators need to review requests, record decisions, categorize needs, and split mixed needs into linked requests. | BO-01, BO-03 |
+| BR-04 | Coordinators need to review requests, record decisions, categorize needs, and separately track mixed needs and preserve their relationship to the original request. | BO-01, BO-03 |
 | BR-05 | Coordinators need to refer any type of request to approved charities or individual contributors, including splitting it into separately tracked portions. | BO-01, BO-02 |
 | BR-06 | Referral recipients need to document each assigned portion's outcome and provide evidence of delivery and receipt, including for money. | BO-03 |
 | BR-07 | Authorized participants need to see relevant progress, unresolved needs, evidence, and a history of decisions and updates. | BO-01, BO-03, BO-04 |
@@ -129,16 +126,16 @@ These rules form the first-version business baseline. The owner decided the main
 
 | ID | Rule | Status |
 | --- | --- | --- |
-| BRule-01 | Charity registration does not activate an account until a platform administrator approves it; rejected or pending charities cannot handle referrals. | Project decision |
+| BRule-01 | Charity registration does not activate an account until an authorized coordinator approves it; rejected or pending charities cannot handle referrals. | Project decision |
 | BRule-02 | Authorized platform coordinators review requests and determine referrals. | Baseline |
 | BRule-03 | Goods, money, and organizational referral requests can each be referred to a charity or individual contributor. | Project decision |
-| BRule-04 | Different kinds of support within a request may be separated into linked requests; one request may also be divided among recipients. | Project decision |
+| BRule-04 | Different kinds of support within a request may be separately tracked while retaining their relationship to the original; one request may also be divided among recipients. | Project decision |
 | BRule-05 | Each referral recipient is responsible for its assigned assistance and provides an outcome description and supporting attachment(s) addressing delivery and receipt. A coordinator reviews the evidence before marking the referral complete. | Baseline |
 | BRule-06 | Helping Hands does not take custody of aid or a share of a contribution. | Project decision |
 | BRule-07 | Administrators and coordinators access information needed for their work; a referral recipient accesses only its assigned referral and necessary beneficiary details and evidence. Requesters can follow their own requests. A third-party requester sees only the information needed to follow the request they submitted. | Baseline |
 | BRule-08 | A recorded outcome is a participant's report; coordinator review does not imply independent verification. An administrator reviews outcomes only when acting as an authorized coordinator. | Baseline |
 | BRule-09 | Decisions and referral updates record who acted and when; unresolved or declined portions remain visible for follow-up. A request is **completed** when all its required need is fulfilled and accepted; it remains **open** while further action is expected; it may be **closed unresolved** when work stops with unmet need and a recorded reason. | Baseline |
-| BRule-10 | Charity applicants provide their organization name, contact details, and registration information or supporting documentation. An administrator reviews these before approval, rejection, or leaving the application pending; approval is not proof of future conduct. | Baseline |
+| BRule-10 | Charity applicants provide their organization name, contact details, and registration information or supporting documentation. An authorized coordinator reviews these before approval, rejection, or leaving the application pending; approval is not proof of future conduct. | Baseline |
 | BRule-11 | Individual contributors register with contact information; a coordinator approves them before making referrals. | Baseline |
 | BRule-12 | The requester must confirm authority to submit information and agree to necessary sharing for referral. Coordinators share only information needed by the selected recipient. Sensitive evidence is restricted, and participants should omit unnecessary personal information. | Baseline; local operational review required before launch |
 | BRule-13 | Independent beneficiary confirmation is not required for the course demonstration. The referral recipient provides the evidence; any beneficiary or authorized third-party confirmation and any disagreement are recorded separately. A disputed or insufficient outcome remains unresolved for coordinator follow-up. | Baseline |
@@ -164,7 +161,7 @@ For example, for 10 food boxes, a coordinator assigns 6 to charity A and 4 to ch
 | --- | --- | --- | --- |
 | SC-01 | A charity registration can remain pending, be rejected, or be approved and activated; only approved charities can handle referrals. | Demonstrate each decision with sample accounts. | BO-02, BO-03 |
 | SC-02 | A direct or third-party request can be reviewed and referred to an approved charity or an approved individual contributor. | Demonstrate with fictional data. | BO-01, BO-02 |
-| SC-03 | A mixed request can be split into linked requests, and one request can be divided among referral recipients with each portion tracked separately. An accepted partial outcome leaves the referral incomplete and its undelivered portion unresolved; only unassigned or released need can be reassigned. | Demonstrate the resulting links, responsibilities, partial outcome, and release and reassignment of a portion. | BO-01, BO-02 |
+| SC-03 | A mixed request can be tracked as distinct related needs, and each need can be divided among referral recipients with each portion tracked separately. An accepted partial outcome leaves the referral incomplete and its undelivered portion unresolved; only unassigned or released need can be reassigned. | Demonstrate the resulting need relationships, responsibilities, partial outcome, and (in later full-app scope) release and reassignment of a portion. | BO-01, BO-02 |
 | SC-04 | A recipient can provide a description and attachment(s) for delivery and receipt; a coordinator can request clarification or accept the outcome before completion. | Demonstrate fictional goods, money, and service evidence and review. | BO-03, BO-04 |
 | SC-05 | A user cannot access another participant's restricted beneficiary information or evidence without the appropriate role and involvement. | Exercise representative access scenarios. | BO-04 |
 | SC-06 | The team seeks stakeholder feedback on usefulness and practical operation; feedback is a validation goal rather than a prerequisite for demonstrating the course prototype. | Review feedback notes where participants are available. | BO-05 |
@@ -210,4 +207,4 @@ The category **organizational referral** includes referrals to individuals as we
 | Instructor | Not recorded | Course requirements apply; no instructor approval is represented here. |
 | Prospective charity and users | Not recorded | No external operational validation is represented here. |
 
-Version 1.3 is the business baseline for subsequent requirements and project work. External feedback and launch readiness remain separate from the project owner's validation and delegation.
+Version 1.4 is the working business baseline for subsequent requirements and project work; the Phase 1 reconciliation requires team review. External feedback and launch readiness remain separate from the project owner's validation and delegation.

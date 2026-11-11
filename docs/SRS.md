@@ -1,15 +1,16 @@
 # Software Requirements Specification — Helping Hands
 
-**Version:** 1.0 | **Status:** Final working requirements baseline under project-owner delegation; implementation and verification are future work | **Authors:** Project team (names to be supplied)
+**Version:** 1.1 | **Status:** Working requirements baseline; Phase 1 reconciliation awaits team review | **Authors:** Project team
 
 | Version | Change |
 | --- | --- |
+| 1.1 | Reconciled Phase 1 scope and coordinator approval, pending team review. |
 | 1.0 | Finalized the working requirements baseline under the project owner’s delegation, retaining distinctions between business rules, proposed technical elaborations, and open targets. |
 | 0.1 | Initial specification derived from BRD 1.3 and project instructions. |
 
 ## 1. Introduction
 
-This specification describes the intended first-version behavior and constraints for Helping Hands, for the project team, instructor, and prospective stakeholders. BRD 1.3 is the authoritative business baseline; this document is the project team’s working specification, finalized under the project owner’s delegation of remaining decisions. It elaborates the BRD without claiming separate approval of every requirement or any instructor or external stakeholder approval. See [BRD](BRD.md), [PRD](PRD.md), [system models](models.md), and [database design](database-design.md). The attached course materials inform the requirements and modeling approach; applicable course requirements should be checked against the final submission.
+This specification describes the intended first-version behavior and constraints for Helping Hands, for the project team, instructor, and prospective stakeholders. BRD 1.4 is the working business baseline; this document is the project team’s working specification, finalized under the project owner’s delegation of remaining decisions. It elaborates the BRD without claiming separate approval of every requirement or any instructor or external stakeholder approval. See [BRD](BRD.md), [PRD](PRD.md), [system models](models.md), and [database design](database-design.md). The attached course materials inform the requirements and modeling approach; applicable course requirements should be checked against the final submission.
 
 Helping Hands coordinates assistance and records requests, referrals, outcomes and review. Participants arrange and provide aid outside the platform. The platform does not take custody of money or goods, process payments, operate inventory or delivery logistics, or perform charity accounting. Public request listings, real operational pilots, and actual donations are outside the first version. The full BRD scope remains in scope even where sequenced after the core demonstration. Demonstrations use fictional people, data and evidence.
 
@@ -17,19 +18,19 @@ Helping Hands coordinates assistance and records requests, referrals, outcomes a
 
 ## 2. Overall description
 
-The intended React Native-based web client communicates with a single ASP.NET Core .NET 10 API backed by PostgreSQL. The API and database can use separate containers without making the application distributed. The frontend is not part of the present implementation. Participants deliver aid through arrangements outside the system; no payment, charity verification, messaging, or other external integration is assumed.
+The intended React Native-based web client communicates with a single ASP.NET Core .NET 10 API backed by PostgreSQL. The API and database can use separate containers without making the application distributed. The frontend is not part of the present implementation. Participants deliver aid through arrangements outside the system; no payment or independent charity verification integration is assumed. The demo plans an SMTP-compatible local email catcher and private S3-compatible storage.
 
-Actors are beneficiaries, third-party requesters, administrators, coordinators, charity representatives and individual contributors. An administrator can review outcomes only when authorized as a coordinator. Role and actual involvement both constrain access. Administrators review charity applications; coordinators review requests, approve contributors, make referrals and review outcomes. Charity and contributor representatives handle only their assigned referrals. Requesters follow their own requests, with third-party views limited to information necessary for follow-up.
+Actors are beneficiaries, third-party requesters, administrators, coordinators, charity representatives and individual contributors. An administrator can review outcomes only when authorized as a coordinator. Role and actual involvement both constrain access. Coordinators review charity applications and requests, approve contributors, make referrals and review outcomes; an administrator acts as coordinator only when authorized for that role. Charity and contributor representatives handle only their assigned referrals. Requesters follow their own requests, with third-party views limited to information necessary for follow-up.
 
 The intended environment is a responsive browser application on phones, tablets and computers, with installable PWA capabilities on supported mobile browsers. React Native web support and PWA functionality require separate configuration and compatibility verification. PostgreSQL, .NET 10, Docker and the code-first migration approach are project constraints. Dependencies include browser capabilities, evidence storage and operational policies yet to be selected, and stakeholder and local legal review before real operation. Participants' willingness to provide meaningful evidence and arrange assistance externally is assumed, not validated.
 
-**Requirement conventions:** priorities are Core (course demonstration), Next (later first-version delivery), or Cross-cutting; these are sequencing suggestions, not exclusions. Confirmed means adopted from the BRD or explicit project direction for this baseline, not separately approved wording. Proposed means a working technical or behavioral elaboration that still requires design or stakeholder validation where applicable; it is not a completed implementation. Open identifies an unresolved policy, capability or target. The baseline is final for project work but can be revised through normal review; finalization does not resolve those open items or turn proposals into verified facts. Verification describes a future check, not a completed result. Actor abbreviations: B beneficiary, T third-party requester, A administrator, C coordinator, R referral recipient, U authorized user, Team project team.
+**Requirement conventions:** priorities are Core (course demonstration), Next (later first-version delivery), or Cross-cutting; these are sequencing suggestions, not exclusions. Confirmed means adopted from the BRD or explicit project direction for this baseline, not separately approved wording. Proposed means a working technical or behavioral elaboration that still requires design or stakeholder validation where applicable; it is not a completed implementation. Open identifies an unresolved policy, capability or target. The baseline is a working draft pending team review; adoption does not resolve open items or turn proposals into verified facts. Verification describes a future check, not a completed result. Actor abbreviations: B beneficiary, T third-party requester, A administrator, C coordinator, R referral recipient, U authorized user, Team project team.
 
 ## 3. User requirements
 
 | ID | User requirement | Priority | Actor | Source | Verification | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| UR-001 | A charity needs to apply and receive an application decision. | Core | A, R | BR-01, BR-02 | TC-001 | Confirmed |
+| UR-001 | A charity needs to apply and receive an application decision. | Core | C, R | BR-01, BR-02 | TC-001 | Confirmed |
 | UR-002 | A contributor needs to register and be approved before referral. | Next | C, R | BR-10, BRule-11 | TC-002 | Confirmed |
 | UR-003 | A requester needs to submit and follow a need, including on another person's behalf. | Core | B, T, C | BR-03, BR-07 | TC-003 | Confirmed |
 | UR-004 | A coordinator needs to review, classify and, when appropriate, split mixed needs. | Core / Next | C | BR-04 | TC-004 | Confirmed |
@@ -43,23 +44,23 @@ The intended environment is a responsive browser application on phones, tablets 
 | ID | Mandatory system requirement | Priority | Actor | Source | Verification | Status |
 | --- | --- | --- | --- | --- | --- | --- |
 | FR-001 | The system shall accept charity applications containing organization name, contact details and registration information or supporting documentation. | Core | R | BRule-10 | TC-001 | Confirmed |
-| FR-002 | The system shall record an application as pending until an administrator makes a decision. | Core | A | BRule-01 | TC-001 | Confirmed |
-| FR-003 | The system shall allow an administrator to approve or reject a charity application and record the decision. | Core | A | BR-01 | TC-001 | Confirmed |
-| FR-004 | The system shall activate a charity account on approval and prevent pending or rejected charities from receiving referrals. | Core | A, C | BRule-01 | TC-001 | Confirmed |
+| FR-002 | The system shall record an application as pending until an authorized coordinator makes a decision. | Core | C | BRule-01 | TC-001 | Confirmed |
+| FR-003 | The system shall allow an authorized coordinator to approve or reject a charity application and record the decision. | Core | C | BR-01 | TC-001 | Confirmed |
+| FR-004 | The system shall activate a charity account on approval and prevent pending or rejected charities from receiving referrals. | Core | C | BRule-01 | TC-001 | Confirmed |
 | FR-005 | The system shall accept contributor registrations with contact information. | Next | R | BRule-11 | TC-002 | Confirmed |
 | FR-006 | The system shall allow a coordinator to approve a contributor and prevent referral to a contributor before approval. | Next | C | BRule-11 | TC-002 | Confirmed |
-| FR-007 | The system shall accept a request from a beneficiary or third party and permit a coordinator to enter one on their behalf. | Core | B, T, C | BR-03 | TC-003 | Confirmed |
+| FR-007 | The system shall accept a request from a beneficiary; later full-product scope includes third-party and coordinator-on-behalf requests. | Core / Next | B, T, C | BR-03 | TC-003 | Confirmed |
 | FR-008 | The system shall record the requester, beneficiary, need and request submission time. | Core | B, T, C | BR-03, BRule-09 | TC-003 | Proposed |
 | FR-009 | Before submission, the system shall require the requester to confirm authority to submit the information and agreement to necessary sharing for referral. | Core | B, T, C | BRule-12 | TC-003 | Confirmed |
 | FR-010 | The system shall allow a coordinator to request clarification on a submitted request. | Core | C | BR-04 | TC-004 | Confirmed |
 | FR-011 | The system shall allow a coordinator to accept a request for referral or reject it with a recorded reason. | Core | C | BR-04 | TC-004 | Confirmed |
 | FR-012 | The system shall allow a coordinator to classify a need as goods, money or organizational referral. | Core | C | IS-03 | TC-004 | Confirmed |
 | FR-013 | The system shall permit an organizational-referral need to identify a service subtype. | Core | C | IS-03 | TC-004 | Confirmed |
-| FR-014 | The system shall allow a coordinator to create linked requests from a mixed need and retain the source relationship. | Next | C | BRule-04 | TC-004 | Confirmed |
+| FR-014 | The system shall preserve separately tracked mixed needs and their source relationship when a coordinator separates them for referral. | Core | C | BRule-04 | TC-004 | Confirmed |
 | FR-015 | The system shall allow a coordinator to refer any need category to an eligible charity or contributor. | Core / Next | C | BRule-03 | TC-005 | Confirmed |
-| FR-016 | The system shall allow a coordinator to define separately tracked portions and assign each to one eligible referral recipient. | Next | C | BR-05, BRule-14 | TC-005 | Confirmed |
-| FR-017 | The system shall prevent assigning a portion simultaneously to another recipient while it remains assigned. | Next | C | BRule-14 | TC-005 | Confirmed |
-| FR-018 | The system shall show remaining unresolved need separately from unassigned need available for referral. | Next | C | BRule-14 | TC-005 | Confirmed |
+| FR-016 | The system shall allow a coordinator to define separately tracked portions and assign each to one eligible referral recipient. | Core | C | BR-05, BRule-14 | TC-005 | Confirmed |
+| FR-017 | The system shall prevent assigning a portion simultaneously to another recipient while it remains assigned. | Core | C | BRule-14 | TC-005 | Confirmed |
+| FR-018 | The system shall show remaining unresolved need separately from unassigned need available for referral. | Core | C | BRule-14 | TC-005 | Confirmed |
 | FR-019 | For a service without meaningful quantity, the system shall record a coordinator-defined, separately trackable scope for each portion. | Next | C | BRule-14 | TC-005 | Confirmed |
 | FR-020 | The system shall allow a recipient to report an outcome against its assigned referral. | Core | R | BR-06 | TC-006 | Confirmed |
 | FR-021 | The system shall require an outcome description and supporting attachment(s) addressing delivery and receipt for outcome review. | Core | R | BRule-05 | TC-006 | Confirmed |
@@ -67,7 +68,7 @@ The intended environment is a responsive browser application on phones, tablets 
 | FR-023 | The system shall record the assistance and evidence of provision and receipt for goods or service outcome reports. | Core | R | BRD §8 | TC-006 | Confirmed |
 | FR-024 | The system shall allow an authorized coordinator to accept a reported outcome, request clarification, or record it unresolved. | Core | C | BRD §8, BRule-08 | TC-006 | Confirmed |
 | FR-025 | The system shall prevent a referral from being completed before coordinator acceptance. | Core | C | BR-10 | TC-006 | Confirmed |
-| FR-026 | The system shall record accepted partial fulfillment without completing the whole referral and retain its undelivered portion as unresolved. | Next | C | BRule-14 | TC-005 | Confirmed |
+| FR-026 | The system shall record accepted partial fulfillment without completing the whole referral and retain its undelivered portion as unresolved. | Core | C | BRule-14 | TC-005 | Confirmed |
 | FR-027 | The system shall allow a coordinator to release an undelivered assigned portion for reassignment while preserving the original referral and outcome history. | Next | C | BRule-14 | TC-005 | Confirmed |
 | FR-028 | The system shall permit reassignment only of unassigned or explicitly released unresolved need. | Next | C | BRule-14 | TC-005 | Confirmed |
 | FR-029 | The system shall record optional beneficiary or authorized third-party confirmation and disagreements separately from the recipient's report. | Next | B, T, C | BRule-13 | TC-008 | Confirmed |
@@ -75,11 +76,26 @@ The intended environment is a responsive browser application on phones, tablets 
 | FR-031 | The system shall allow authorized users to view relevant request and referral progress. | Core | U | BR-07 | TC-007 | Confirmed |
 | FR-032 | The system shall record significant decisions and referral updates with actor and time. | Core | U | BRule-09 | TC-007 | Confirmed |
 | FR-033 | The system shall retain unresolved or declined portions for follow-up. | Next | C | BRule-09 | TC-008 | Confirmed |
-| FR-034 | The system shall mark a request completed only when all required need is fulfilled and accepted. | Next | C | BRule-09 | TC-008 | Confirmed |
+| FR-034 | The system shall permit explicit coordinator completion only when all required need is fulfilled and accepted. | Core | C | BRule-09 | TC-008 | Confirmed |
 | FR-035 | The system shall allow a coordinator to close a request with unmet need as closed unresolved only with a recorded reason. | Next | C | BRule-09 | TC-008 | Confirmed |
 | FR-036 | The system shall restrict beneficiary details and evidence according to role and involvement, including recipient assignment and requester relationship. | Core | U | BRule-07, BRule-12 | TC-007 | Confirmed |
 | FR-037 | The system shall reject unauthorized read or mutation attempts without disclosing restricted information. | Core | U | BR-08 | TC-007 | Proposed |
 | FR-038 | The system shall allow a coordinator to record a follow-up action for an unresolved or declined referral. | Core | C | BRD §8 | TC-008 | Confirmed |
+
+### Phase 1 functional elaboration (planned)
+
+The current Phase 1 baseline narrows FR-007 to beneficiary self-submission; third-party and coordinator-on-behalf submission remain later full-product scope. Each submission may contain multiple distinct needs. Separately tracked needs may be implemented as linked records or another reviewed representation, provided their source and history are preserved without double-counting. Full split allocation among approved charities is in the demo; explicit release and reassignment after a partial report remain later scope.
+
+| ID | Requirement | Verification scenario | Backlog |
+| --- | --- | --- | --- |
+| P1-FR-01 | Coordinators manage service categories and versioned platform-unit standards with structured component names, quantities and units; new activity uses current versions while history retains its version. | Create a new version and inspect earlier need, capacity and referral history. | P1-12–P1-15, P1-51 |
+| P1-FR-02 | A charity can select supported services and set nonnegative available-from-now quantities, replacing current availability without altering previous commitments. | Update availability after a referral and check balance and history. | P1-18–P1-20, P1-22 |
+| P1-FR-03 | A service/version without an update on the current Africa/Cairo calendar day is ineligible for new referral; an updated zero is current but unavailable. | Exercise Cairo midnight, zero and multiple services with different freshness. | P1-21–P1-23, P1-32 |
+| P1-FR-04 | Create one 08:00 Cairo daily reminder intent per charity with stale services, with an in-app task, delivery attempt history and retry handling; do not assert mailbox delivery from SMTP acceptance. | Exercise multiple stale services, restart, failures and ambiguous sends with local test email. | P1-23–P1-26, P1-52 |
+| P1-FR-05 | Match an approved active charity by supported, compatible version and current availability; atomically allocate portions without oversubscribing need or capacity. | Race assignments and capacity updates in isolated PostgreSQL; inspect balances and denied access. | P1-32–P1-36, P1-53–P1-54 |
+| P1-FR-06 | Require an assigned recipient's report and private supporting evidence, coordinator acceptance or clarification, and explicit closure only after all required needs are fulfilled and accepted. | Check missing evidence, unrelated access, partial acceptance and premature closure. | P1-39–P1-43, P1-55 |
+
+The decision for existing needs when a standard changes remains open in [P1-33](https://github.com/Bola-j/Helping-Hands/issues/33); do not silently substitute incompatible versions. These scenarios specify expected behavior and are not test results.
 
 ## 5. Non-functional requirements
 
@@ -128,10 +144,10 @@ BRD BRule-01 through BRule-14 remain authoritative. Particularly, eligibility pr
 | DR-002 | Each referral shall identify its request, defined portion and responsible eligible recipient. | Core / Next | C | BR-05 | Referential integrity test | Proposed |
 | DR-003 | The system shall retain actor, timestamp, decision and relevant reason for significant decisions and updates. | Core | U | BRule-09 | History review | Confirmed |
 | DR-004 | Evidence metadata shall identify its referral or report, submitting actor, time and storage reference, with access restricted. | Core | R, C | BR-06, BR-08 | Metadata/access test | Proposed |
-| DR-005 | Quantity-based assignments and accepted fulfillment shall not exceed the relevant available or assigned amount. | Next | C | BRule-14 | Boundary and concurrent tests | Proposed |
+| DR-005 | Quantity-based assignments and accepted fulfillment shall not exceed the relevant available or assigned amount. | Core | C | BRule-14 | Boundary and concurrent tests | Proposed |
 | DR-006 | Personal data and evidence retention, deletion, access recovery and consent policies shall be resolved with appropriate local review before real use. | Cross-cutting | Team | BRule-12, D-03 | Policy review | Open |
 
-The confirmed database structure, conceptual model, PostgreSQL mapping, integrity constraints and code-first migration approach are in [database-design.md](database-design.md). The physical mapping and enforcement remain planned; no database has been created. Each table has a UUID primary key, and user-facing business records receive server-generated references as described in the [API plan](api-v1-plan.md).
+The confirmed database structure, conceptual model, PostgreSQL mapping, integrity constraints and code-first migration approach are in [database-design.md](database-design.md). The deployed database state and enforcement require verification; the presence of code or migrations does not establish a working database. Each table has a UUID primary key, and user-facing business records receive server-generated references as described in the [API plan](api-v1-plan.md).
 
 ## 8. Use cases and models
 
@@ -139,10 +155,10 @@ The context, use-case overview, activity, sequence, domain and state models are 
 
 | ID | Actor / precondition | Main flow | Exception / result | Requirements |
 | --- | --- | --- | --- | --- |
-| UC-001 | Charity applicant; administrator authorized | Apply → administrator reviews → approve and activate | Pending or rejected cannot receive referrals | FR-001–004 |
+| UC-001 | Charity applicant; coordinator authorized | Apply → coordinator reviews → approve and activate | Pending or rejected cannot receive referrals | FR-001–004 |
 | UC-002 | Contributor; coordinator authorized | Register → coordinator approves → eligible for referral | Unapproved contributor cannot be assigned | FR-005–006 |
 | UC-003 | B, T or C; authority and sharing confirmed | Submit → coordinator reviews and classifies → accepts | Clarification or reasoned rejection | FR-007–013 |
-| UC-004 | C; mixed request reviewed | Split different needs into linked requests | Preserve source relationship | FR-014 |
+| UC-004 | C; mixed request reviewed | Track and refer each distinct need | Preserve source relationship without double counting | FR-014 |
 | UC-005 | C; eligible recipient and available need | Define portion → assign → track progress | Assigned portion cannot be duplicated; release undelivered portion before reassignment | FR-015–019, FR-026–028 |
 | UC-006 | R assigned; C authorized | Report delivery and receipt with attachment → coordinator reviews → accept | Clarification, dispute or insufficient evidence remains unresolved; partial acceptance does not complete referral | FR-020–030 |
 | UC-007 | U with role and involvement | View permitted progress and history | Unauthorized access denied | FR-031–032, FR-036–037 |
@@ -150,7 +166,7 @@ The context, use-case overview, activity, sequence, domain and state models are 
 
 ## 9. System design and verification
 
-A responsive web client calls one ASP.NET Core API. The initial foundation uses a Minimal API endpoint; future endpoints use Minimal API route groups. Endpoint handlers handle HTTP input and authorization; focused services implement workflows; database access persists to PostgreSQL. See [architecture.md](architecture.md) for the current foundation and proposed evolution. Evidence requires a separately selected storage approach, with metadata and access checks in the API. This is one deployable application, not a claim that business workflows exist today. Configuration and secrets belong outside committed source. No external aid transfer is performed by the application.
+The planned React Native Web client calls one ASP.NET Core Minimal API. Existing endpoint and workflow behavior must be verified against the Phase 1 assessment; planned routes do not prove complete workflows. Endpoint handlers handle HTTP input and authorization; focused services implement workflows; database access persists to PostgreSQL. See [architecture.md](architecture.md) for the current foundation and proposed evolution. The planned demo uses private S3-compatible storage, with metadata and access checks in the API; the selected operational storage policies remain open. Existing behavior must be verified independently. Configuration and secrets belong outside committed source. No external aid transfer is performed by the application.
 
 Review requirements with users and the instructor where available; validate usefulness and operating arrangements with prospective participants before real deployment. Verify functionality with fictional-data demonstrations and automated or manual role, boundary, concurrency and recovery checks as implementation becomes available. These scenarios are representative specifications, not test results.
 
@@ -206,14 +222,14 @@ Purpose: let involved participants follow relevant work while protecting restric
 Alternatives: An unrelated or unauthorized user is denied access without disclosure of restricted details; a third-party requester receives only information needed to follow the submitted request. Postconditions: no business record is changed by viewing it. Requirements: FR-031–032, FR-036–037, NFR-001–003.
 
 **UC-001 — Charity application and review**  
-Purpose: establish eligibility for charity referrals. Actors: charity applicant and administrator. Preconditions: applicant can access registration; administrator is authorized. Trigger: applicant starts an application.
+Purpose: establish eligibility for charity referrals. Actors: charity applicant and coordinator. Preconditions: applicant can access registration; coordinator is authorized. Trigger: applicant starts an application.
 
 1. Applicant enters organization name, contact details and registration information or supporting documentation and submits it.
 2. The system records the application as pending.
-3. The administrator reviews the application and supplied information.
-4. The administrator approves it; the system records the decision and activates the charity.
+3. The coordinator reviews the application and supplied information.
+4. The coordinator approves it; the system records the decision and activates the charity.
 
-Alternatives: Missing required information prevents submission; the administrator may leave the application pending or reject it. Postconditions: the decision and actor/time are retained; pending or rejected charities remain ineligible. Requirements: FR-001–004, FR-032.
+Alternatives: Missing required information prevents submission; the coordinator may leave the application pending or reject it. Postconditions: the decision and actor/time are retained; pending or rejected charities remain ineligible. Requirements: FR-001–004, FR-032.
 
 **UC-003 — Submit and review a request**  
 Purpose: record and assess a need. Actors: beneficiary, third-party requester or coordinator; coordinator reviewer. Preconditions: the submitter has the authority required to provide information. Trigger: a requester begins recording a need.
@@ -226,13 +242,13 @@ Purpose: record and assess a need. Actors: beneficiary, third-party requester or
 Alternatives: Missing confirmation prevents submission; the coordinator requests clarification or rejects the request with a reason. Mixed support may proceed to UC-004. Postconditions: request and decision history are available only to authorized participants. Requirements: FR-007–013, FR-031–032, FR-036.
 
 **UC-004 — Split mixed needs**  
-Purpose: track different kinds of support separately. Actor: coordinator. Preconditions: a request has mixed needs and is under authorized review. Trigger: the coordinator decides separation is appropriate.
+Purpose: track different kinds of support separately. Actor: coordinator. Preconditions: a request has mixed needs and is under authorized review. Trigger: the coordinator reviews and refers each distinct need.
 
-1. The coordinator identifies distinct kinds of support and creates a request for each.
-2. The system links each child to the original request and preserves its context.
+1. The coordinator identifies and reviews distinct kinds of support in the submitted request.
+2. The system tracks each need separately and preserves its source and context.
 3. The coordinator reviews the resulting needs for referral.
 
-Alternatives: If no split is needed, the original continues through review. Postconditions: linked needs are separately trackable and the original and children are not double-counted as additional need. Requirements: FR-012–014; database design defines proposed split-parent handling.
+Alternatives: If no split is needed, the original continues through review. Postconditions: needs are separately trackable and parent and child representations are not double-counted. Requirements: FR-012–014; the physical representation requires design review.
 
 **UC-005 — Assign and follow a portion**  
 Purpose: give an eligible recipient responsibility for a defined available need. Actors: coordinator and approved charity or contributor. Preconditions: the need is accepted for referral, the recipient is eligible, and the portion is unassigned or explicitly released. Trigger: the coordinator initiates an assignment.
@@ -274,6 +290,49 @@ A disagreement can arrive after an outcome was accepted. Until the coordinator r
 | FR-040 | The system shall prevent allocation, acceptance, release and completion transitions for a request with an open dispute until the coordinator resolves it or makes an audited correction. | Next | C | BRule-13–14; proposed elaboration | TC-009 | Proposed |
 | FR-041 | The system shall preserve the original report and decision and atomically recalculate affected balances when an authorized coordinator records a correction. | Next | C | BRule-09, BRule-14; proposed elaboration | TC-009 | Proposed |
 | TC-009 | Accept a fictional partial outcome, record a later disagreement, attempt completion and affected reassignment, then resolve or correct it; check the freeze, recalculated balances and preserved audit history. | Next | C | FR-039–041 | Future test, not a result | Proposed |
+
+# Appendix: Phase 1 requirements trace and review
+
+Status: **draft for team review**, 9 November 2026. The current Phase 1 roadmap is the source of the newer demo scope. This record reconciles it with the older full-product documents; it does not assert that planned features are implemented. See the implementation baseline appendix below for historical implementation evidence and the [roadmap](api-demo-scrum-roadmap.md) for acceptance and dependencies.
+
+## Decisions and traceability
+
+| Capability or decision | Phase 1 target and boundary | Work and verification tickets |
+| --- | --- | --- |
+| Charity eligibility | A coordinator reviews an application, with actor, time and decision retained; only approved, active charities receive referrals. Administrator and coordinator are distinct roles, and authorization must explicitly grant the coordinator this action. Earlier administrator-only behavior in existing API code is a gap, not proof of the target. | [P1-02](https://github.com/Bola-j/Helping-Hands/issues/2), [P1-16](https://github.com/Bola-j/Helping-Hands/issues/16), [P1-17](https://github.com/Bola-j/Helping-Hands/issues/17), [P1-44](https://github.com/Bola-j/Helping-Hands/issues/44) |
+| Intake and role access | The demo beneficiary submits only their own request. Third-party requester and contributor flows remain full-app scope for later. Role and involvement checks protect each request and attachment. | [P1-09](https://github.com/Bola-j/Helping-Hands/issues/9)–[P1-11](https://github.com/Bola-j/Helping-Hands/issues/11), [P1-28](https://github.com/Bola-j/Helping-Hands/issues/28)–[P1-31](https://github.com/Bola-j/Helping-Hands/issues/31), [P1-44](https://github.com/Bola-j/Helping-Hands/issues/44) |
+| Standards | A coordinator manages service categories and versioned units with structured components; historical records retain their original versions. New activity uses current versions. The compatible physical mapping requires a reviewed future migration. | [P1-12](https://github.com/Bola-j/Helping-Hands/issues/12)–[P1-15](https://github.com/Bola-j/Helping-Hands/issues/15), [P1-51](https://github.com/Bola-j/Helping-Hands/issues/54) |
+| Capacity and reminders | Each charity reports direct available-from-now capacity in platform units, per service/version and Cairo day. Zero is current but unavailable; stale services freeze only their own new assignments. The 08:00 Cairo reminder records one intent per charity/day; retries cannot claim guaranteed mailbox delivery. | [P1-18](https://github.com/Bola-j/Helping-Hands/issues/18)–[P1-26](https://github.com/Bola-j/Helping-Hands/issues/26), [P1-52](https://github.com/Bola-j/Helping-Hands/issues/55), [P1-53](https://github.com/Bola-j/Helping-Hands/issues/56) |
+| Needs and referrals | A request can contain distinct needs, each tracked by service, standard version and quantity; coordinators can split allocations among eligible charities. Individual need and assignment balances are counted once. The earlier linked-child model is a candidate mapping, not an assertion that Phase 1 mapping is decided or implemented. | [P1-27](https://github.com/Bola-j/Helping-Hands/issues/27)–[P1-36](https://github.com/Bola-j/Helping-Hands/issues/36), [P1-53](https://github.com/Bola-j/Helping-Hands/issues/56), [P1-54](https://github.com/Bola-j/Helping-Hands/issues/58) |
+| Evidence, progress and closure | Assigned representatives report outcomes and upload private evidence; coordinators accept or request clarification. Accepted amounts count once. An explicit coordinator closure is allowed only after all required needs are fulfilled and accepted. Acceptance is a review, not independent proof of delivery. | [P1-37](https://github.com/Bola-j/Helping-Hands/issues/37)–[P1-43](https://github.com/Bola-j/Helping-Hands/issues/43), [P1-55](https://github.com/Bola-j/Helping-Hands/issues/57) |
+| Demo and later delivery | Fictional web-to-API, PostgreSQL, private storage and email rehearsal is Phase 1. Production deployment and the remaining first-version capabilities are tracked separately. | [P1-45](https://github.com/Bola-j/Helping-Hands/issues/45)–[P1-48](https://github.com/Bola-j/Helping-Hands/issues/48), [P1-56](https://github.com/Bola-j/Helping-Hands/issues/59), [P1-57](https://github.com/Bola-j/Helping-Hands/issues/60), [Phase 2 deployment](https://github.com/users/Bola-j/projects/5) |
+
+## Phase 1 authorization summary
+
+| Actor | Intended demo access |
+| --- | --- |
+| Beneficiary | Register, authenticate, submit their own needs and see their authorized progress. |
+| Charity representative | Submit the charity application, manage that charity’s supported services and capacity, and report only assigned referrals with private evidence. |
+| Coordinator | Review charity applications and requests; manage standards, match and allocate, review outcomes and explicitly close fulfilled requests. |
+| Administrator | Manage platform access; access to coordinator actions requires the coordinator role. |
+| Unrelated user | No access to another participant’s private records or evidence. |
+
+## Scenarios to verify during implementation
+
+- A pending or rejected charity cannot be allocated; an authorized coordinator can record a decision, while an unrelated user is denied.
+- Intake confirmation and role/involvement checks prevent unauthorized requests and evidence access; a beneficiary can view only their own progress.
+- A current update of zero differs from a stale service at Cairo midnight, and an update replaces availability without subtracting past commitments again.
+- Multiple stale services create one daily reminder intent per charity; a failed or ambiguous SMTP attempt remains visible and does not prove delivery.
+- Concurrent allocations and capacity updates preserve consistent balances. Split allocations cannot exceed need or capacity; only compatible standard versions match.
+- An accepted partial outcome leaves unmet need open; repeated acceptance does not double count; incomplete needs prevent explicit closure.
+
+These are acceptance scenarios, not executed test results.
+
+## Open decisions and review
+
+- [P1-33](https://github.com/Bola-j/Helping-Hands/issues/33): decide how an outstanding need tied to an old standard is fulfilled after a new version is introduced. Do not silently substitute incompatible versions.
+- Physical mapping of needs, versioned standards and capacity is to be designed and validated through the linked database tickets; existing draw.io models represent the earlier baseline, not the complete Phase 1 model.
+- Human team review and approval: **pending**. Record actual participants, date, decisions and any remaining disagreements when that review occurs; no approval is implied by this draft.
 
 # Appendix: Phase 1 implementation baseline and verification
 

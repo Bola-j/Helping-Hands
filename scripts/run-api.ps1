@@ -1,5 +1,7 @@
 param(
-    [string]$EnvironmentFile = (Join-Path $PSScriptRoot "../.env")
+    [string]$EnvironmentFile = (Join-Path $PSScriptRoot "../.env"),
+    [switch]$Migrate,
+    [switch]$SeedDemo
 )
 $ErrorActionPreference = "Stop"
 if (-not (Test-Path -LiteralPath $EnvironmentFile -PathType Leaf)) {
@@ -21,7 +23,14 @@ try {
         [Environment]::SetEnvironmentVariable($key, $value, 'Process')
     }
     $project = Join-Path $PSScriptRoot '../src/HelpingHands.Api/HelpingHands.Api.csproj'
-    & dotnet run --project $project --no-launch-profile
+    if ($Migrate -and $SeedDemo) { throw "Choose either -Migrate or -SeedDemo." }
+    if ($Migrate) {
+        & dotnet ef database update --project $project --startup-project $project
+    } elseif ($SeedDemo) {
+        & dotnet run --project $project --no-launch-profile -- --seed-demo
+    } else {
+        & dotnet run --project $project --no-launch-profile
+    }
     if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 }
 finally {

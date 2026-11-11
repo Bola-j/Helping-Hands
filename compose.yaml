@@ -9,7 +9,8 @@ services:
       ASPNETCORE_URLS: https://+:8443
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/dev.pfx
       ASPNETCORE_Kestrel__Certificates__Default__Password: ${DEV_CERT_PASSWORD:?Set DEV_CERT_PASSWORD in .env}
-      ConnectionStrings__HelpingHands: Host=postgres;Port=5432;Database=helping_hands;Username=helping_hands;Password=${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      ConnectionStrings__HelpingHands: Host=postgres;Port=5432;Database=helping_hands;Username=helping_hands
+      PGPASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
       EvidenceStorage__ServiceUrl: http://minio:9000
       EvidenceStorage__Bucket: ${EVIDENCE_BUCKET:-helping-hands-evidence}
       EvidenceStorage__AccessKey: ${MINIO_ROOT_USER:?Set MINIO_ROOT_USER in .env}

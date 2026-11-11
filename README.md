@@ -46,7 +46,7 @@ For local development, install the .NET 10 SDK, a compatible `dotnet-ef` tool an
 Create a local HTTPS certificate using the same password as `DEV_CERT_PASSWORD`. Do not commit this file or password:
 
 ```powershell
-Copy-Item .env.example .env
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
 # Edit .env and set the local service and fictional account credentials.
 New-Item -ItemType Directory -Force .local/https | Out-Null
 # Substitute the value you chose for DEV_CERT_PASSWORD; avoid storing it in shell history.

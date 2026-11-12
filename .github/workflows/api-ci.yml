@@ -33,6 +33,7 @@ jobs:
       EvidenceStorage__Bucket: helping-hands-ci
       EvidenceStorage__AccessKey: local-test
       EvidenceStorage__SecretKey: local-test
+      P108_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Database=helping_hands_p108_ci;Username=postgres
       PGHOST: 127.0.0.1
       PGPORT: 5432
       PGDATABASE: helping_hands_ci
@@ -48,6 +49,8 @@ jobs:
         run: dotnet restore HelpingHands.slnx
       - name: Build
         run: dotnet build HelpingHands.slnx --configuration Release --no-restore
+      - name: Create isolated session test database
+        run: createdb -h 127.0.0.1 -U postgres helping_hands_p108_ci
       - name: Run API tests
         run: dotnet test HelpingHands.slnx --configuration Release --no-build --no-restore
       - name: Install EF Core tools

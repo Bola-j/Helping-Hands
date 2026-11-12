@@ -73,6 +73,10 @@ Use `https://localhost:8443/health` for liveness, `/ready` for PostgreSQL readin
 
 Build with `dotnet build HelpingHands.slnx`. For a containerized API, use `docker compose stop` to stop local services and `docker compose up -d` to restart them; stopping retains volumes. For an API running directly on the host, press Ctrl+C. If startup fails, inspect `docker compose ps -a` and `docker compose logs storage storage-init api`; confirm credentials, available ports, certificate access and image pulls before retrying. Do not delete volumes containing data you need. The current file-processing policy is intended only for fictional demo evidence and is not approved for production.
 
+## Session integration tests
+
+The session integration tests require a separate, disposable PostgreSQL database with a name beginning `helping_hands_p108`. Set `P108_TEST_POSTGRES` in your local process environment to its Npgsql connection string before running `dotnet test HelpingHands.slnx`; keep credentials in ignored local configuration. The fixture applies the existing migrations and creates fictional accounts in that database; never point it at a shared or real-data database. It does not delete the database. To run the quick suite without PostgreSQL, use `dotnet test HelpingHands.slnx --filter "Category!=PostgresIntegration"`; this excludes the real-cookie database tests and must not be reported as a full pass. CI creates a separate PostgreSQL database and runs all tests, keeping its migration-validation database separate.
+
 ## Repository status
 
 The BRD is the business baseline. The PRD and SRS are finalized working requirements baselines, subject to normal change control; the database structure is confirmed; supporting models and the PostgreSQL mapping still require implementation and verification. The demo API is under development and has not yet passed complete end-to-end verification.

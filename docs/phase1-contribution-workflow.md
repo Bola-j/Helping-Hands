@@ -17,7 +17,7 @@ The following are proposed starting points, not assignments or evidence of compl
 
 | Team member | Independently reviewable candidate | Dependency or handoff |
 | --- | --- | --- |
-| Bola Ghaly | [P1-08: API session and antiforgery contracts](https://github.com/Bola-j/Helping-Hands/issues/8) | Depends on P1-06 and P1-10; reconcile existing behavior and run focused HTTP access checks. |
+| Bola Ghaly | [P1-08: API session and antiforgery contracts](https://github.com/Bola-j/Helping-Hands/issues/8) | Depends on P1-05 and P1-06; assess the existing session and antiforgery contract and run focused HTTP checks. |
 | Ziad Walid | [P1-12: service catalog and versioned standards schema](https://github.com/Bola-j/Helping-Hands/issues/12) | Depends on P1-02 and P1-05; use a reviewed migration and isolated PostgreSQL checks. |
 | hussien okely | [P1-11: registration and login screens](https://github.com/Bola-j/Helping-Hands/issues/11) | Future UI work; depends on the web foundation, session client and API identity tickets. |
 | ali fathy | [P1-15: coordinator service and standards screens](https://github.com/Bola-j/Helping-Hands/issues/15) | Future UI work; depends on the web foundation, session client and service API. |

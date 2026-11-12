@@ -59,7 +59,7 @@ services:
           *[!a-zA-Z0-9]*) echo "S3 credentials must contain only letters and digits" >&2; exit 1 ;;
         esac
         printf '{"identities":[{"name":"client","credentials":[{"accessKey":"%s","secretKey":"%s"}],"actions":["Admin","Read","Write","List","Tagging"]}]}' "$$S3_ACCESS_KEY" "$$S3_SECRET_KEY" > /run/storage/s3.json
-        exec weed server -dir=/data -s3 -s3.config=/run/storage/s3.json -volume.max=1
+        exec weed server -dir=/data -s3 -s3.config=/run/storage/s3.json -volume.max=10
     ports:
       - "127.0.0.1:${S3_API_HOST_PORT:-9000}:8333"
     volumes:
@@ -80,7 +80,9 @@ services:
     command:
       - |
         attempt=0
-        until aws --endpoint-url http://storage:8333 s3api head-bucket --bucket "$$EVIDENCE_BUCKET" >/dev/null 2>&1 || aws --endpoint-url http://storage:8333 s3api create-bucket --bucket "$$EVIDENCE_BUCKET" >/dev/null 2>&1; do
+        printf startup-check > /tmp/storage-probe
+        probe_key="__startup_probe/$$(date +%s)-$$$$"
+        until { aws --endpoint-url http://storage:8333 s3api head-bucket --bucket "$$EVIDENCE_BUCKET" >/dev/null 2>&1 || aws --endpoint-url http://storage:8333 s3api create-bucket --bucket "$$EVIDENCE_BUCKET" >/dev/null 2>&1; } && aws --endpoint-url http://storage:8333 s3api put-object --bucket "$$EVIDENCE_BUCKET" --key "$$probe_key" --body /tmp/storage-probe >/dev/null 2>&1 && aws --endpoint-url http://storage:8333 s3api delete-object --bucket "$$EVIDENCE_BUCKET" --key "$$probe_key" >/dev/null 2>&1; do
           attempt=$$((attempt + 1))
           if [ "$$attempt" -ge 60 ]; then echo "Storage bucket initialization failed" >&2; exit 1; fi
           sleep 2

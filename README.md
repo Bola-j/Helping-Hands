@@ -65,7 +65,7 @@ For an isolated second stack, use a distinct Compose project name and set unique
 
 If you have an existing `.env`, preserve it and rename `MINIO_ROOT_USER`, `MINIO_ROOT_PASSWORD`, and `MINIO_API_HOST_PORT` to `S3_ACCESS_KEY`, `S3_SECRET_KEY`, and `S3_API_HOST_PORT`; update the matching `EvidenceStorage__...` host settings. Remove the obsolete console-port setting. Do not overwrite the existing file.
 
-SeaweedFS uses a private S3 identity generated from the local environment. Its volume format is distinct from MinIO: do not reuse an existing MinIO volume without a separately verified migration. The service is for local development.
+SeaweedFS uses a private S3 identity generated from the local environment. Its volume format is distinct from MinIO: do not reuse an existing MinIO volume without a separately verified migration. The service is for local development and allows up to ten SeaweedFS volumes; this is a demo capacity limit, not a production sizing recommendation.
 
 Inside the development container, the API receives the PostgreSQL password separately from the connection string through its environment. The migration command runs on the host using the loopback connection from `.env`. The API container uses Compose service names for PostgreSQL and the S3 service; it does not run migrations automatically. The explicit seed command works only in Development and does not promote an existing unrelated account. The launcher reads unquoted `KEY=VALUE` entries from `.env` into the process, restores previous values on exit, and supports values containing `=`. `.env` and `.local` are ignored by Git and excluded from the Docker build context. Never commit credentials; use a secret manager or deployment environment for real deployments.
 

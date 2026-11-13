@@ -7,7 +7,7 @@
         <mxCell id="UserAccount" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;UserAccount&lt;/b&gt;&lt;hr&gt;UserId uuid PK&lt;br&gt;DisplayName varchar(200)!&lt;br&gt;Email varchar(320)?&lt;br&gt;Phone varchar(40)?&lt;br&gt;AccountStatus varchar(20)!&lt;br&gt;CreatedAt timestamptz!&lt;br&gt;Version uuid!" vertex="1">
           <mxGeometry height="175" width="1003" x="895" y="844.67" as="geometry" />
         </mxCell>
-        <mxCell id="Role" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;Role&lt;/b&gt;&lt;hr&gt;RoleId uuid PK&lt;br&gt;Code varchar(40)!" vertex="1">
+        <mxCell id="Role" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;Role&lt;/b&gt;&lt;hr&gt;RoleId uuid PK&lt;br&gt;Code varchar(40)!&lt;br&gt;Beneficiary: planned seed value" vertex="1">
           <mxGeometry height="90" width="340" x="1558" y="1599.58" as="geometry" />
         </mxCell>
         <mxCell id="UserRole" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;UserRole&lt;/b&gt;&lt;hr&gt;UserRoleId uuid PK&lt;br&gt;UserId uuid! FK UserAccount&lt;br&gt;RoleId uuid! FK Role&lt;br&gt;GrantedAt timestamptz!" vertex="1">

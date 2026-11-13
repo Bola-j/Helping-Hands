@@ -9,7 +9,7 @@ permissions:
 
 jobs:
   api:
-    name: Build, test and verify PostgreSQL migration
+    name: API full verification
     runs-on: ubuntu-latest
     timeout-minutes: 20
     services:
@@ -34,6 +34,8 @@ jobs:
       EvidenceStorage__AccessKey: local-test
       EvidenceStorage__SecretKey: local-test
       P108_TEST_POSTGRES: Host=127.0.0.1;Port=5432;Database=helping_hands_p108_ci;Username=postgres
+      P1_WORKFLOW_POSTGRES: Host=127.0.0.1;Port=5432;Database=helping_hands_workflow_ci;Username=postgres
+      P1_E2E_POSTGRES: Host=127.0.0.1;Port=5432;Database=helping_hands_p108_e2e_ci;Username=postgres
       PGHOST: 127.0.0.1
       PGPORT: 5432
       PGDATABASE: helping_hands_ci
@@ -41,6 +43,16 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Test production-change gate
+        run: python -m unittest discover -s .github/tests -v
+      - name: Require tests for API production changes
+        if: github.event_name == 'pull_request'
+        env:
+          PR_BASE: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD: ${{ github.event.pull_request.head.sha }}
+        run: python .github/scripts/check_test_changes.py "$(git merge-base "$PR_BASE" "$PR_HEAD")" "$PR_HEAD"
       - name: Install .NET 10
         uses: actions/setup-dotnet@v6.1.0
         with:
@@ -50,9 +62,20 @@ jobs:
       - name: Build
         run: dotnet build HelpingHands.slnx --configuration Release --no-restore
       - name: Create isolated session test database
-        run: createdb -h 127.0.0.1 -U postgres helping_hands_p108_ci
-      - name: Run API tests
-        run: dotnet test HelpingHands.slnx --configuration Release --no-build --no-restore
+        run: |
+          createdb -h 127.0.0.1 -U postgres helping_hands_p108_ci
+          createdb -h 127.0.0.1 -U postgres helping_hands_workflow_ci
+          createdb -h 127.0.0.1 -U postgres helping_hands_p108_e2e_ci
+      - name: Start isolated private S3
+        run: bash .github/scripts/start-private-s3.sh
+      - name: Application tests (unit and HTTP validation)
+        run: dotnet test HelpingHands.slnx --configuration Release --no-build --no-restore --filter 'Category!=PostgresIntegration' --logger 'trx;LogFileName=quick.trx' --results-directory TestResults
+      - name: Application tests (PostgreSQL API integration)
+        run: dotnet test HelpingHands.slnx --configuration Release --no-build --no-restore --filter 'Category=PostgresIntegration&FullyQualifiedName!~EvidenceFlowTests' --logger 'trx;LogFileName=postgres.trx' --results-directory TestResults
+      - name: Provision private bucket for evidence tests
+        run: docker run --rm --network host -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION amazon/aws-cli:2.27.49 --endpoint-url http://127.0.0.1:8333 s3api create-bucket --bucket "$P1_TEST_S3_BUCKET"
+      - name: Application end-to-end tests (evidence workflow)
+        run: dotnet test HelpingHands.slnx --configuration Release --no-build --no-restore --filter 'FullyQualifiedName~EvidenceFlowTests' --logger 'trx;LogFileName=e2e.trx' --results-directory TestResults
       - name: Install EF Core tools
         run: dotnet tool install dotnet-ef --version 10.0.0 --tool-path "$RUNNER_TEMP/dotnet-tools"
       - name: Check migration model and apply to isolated database
@@ -61,3 +84,14 @@ jobs:
           "$RUNNER_TEMP/dotnet-tools/dotnet-ef" database update --project src/HelpingHands.Api --configuration Release --no-build
       - name: Verify PostgreSQL schema
         run: psql -v ON_ERROR_STOP=1 -f .github/scripts/verify-postgres-schema.sql
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-results
+          path: TestResults/*.trx
+          if-no-files-found: warn
+      - name: Remove isolated S3 container
+        if: always()
+        run: docker rm -f -v p1-ci-storage || true

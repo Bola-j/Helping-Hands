@@ -143,21 +143,18 @@ The [Phase 1 conceptual model](diagrams/conceptual-eer.drawio) is the single dat
 ```mermaid
 stateDiagram-v2
  [*] --> Submitted
- Submitted --> UnderReview
- UnderReview --> ClarificationNeeded
- ClarificationNeeded --> UnderReview
- UnderReview --> Declined: reason recorded
- UnderReview --> Accepted
- UnderReview --> Split: mixed needs separated
- Split --> Completed: coordinator closes after all child needs fulfilled and accepted
- Split --> ClosedUnresolved: work stops with unmet child need and reason
- Accepted --> InProgress: referral made
- InProgress --> Completed: coordinator closes after all need fulfilled and accepted
- Accepted --> ClosedUnresolved: work stops with reason
- InProgress --> ClosedUnresolved: work stops with unmet need and reason
+ Submitted --> InReview: coordinator reviews a need
+ Submitted --> Clarification: clarification requested
+ Submitted --> FullyAccepted: only need accepted
+ Submitted --> FullyRejected: only need rejected
+ InReview --> Clarification: clarification requested
+ Clarification --> InReview: beneficiary responds
+ InReview --> FullyAccepted: every need accepted
+ InReview --> PartiallyAccepted: accepted and rejected needs
+ InReview --> FullyRejected: every need rejected
 ```
 
-Linked requests retain their relationship to the original. Under the proposed database design, a split parent is not allocatable: its children carry the distinct needs, and its displayed outcome is derived from their outcomes without counting the parent need again. Its status is completed only if all required child needs are fulfilled and accepted; it can be closed unresolved with a reason if work stops with unmet child need. These are proposed model details, not extra BRD decisions.
+The request remains under review until each need has a final decision; each need separately records its classification and decision. A clarification response adds an explanation without changing the selected version or quantity. The three final review outcomes do not imply delivery or completion. Allocation, report review, and closure are later workflows; only accepted needs are eligible for future referral and demand must not be counted twice.
 
 ## Referral state model
 

@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using HelpingHands.Api.Data;
+using HelpingHands.Api.Features.Needs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 namespace HelpingHands.Api.Features;
@@ -12,7 +13,7 @@ public static partial class DemoEndpoints
 
     public sealed record BeneficiaryInput(string DisplayName, string? ContactDetails, bool IsFamily);
 
-    public sealed record RequestInput(Guid BeneficiaryId, string Description, bool AuthorityConfirmed, bool SharingAgreed);
+    public sealed record RequestInput(Guid BeneficiaryId, string Description, bool AuthorityConfirmed, bool SharingAgreed, IReadOnlyList<NeedSelection?>? Needs);
 
     public sealed record RequestDecisionInput(string Decision, string? Reason, string? Category, string? ServiceSubtype, decimal? RequiredQuantity, string? Unit, Guid Version);
 

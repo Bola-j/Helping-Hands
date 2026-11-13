@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.RateLimiting;
 using HelpingHands.Api.Auth;
 using HelpingHands.Api.Data;
 using HelpingHands.Api.Features;
+using HelpingHands.Api.Features.Catalog;
 using HelpingHands.Api.Features.Needs;
 using HelpingHands.Api.Storage;
 using Microsoft.AspNetCore.Diagnostics;
@@ -46,6 +47,7 @@ if (app.Environment.IsDevelopment()) app.MapOpenApi();
 var api = app.MapGroup("/api/v1").AddEndpointFilter<AntiforgeryFilter>();
 api.MapAuthEndpoints();
 api.MapDemoEndpoints();
+api.MapCatalogEndpoints();
 app.Run();
 
 public partial class Program;

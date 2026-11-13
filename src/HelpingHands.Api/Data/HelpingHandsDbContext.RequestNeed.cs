@@ -6,9 +6,15 @@ public sealed partial class HelpingHandsDbContext
 {
     private static void ConfigureRequestNeed(ModelBuilder model) => model.Entity<RequestNeed>(builder =>
     {
-        builder.ToTable("RequestNeed", table => table.HasCheckConstraint("CK_RequestNeed_Quantity", "\"Quantity\" > 0"));
+        builder.ToTable("RequestNeed", table =>
+        {
+            table.HasCheckConstraint("CK_RequestNeed_Quantity", "\"Quantity\" > 0");
+            table.HasCheckConstraint("CK_RequestNeed_Category", "\"Category\" IS NULL OR \"Category\" IN ('Goods', 'Money', 'OrganizationalReferral')");
+        });
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Quantity).HasPrecision(18, 3);
+        builder.Property(x => x.Category).HasMaxLength(30);
+        builder.Property(x => x.ServiceSubtype).HasMaxLength(100);
         builder.Property(x => x.Status).HasMaxLength(30).IsRequired();
         builder.HasIndex(x => new { x.RequestId, x.StandardVersionId }).IsUnique();
         builder.HasOne<AssistanceRequest>().WithMany().HasForeignKey(x => x.RequestId).OnDelete(DeleteBehavior.Restrict);

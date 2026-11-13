@@ -13,6 +13,7 @@ public sealed partial class EvidenceFlowFixture : IAsyncLifetime
     public string Administrator { get; } = $"admin-{Guid.NewGuid():N}@example.test";
     public string Coordinator { get; } = $"coordinator-{Guid.NewGuid():N}@example.test";
     public string Representative { get; } = $"charity-{Guid.NewGuid():N}@example.test";
+    public string Beneficiary { get; } = $"beneficiary-{Guid.NewGuid():N}@example.test";
     public string Outsider { get; } = $"outsider-{Guid.NewGuid():N}@example.test";
     public string Password { get; } = $"{Guid.NewGuid():N}Aa1!";
 

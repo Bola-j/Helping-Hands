@@ -6,7 +6,7 @@ namespace HelpingHands.Api.Features;
 
 public static partial class DemoEndpoints
 {
-    private static bool Staff(ClaimsPrincipal user) => Coordinator(user) || Admin(user);
+    private static bool Staff(ClaimsPrincipal user) => Coordinator(user);
 
     private static bool Blank(string? value, int max) => string.IsNullOrWhiteSpace(value) || value.Length > max;
 

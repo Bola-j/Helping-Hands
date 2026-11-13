@@ -15,10 +15,15 @@ public sealed partial class SessionCookieFixture
 
     public async Task<HttpResponseMessage> LoginAsync(HttpClient client)
     {
+        return await LoginAsync(client, Email, Password);
+    }
+
+    public async Task<HttpResponseMessage> LoginAsync(HttpClient client, string email, string password)
+    {
         var token = await TokenAsync(client);
         using var request = new HttpRequestMessage(HttpMethod.Post, "/api/v1/auth/login")
         {
-            Content = JsonContent.Create(new { Email, Password })
+            Content = JsonContent.Create(new { Email = email, Password = password })
         };
         request.Headers.Add("X-CSRF-TOKEN", token);
         return await client.SendAsync(request);

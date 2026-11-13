@@ -1,6 +1,6 @@
 # P1-01 and P1-02: assessment and requirements reconciliation plans
 
-Status: **assessment reviewed and completed; reconciliation and diagrams in progress; Scrum Master review accepted**. These plans refine [P1-01](https://github.com/Bola-j/Helping-Hands/issues/1) and [P1-02](https://github.com/Bola-j/Helping-Hands/issues/2). Findings below are preliminary inspection, not completion evidence. P1-02 discovery can begin now; its final reconciliation depends on P1-01. See the [Phase 1 roadmap](api-demo-scrum-roadmap.md) for ticket dependencies and responsibilities.
+Status: **assessment reviewed and completed; role policy reconciled; diagram/cardinality reconciliation remains in progress**. These plans refine [P1-01](https://github.com/Bola-j/Helping-Hands/issues/1) and [P1-02](https://github.com/Bola-j/Helping-Hands/issues/2). Findings below are preliminary inspection, not completion evidence. P1-02 discovery can begin now; its final reconciliation depends on P1-01. See the [Phase 1 roadmap](api-demo-scrum-roadmap.md) for ticket dependencies and responsibilities.
 
 ## P1-01 — assess the current implementation
 
@@ -24,8 +24,8 @@ Status: **assessment reviewed and completed; reconciliation and diagrams in prog
 ### Work plan
 
 - [ ] Trace the latest Phase 1 goal and each user journey through BRD, PRD, SRS, API plan, database design, relevant diagrams and the demo roadmap. Build a list of conflicts and affected tickets; distinguish confirmed decisions, proposed details and unresolved questions.
-- [ ] Reconcile charity approval explicitly: the current Phase 1 roadmap calls for a coordinator, while the earlier BRD, SRS, API plan and database design described an administrator. The working documents now record the coordinator decision and distinct roles; review those changes and the authorization implications with the team.
-- [ ] Specify self-only beneficiary intake as the Phase 1 subset while preserving third-party intake as later scope. Define the roles, involvement checks and authorized views for each demo journey.
+- [x] Record the identity access decision: Administrator inherits Coordinator permissions while remaining a distinct role; Coordinator owns the workflow, and P1-16 retains decision behavior and eligibility.
+- [x] Specify self-only beneficiary intake as the Phase 1 subset; third-party requester permissions remain later scope. The legacy `Requester` role grants no Phase 1 access. Define involvement checks and authorized views for each demo journey.
 - [ ] Reconcile multiple needs and partial/split referrals with the existing child-request model, history and completion rules. Specify quantities, capacity and acceptance invariants without claiming a new schema exists. Apply the interim P1-33 exact-version rule for outstanding requests after standards change; any future conversion policy requires review.
 - [ ] Add testable requirements for service categories and structured versioned standards; per-service Cairo-day capacity, stale versus zero and freeze; one daily reminder per charity, retries and ambiguous SMTP results; evidence access, coordinator review and explicit closure. Trace each to API, database, web and verification tickets.
 - [ ] Update the affected source documents and diagrams after the decisions are recorded. Keep full-product capabilities and Phase 2 exclusions clearly scoped rather than deleting future requirements. Describe planned and verified functionality separately using P1-01 evidence.
@@ -33,7 +33,7 @@ Status: **assessment reviewed and completed; reconciliation and diagrams in prog
 
 ### Acceptance examples to refine
 
-- A coordinator can approve or reject a charity under the agreed role model; pending or rejected charities cannot receive referrals, and unrelated users are denied.
+- A Coordinator or Administrator can pass the charity-review authorization boundary; P1-16 verifies the decision workflow and eligibility. Pending or rejected charities cannot receive referrals, and unrelated users are denied.
 - A beneficiary submits their own request with multiple needs; quantities, versions and split portions retain their meaning and cannot be counted twice.
 - A zero capacity update is current but offers no units; a service without an update on the current Cairo day is stale and frozen for new assignments.
 - One charity with multiple stale services receives one daily reminder intent; retries and ambiguous SMTP outcomes are recorded without claiming confirmed delivery.

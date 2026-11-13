@@ -41,7 +41,7 @@ public sealed partial class WorkflowValidationTests : IClassFixture<WebApplicati
     }
 
     [Fact]
-    public async Task RequesterCannotApproveCharity()
+    public async Task BeneficiaryCannotApproveCharity()
     {
         using var client = Client();
         var response = await PostWithToken(client, $"/api/v1/recipients/{Guid.NewGuid()}/decisions", new

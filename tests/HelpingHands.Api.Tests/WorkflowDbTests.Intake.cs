@@ -9,14 +9,15 @@ public sealed partial class WorkflowDbTests
     [Fact]
     public async Task Intake_RequiresConfirmationsAndConcealsRequestFromUnrelatedUser()
     {
+        using var beneficiary = await fixture.LoginAsync("Beneficiary");
         using var coordinator = await fixture.LoginAsync("Coordinator");
         using var unrelated = await fixture.LoginAsync("Unrelated");
-        var beneficiary = await WorkflowDbFixture.BeneficiaryAsync(coordinator);
-        var id = beneficiary.GetProperty("id").GetGuid();
-        using var invalid = await WorkflowDbFixture.PostAsync(coordinator, "/api/v1/requests", new
+        var profile = await WorkflowDbFixture.BeneficiaryAsync(beneficiary);
+        var id = profile.GetProperty("id").GetGuid();
+        using var invalid = await WorkflowDbFixture.PostAsync(beneficiary, "/api/v1/requests", new
         { BeneficiaryId = id, Description = "Fictional need", AuthorityConfirmed = false, SharingAgreed = true });
         Assert.Equal(HttpStatusCode.BadRequest, invalid.StatusCode);
-        var request = await WorkflowDbFixture.RequestAsync(coordinator, id);
+        var request = await WorkflowDbFixture.RequestAsync(beneficiary, id);
         using var hidden = await unrelated.GetAsync($"/api/v1/requests/{request.GetProperty("id").GetGuid()}");
         Assert.Equal(HttpStatusCode.NotFound, hidden.StatusCode);
         using var history = await coordinator.GetAsync($"/api/v1/requests/{request.GetProperty("id").GetGuid()}/history");

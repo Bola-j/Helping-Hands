@@ -20,10 +20,10 @@ public sealed partial class WorkflowDbFixture
         { Decision = "Accepted", Category = "Goods", RequiredQuantity = 1m, Unit = "box", Version = request.GetProperty("version").GetGuid() });
         return await JsonAsync(response, HttpStatusCode.OK);
     }
-    public static async Task<JsonElement> AcceptedRequestAsync(HttpClient coordinator)
+    public static async Task<JsonElement> AcceptedRequestAsync(HttpClient beneficiary, HttpClient coordinator)
     {
-        var beneficiary = await BeneficiaryAsync(coordinator);
-        var request = await RequestAsync(coordinator, beneficiary.GetProperty("id").GetGuid());
+        var profile = await BeneficiaryAsync(beneficiary);
+        var request = await RequestAsync(beneficiary, profile.GetProperty("id").GetGuid());
         return await AcceptAsync(coordinator, request);
     }
 }

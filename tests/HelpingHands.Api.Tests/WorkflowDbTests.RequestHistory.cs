@@ -9,7 +9,7 @@ public sealed partial class WorkflowDbTests
     [Fact]
     public async Task RejectionHistory_RecordsReasonForStaffButConcealsItFromRequester()
     {
-        using var requester = await fixture.LoginAsync("Requester");
+        using var requester = await fixture.LoginAsync("Beneficiary");
         using var coordinator = await fixture.LoginAsync("Coordinator");
         var request = await SubmittedRequestAsync(requester);
         var rejected = await ReviewRequestAsync(coordinator, request, "Rejected", "Fictional staff reason");
@@ -26,7 +26,7 @@ public sealed partial class WorkflowDbTests
     [Fact]
     public async Task ClarificationHistory_RecordsRequestReviewAndResponse()
     {
-        using var requester = await fixture.LoginAsync("Requester");
+        using var requester = await fixture.LoginAsync("Beneficiary");
         using var coordinator = await fixture.LoginAsync("Coordinator");
         var request = await SubmittedRequestAsync(requester);
         var clarification = await ReviewRequestAsync(coordinator, request, "Clarification", "Fictional clarification");

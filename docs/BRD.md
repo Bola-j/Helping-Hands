@@ -4,9 +4,9 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 1.4 |
-| Updated | 2026-11-09 |
-| Status | Working business baseline; Phase 1 review accepted by the Scrum Master |
+| Version | 1.5 |
+| Updated | 2026-11-13 |
+| Status | Working business baseline; Administrator inheritance decision recorded |
 | Prepared by | Helping Hands project team |
 
 | Version | Change |
@@ -19,8 +19,9 @@
 | 1.2 | Adopted practical first-version rules and recorded delegation of remaining decisions. |
 | 1.3 | Distinguished unresolved from unassigned needs and partial outcomes from referral completion. |
 | 1.4 | Reconciled the latest Phase 1 scope and coordinator charity approval; Scrum Master review accepted on 11 November 2026. |
+| 1.5 | Recorded the project decision that Administrator inherits Coordinator permissions while remaining a distinct role. |
 
-The [original idea and business model](references/helping-hands-full-idea.md) is background. This document supersedes its direct inventory, finance, and organizational-help management model. The project owner validated the earlier BRD, requested finalization, and delegated the remaining decisions to practical business judgment. Version 1.3 adopted those decisions as the earlier baseline; version 1.4 records the later Phase 1 project direction; the Scrum Master accepted its review. This records delegation, not separate approval of every rule; no instructor, charity, or other stakeholder approval is implied.
+The [original idea and business model](references/helping-hands-full-idea.md) is background. This document supersedes its direct inventory, finance, and organizational-help management model. The project owner validated the earlier BRD, requested finalization, and delegated the remaining decisions to practical business judgment. Version 1.3 adopted those decisions as the earlier baseline; version 1.4 records the later Phase 1 project direction; version 1.5 records the explicit identity-access decision. No instructor, charity, or other stakeholder approval is implied.
 
 ## 2. Executive summary
 
@@ -50,8 +51,8 @@ The platform does not collect or hold donations, operate a warehouse, manage a c
 | --- | --- |
 | Beneficiary | Self-registers for the Phase 1 demonstration, requests or receives assistance, and needs appropriate privacy and a way to understand progress. |
 | Third-party requester | Submits a request for another person, such as a relative, neighbor, or teacher. |
-| Platform administrator | Manages platform access; may act as coordinator only when separately authorized for that role. |
-| Platform coordinator | Reviews charity applications and requests, divides needs when appropriate, makes referrals, and follows outcomes. An administrator may also act as coordinator when authorized. |
+| Platform administrator | Manages platform access and inherits all coordinator permissions while remaining a distinct role. |
+| Platform coordinator | Reviews charity applications and requests, divides needs when appropriate, makes referrals, and follows outcomes. |
 | Charity | A representative self-registers an account and pending charity application; after coordinator approval, the charity handles referrals and supplies evidence of assistance. |
 | Individual donor or contributor | Registers an account, may handle a referred portion after coordinator approval, and supplies evidence of assistance. |
 | Project team and instructor | Build and assess the course project. |
@@ -135,7 +136,7 @@ These rules form the first-version business baseline. The owner decided the main
 | BRule-05 | Each referral recipient is responsible for its assigned assistance and provides an outcome description and supporting attachment(s) addressing delivery and receipt. A coordinator reviews the evidence before marking the referral complete. | Baseline |
 | BRule-06 | Helping Hands does not take custody of aid or a share of a contribution. | Project decision |
 | BRule-07 | Administrators and coordinators access information needed for their work; a referral recipient accesses only its assigned referral and necessary beneficiary details and evidence. Requesters can follow their own requests. A third-party requester sees only the information needed to follow the request they submitted. | Baseline |
-| BRule-08 | A recorded outcome is a participant's report; coordinator review does not imply independent verification. An administrator reviews outcomes only when acting as an authorized coordinator. | Baseline |
+| BRule-08 | A recorded outcome is a participant's report; coordinator review does not imply independent verification. Administrator inherits Coordinator permission to review outcomes. | Baseline |
 | BRule-09 | Decisions and referral updates record who acted and when; unresolved or declined portions remain visible for follow-up. A request is **completed** when all its required need is fulfilled and accepted; it remains **open** while further action is expected; it may be **closed unresolved** when work stops with unmet need and a recorded reason. | Baseline |
 | BRule-10 | Charity applicants provide their organization name, contact details, and registration information or supporting documentation. An authorized coordinator reviews these before approval, rejection, or leaving the application pending; approval is not proof of future conduct. | Baseline |
 | BRule-11 | Individual contributors register with contact information; a coordinator approves them before making referrals. | Baseline |

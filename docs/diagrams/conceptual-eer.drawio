@@ -58,7 +58,7 @@
         <mxCell id="RequestNeed" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#fff2cc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;RequestNeed&lt;/b&gt;" vertex="1">
           <mxGeometry height="58" width="300" x="1771" y="328.83" as="geometry" />
         </mxCell>
-        <mxCell id="Role" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;Role&lt;/b&gt;" vertex="1">
+        <mxCell id="Role" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#dae8fc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;Role&lt;/b&gt;&lt;br&gt;Beneficiary is a planned seeded role" vertex="1">
           <mxGeometry height="58" width="300" x="869" y="813.5" as="geometry" />
         </mxCell>
         <mxCell id="ServiceCategory" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#d5e8d4;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;ServiceCategory&lt;/b&gt;" vertex="1">

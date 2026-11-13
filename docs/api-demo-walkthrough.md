@@ -1,10 +1,21 @@
 # API demo walkthrough
 
-**Existing API procedure, not the current Phase 1 acceptance flow:** this walkthrough reflects the earlier administrator charity-approval and coordinator-intake endpoints in source. The Phase 1 target calls for coordinator charity approval and beneficiary self-service; see the [Phase 1 roadmap](api-demo-scrum-roadmap.md) and [capability assessment](SRS.md#appendix-phase-1-implementation-baseline-and-verification). Execution has not been established by this document.
+**Existing API procedure, not the current Phase 1 acceptance flow:** this walkthrough reflects the current source endpoints. The Phase 1 P1-09 target below replaces the shared account-registration route, but is not yet implemented. Execution of the procedures in this document has not been established. The implementation baseline is recorded in the [SRS capability assessment](SRS.md#appendix-phase-1-implementation-baseline-and-verification).
 
 This walkthrough is for fictional data only. Start PostgreSQL, S3 storage and the API using the [README](../README.md), apply migrations, and explicitly seed development accounts. Use an HTTPS-capable API client that keeps separate cookie jars for each fictional actor. The OpenAPI document is available at `/openapi/v1.json` in Development. Responses and exact field names should be checked there before running this walkthrough.
 
-For every actor session, first call `GET /api/v1/auth/antiforgery`; send the returned `requestToken` in the `X-CSRF-TOKEN` header on every POST or PUT, including registration, login and file uploads. The client must preserve the accompanying antiforgery cookie. Obtain a new token after login or logout. The API's secure cookies require HTTPS.
+For every actor session, first call `GET /api/v1/auth/antiforgery`; send the returned `requestToken` in the `X-CSRF-TOKEN` header on every POST or PUT, including registration, login and file uploads. The client must preserve the accompanying antiforgery cookie. Obtain a new token after login or logout. The API's secure cookies require HTTPS. Registration creates an account but does not sign the participant in; call login separately.
+
+### Planned P1-09 signup contract
+
+These target routes replace the current generic route after P1-09 is implemented:
+
+- `POST /api/v1/auth/register/beneficiary` accepts `displayName`, `email`, `password`, optional `contactDetails`, and `isFamily`. It creates a UUID account with the `Beneficiary` role and a linked beneficiary profile; the response returns both IDs and the profile's `BEN` reference. Login remains a separate request.
+- `POST /api/v1/auth/register/charity` accepts `representativeDisplayName`, `email`, `password`, `organizationName`, `contactDetails`, and optional `registrationInformation`. It creates a UUID account, representative membership, and pending inactive charity application; the response returns the account and application IDs and the `REC` reference. Login remains separate. Coordinator decisions are handled by P1-16.
+
+Both routes are anonymous signup operations protected by the P1-08 antiforgery contract. Email uniqueness is global across account types. A pending charity cannot receive referrals. Registration does not include email verification or third-party requester signup.
+
+### Existing source-only demo procedure
 
 1. **Charity representative:** `POST /api/v1/auth/register` with a fictional `displayName`, `email` and `password`, then `POST /api/v1/auth/login` with that email and password. Create a charity with `POST /api/v1/recipients`, providing `displayName`, `contactDetails` and `registrationInformation`. Record the response `id`, `reference` and `version`. Sign out and back in to refresh the representative role. An application can instead upload a PDF, JPEG or PNG through `/recipients/{id}/attachments`; the administrator cannot approve it without registration information or an attachment.
 2. **Administrator:** use a separate session to log in as the development-seeded administrator. Retrieve the application through `GET /api/v1/recipients/{id}` and submit `POST /api/v1/recipients/{id}/decisions` with `decision: "Approved"`, the current `version` and an optional reason. Pending and rejected charities must remain ineligible.

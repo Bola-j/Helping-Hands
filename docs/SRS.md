@@ -1,9 +1,10 @@
 # Software Requirements Specification — Helping Hands
 
-**Version:** 1.1 | **Status:** Working requirements baseline; Scrum Master review accepted; diagram reconciliation open | **Authors:** Project team
+**Version:** 1.2 | **Status:** Working requirements baseline; Scrum Master review accepted; signup contract reconciled; other diagram reconciliation remains open | **Authors:** Project team
 
 | Version | Change |
 | --- | --- |
+| 1.2 | Specified distinct beneficiary and charity signup flows and linked-profile/application outcomes for P1-09; documented the planned-vs-current implementation boundary. |
 | 1.1 | Reconciled Phase 1 scope and coordinator approval; Scrum Master review accepted on 11 November 2026. |
 | 1.0 | Finalized the working requirements baseline under the project owner’s delegation, retaining distinctions between business rules, proposed technical elaborations, and open targets. |
 | 0.1 | Initial specification derived from BRD 1.3 and project instructions. |
@@ -14,7 +15,7 @@ This specification describes the intended first-version behavior and constraints
 
 Helping Hands coordinates assistance and records requests, referrals, outcomes and review. Participants arrange and provide aid outside the platform. The platform does not take custody of money or goods, process payments, operate inventory or delivery logistics, or perform charity accounting. Public request listings, real operational pilots, and actual donations are outside the first version. The full BRD scope remains in scope even where sequenced after the core demonstration. Demonstrations use fictional people, data and evidence.
 
-**Terms.** A *beneficiary* receives assistance; a *requester* submits the need, possibly for someone else. A *referral recipient* is the approved charity or contributor assigned to provide assistance. A *portion* is an independently tracked quantity or clearly defined service scope. *Remaining need* is all unresolved need, including assigned portions; *unassigned need* is the unresolved part available to assign, including explicitly released undelivered portions. An *accepted outcome* is a coordinator's review of a participant's report, not independent proof. *Completed* means all required need is fulfilled and accepted; *closed unresolved* means work has stopped with unmet need and a reason.
+**Terms.** A *beneficiary* receives assistance and has a distinct Phase 1 account role; a *requester* submits the need, possibly for someone else, and third-party requester signup is not in the Phase 1 demo. A self-registering beneficiary account is linked to its beneficiary profile. A *referral recipient* is the approved charity or contributor assigned to provide assistance. A *portion* is an independently tracked quantity or clearly defined service scope. *Remaining need* is all unresolved need, including assigned portions; *unassigned need* is the unresolved part available to assign, including explicitly released undelivered portions. An *accepted outcome* is a coordinator's review of a participant's report, not independent proof. *Completed* means all required need is fulfilled and accepted; *closed unresolved* means work has stopped with unmet need and a reason.
 
 ## 2. Overall description
 
@@ -42,6 +43,7 @@ The current forecast targets 12 November 2026 for the Phase 1 API, PostgreSQL mi
 | UR-006 | A recipient needs to report outcomes and provide evidence for review. | Core | R, C | BR-06, BR-10 | TC-006 | Confirmed |
 | UR-007 | Authorized users need relevant progress and decision history while private information remains restricted. | Core | U | BR-07, BR-08 | TC-007 | Confirmed |
 | UR-008 | A coordinator needs to follow unresolved need, release it when appropriate and close work with a reason when unmet. | Next | C | BRule-09, BRule-14 | TC-005, TC-008 | Confirmed |
+| UR-009 | Beneficiaries and charity representatives need distinct account signup flows that create the appropriate profile or pending application. | Core | B, R | BR-01, BR-03 | TC-010 | Confirmed |
 
 ## 4. Functional requirements
 
@@ -85,6 +87,7 @@ The current forecast targets 12 November 2026 for the Phase 1 API, PostgreSQL mi
 | FR-036 | The system shall restrict beneficiary details and evidence according to role and involvement, including recipient assignment and requester relationship. | Core | U | BRule-07, BRule-12 | TC-007 | Confirmed |
 | FR-037 | The system shall reject unauthorized read or mutation attempts without disclosing restricted information. | Core | U | BR-08 | TC-007 | Proposed |
 | FR-038 | The system shall allow a coordinator to record a follow-up action for an unresolved or declined referral. | Core | C | BRD §8 | TC-008 | Confirmed |
+| FR-042 | The system shall provide separate beneficiary and charity signup routes. Beneficiary signup creates an account with the `Beneficiary` role and a linked beneficiary profile; charity signup creates an account with the `RecipientRepresentative` role, membership and a pending inactive charity application. Both use globally unique email, antiforgery protection, UUID identities and server-generated profile/application references; registration does not sign the user in or verify email. | Core | B, R | UR-009; IS-01–02 | TC-010 | Confirmed |
 
 ### Phase 1 functional elaboration (planned)
 
@@ -167,6 +170,7 @@ The context, use-case overview, activity, sequence, domain and state models are 
 | UC-006 | R assigned; C authorized | Report delivery and receipt with attachment → coordinator reviews → accept | Clarification, dispute or insufficient evidence remains unresolved; partial acceptance does not complete referral | FR-020–030 |
 | UC-007 | U with role and involvement | View permitted progress and history | Unauthorized access denied | FR-031–032, FR-036–037 |
 | UC-008 | C; request has progress | Record follow-up → complete if all fulfilled and accepted, or close unresolved with reason | Unmet need remains visible in history | FR-033–035, FR-038 |
+| UC-009 | Beneficiary or charity representative | Use type-specific signup → receive account and linked profile/application | Charity remains pending; login is separate | FR-042 |
 
 ## 9. System design and verification
 
@@ -184,6 +188,7 @@ Review requirements with users and the instructor where available; validate usef
 | TC-006 | For fictional money, goods and service referrals, submit description and supporting delivery/receipt evidence; request clarification and then accept. No completion before acceptance. | FR-020–025 |
 | TC-007 | Exercise requester, third-party, unrelated recipient, coordinator and administrator access to request, evidence and history; unauthorized reads and writes fail. | FR-031–032, FR-036–037 |
 | TC-008 | Record disagreement separately; insufficient or disputed report stays unresolved. Record follow-up, complete only when all need is accepted, or close unresolved with reason. | FR-029–035, FR-038 |
+| TC-010 | Exercise both signup routes, profile/application links, seeded roles, references, validation, global and concurrent email uniqueness, antiforgery, transaction rollback, separate login and credential-safe responses. | FR-042 |
 
 ## 10. Traceability
 
@@ -197,6 +202,7 @@ Review requirements with users and the instructor where available; validate usef
 | BO-03; BR-06/10 | F-07 Outcome/evidence/review | UR-006 | FR-020–025, 029–030; IR-003 | UC-006 | TC-006/008 |
 | BO-01/03/04; BR-07/08 | F-10 Authorization/history | UR-007 | FR-031–032, 036–037; NFR-001–003; DR-003 | UC-007 | TC-007 |
 | BO-01/03; BRule-09 | F-09 Progress/follow-up/closure | UR-008 | FR-033–035, 038 | UC-008 | TC-008 |
+| BO-02/03; BR-01/03 | F-00 Signup; F-01 Charity review | UR-009 | FR-042, FR-001–004 | UC-009, UC-001 | TC-010, TC-001 |
 | BO-05; BR-09 | Stakeholder validation | — | No software requirement implied | — | Review feedback if available; gap remains |
 
 ## 11. Open decisions, risks and evolution
@@ -226,14 +232,23 @@ Purpose: let involved participants follow relevant work while protecting restric
 Alternatives: An unrelated or unauthorized user is denied access without disclosure of restricted details; a third-party requester receives only information needed to follow the submitted request. Postconditions: no business record is changed by viewing it. Requirements: FR-031–032, FR-036–037, NFR-001–003.
 
 **UC-001 — Charity application and review**  
-Purpose: establish eligibility for charity referrals. Actors: charity applicant and coordinator. Preconditions: applicant can access registration; coordinator is authorized. Trigger: applicant starts an application.
+Purpose: establish eligibility for charity referrals. Actors: charity representative and coordinator. Preconditions: applicant can access signup; coordinator is authorized. Trigger: applicant submits the charity signup route.
 
-1. Applicant enters organization name, contact details and registration information or supporting documentation and submits it.
-2. The system records the application as pending.
+1. Applicant enters representative account details, organization name, contact details and optional registration information and submits the charity signup route.
+2. The system creates the account, `RecipientRepresentative` role, membership and application together; the application remains pending and inactive.
 3. The coordinator reviews the application and supplied information.
 4. The coordinator approves it; the system records the decision and activates the charity.
 
-Alternatives: Missing required information prevents submission; the coordinator may leave the application pending or reject it. Postconditions: the decision and actor/time are retained; pending or rejected charities remain ineligible. Requirements: FR-001–004, FR-032.
+Alternatives: Invalid registration or duplicate email creates no partial account/application; the coordinator may leave the application pending or reject it. Postconditions: the decision and actor/time are retained; pending or rejected charities remain ineligible. Requirements: FR-001–004, FR-032, FR-042.
+
+**UC-009 — Beneficiary and charity account signup**
+Purpose: create the correct account and business profile at signup. Actors: beneficiary and charity representative. Preconditions: applicant can access the public signup route and has an antiforgery token. Trigger: applicant selects the appropriate signup flow.
+
+1. A beneficiary submits display name, email, password, optional contact details and family flag to `/api/v1/auth/register/beneficiary`; the system creates the `Beneficiary` account and linked profile in one transaction and returns both UUIDs and the `BEN` reference.
+2. A charity representative submits representative name, email, password, organization name, contact details and optional registration information to `/api/v1/auth/register/charity`; the system creates the `RecipientRepresentative` account, membership and pending inactive charity application in one transaction and returns the account/application UUIDs and `REC` reference.
+3. The applicant signs in separately. Charity review and activation follow UC-001; signup itself does not grant referral eligibility.
+
+Alternatives: Invalid fields, weak password, duplicate/case-variant email, concurrent duplicate signup, invalid antiforgery token or failed related-record creation returns a safe error without credentials or partial business records. Email verification and third-party requester signup are outside this increment. Requirements: FR-042, NFR-001–003.
 
 **UC-003 — Submit and review a request**  
 Purpose: record and assess a need. Actors: beneficiary, third-party requester or coordinator; coordinator reviewer. Preconditions: the submitter has the authority required to provide information. Trigger: a requester begins recording a need.
@@ -355,7 +370,7 @@ Assessment date: 9 November 2026. This is a historical assessment of the uncommi
 | Phase 1 capability / ticket | Observed implementation and evidence | Gap or unverified behavior / next work |
 | --- | --- | --- |
 | Baseline and local stack (P1-01, P1-05, P1-06, P1-46, P1-49) | `HelpingHands.slnx`, .NET 10 API, one `InitialDemo` migration and model snapshot, Dockerfile and Compose definitions for API, PostgreSQL 17, MinIO and bucket initialization. Build and snapshot check passed. | The empty PostgreSQL migration passed; application startup, migration upgrade, persistent-volume restart and recovery still need isolated verification. Configured MinIO image pull failed. No frontend or SMTP service in Compose; track P1-06, P1-25, P1-46 and P1-49. |
-| Registration and identity (P1-09–P1-11, P1-50) | Cookie/antiforgery endpoints, login/logout/session, PostgreSQL-backed identity stores and registration exist. Pipeline tests cover anonymous denial and antiforgery token behavior. | Registration currently assigns the `Requester` role; Phase 1 beneficiary/charity signup and role semantics require further work and live tests. No web app found. |
+| Registration and identity (P1-09–P1-11, P1-50) | On current `main`, the shared `POST /api/v1/auth/register` creates an account with `Requester`; authenticated beneficiary creation and charity application use separate routes. Session and antiforgery foundations and PostgreSQL-backed identity stores exist. PR #82 is open and adds registration behavior tests, but is not part of `main`. | P1-09 target replaces shared signup with beneficiary and charity signup routes, adds the seeded `Beneficiary` role, and creates linked profiles/pending applications atomically. Those target routes and tests are not yet implemented/merged. Login/logout and role/involvement enforcement remain P1-10. No web app is in the tracked main baseline. |
 | Charity approval (P1-16, P1-17) | Recipient application and decision endpoints, records and history exist; review code requires `Admin`. A test checks that a requester cannot approve. | Phase 1 requires coordinator approval; reconcile and implement the agreed role policy. Pending/rejected eligibility and real authorization workflows remain unverified. |
 | Services and standard versions (P1-12–P1-15, P1-51) | No service catalog or structured versioned standards were found among source routes or mapped entities. | Model, migrate, expose and display catalog, immutable versions and contents; test historical references and new-request rules. |
 | Charity capacity and daily freshness (P1-18–P1-23, P1-53) | Existing referral code checks recipient approval and total assigned request quantity; it does not establish the Phase 1 charity service/version daily capacity model. | Add supported services, current-day quantities, Cairo-day freeze, locking and web screens; validate real concurrent operations. |
@@ -369,5 +384,5 @@ Assessment date: 9 November 2026. This is a historical assessment of the uncommi
 ## Open verification and handoff
 
 - Do not mark a capability done based on this inventory. Recheck S3 availability and run isolated upgrade, recovery, representative API and storage verification; record actual results.
-- Final P1-02 reconciliation must account for the administrator/coordinator role difference, requester role and current automatic request completion; these are implementation observations, not authorization to silently change the agreed Phase 1 behavior.
+- Final P1-02 reconciliation must account for the administrator/coordinator role difference, the legacy `Requester` role still assigned by the current main-branch registration route (distinct from the planned `Beneficiary` role), and current automatic request completion; these are implementation observations, not authorization to silently change the agreed Phase 1 behavior.
 - At assessment time P1-33 was a product decision; an interim exact-version rule was selected subsequently. The Scrum Master accepted the assessment review; remaining blockers are tracked separately.

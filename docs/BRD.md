@@ -48,11 +48,11 @@ The platform does not collect or hold donations, operate a warehouse, manage a c
 
 | Stakeholder | Role and interest |
 | --- | --- |
-| Beneficiary | Requests or receives assistance; needs appropriate privacy and a way to understand progress. |
+| Beneficiary | Self-registers for the Phase 1 demonstration, requests or receives assistance, and needs appropriate privacy and a way to understand progress. |
 | Third-party requester | Submits a request for another person, such as a relative, neighbor, or teacher. |
 | Platform administrator | Manages platform access; may act as coordinator only when separately authorized for that role. |
 | Platform coordinator | Reviews charity applications and requests, divides needs when appropriate, makes referrals, and follows outcomes. An administrator may also act as coordinator when authorized. |
-| Charity | Self-registers and, after approval, handles requests referred to it and supplies evidence of assistance. |
+| Charity | A representative self-registers an account and pending charity application; after coordinator approval, the charity handles referrals and supplies evidence of assistance. |
 | Individual donor or contributor | Registers an account, may handle a referred portion after coordinator approval, and supplies evidence of assistance. |
 | Project team and instructor | Build and assess the course project. |
 | Potential sponsor or funding partner | May support ongoing service costs; participation remains unconfirmed. |
@@ -63,8 +63,8 @@ The platform does not collect or hold donations, operate a warehouse, manage a c
 
 | ID | Capability |
 | --- | --- |
-| IS-01 | Charities self-register; an authorized coordinator leaves an application pending, approves it to activate its account, or rejects it. |
-| IS-02 | Beneficiaries and third parties submit requests; a coordinator can also enter a request on their behalf. |
+| IS-01 | A charity representative self-registers an account and pending application; an authorized coordinator leaves it pending, approves it to activate the charity, or rejects it. |
+| IS-02 | Beneficiaries self-register for the Phase 1 demo and submit their own requests. Third-party requesters and coordinators can submit on behalf in the full first version. |
 | IS-03 | Coordinators review requests and classify them as goods, money, or organizational referral. Other needs, such as tutoring, repairs, and transport, are subtypes of organizational referral; they may be fulfilled by an organization or an individual contributor. |
 | IS-04 | A coordinator can separately track the different kinds of support within a request and refer any request type to approved charities or individual contributors. |
 | IS-05 | A coordinator can divide a request among multiple referral recipients, track each assigned portion separately, and see any remaining need. |
@@ -94,8 +94,8 @@ Requests and offers may be communicated through several channels, with organizat
 
 ## 8. Proposed business process
 
-1. A charity registers. An authorized coordinator keeps the application pending, approves it and activates the account, or rejects it.
-2. A beneficiary or third party submits a request, or a coordinator records it on their behalf.
+1. A beneficiary creates an account and linked beneficiary profile through beneficiary signup. A charity representative creates an account and pending charity application through the separate charity signup flow; the coordinator can keep it pending, approve and activate it, or reject it.
+2. A beneficiary submits a request. Third-party and coordinator-on-behalf intake are full first-version scope, sequenced later than the Phase 1 demo.
 3. A coordinator reviews the request, requests clarification, declines it with a reason, or accepts it for referral. When different types of support are needed, the coordinator separately tracks the needs while retaining their relationship to the original.
 4. A coordinator refers a request or a defined portion to one or more approved charities or individual contributors. Each portion has its own responsible referral recipient and progress record.
 5. The referral recipient handles the assistance outside the platform and supplies evidence that it was delivered and received, including for monetary assistance.

@@ -1,0 +1,43 @@
+<mxfile host="app.diagrams.net" modified="2026-11-13T00:00:00.000Z" agent="Helping Hands docs" version="24.7.17" type="device">
+  <diagram id="p109-signup-sequence" name="P1-09 Signup Sequence">
+    <mxGraphModel dx="1440" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1440" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="P1-09 beneficiary and charity signup — planned, not implemented" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;fontSize=22;fontStyle=1;fontColor=#16324f;" vertex="1" parent="1">
+          <mxGeometry x="150" y="20" width="1140" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="applicant" value="Applicant" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="70" y="90" width="180" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="Signup API" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="420" y="90" width="200" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="database" value="Identity and business database" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="790" y="90" width="280" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="coordinator" value="Coordinator" style="rounded=1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;fontSize=15;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1180" y="90" width="180" height="48" as="geometry" />
+        </mxCell>
+        <mxCell id="life-applicant" style="edgeStyle=none;html=1;dashed=1;endArrow=none;strokeColor=#94a3b8;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="160" y="138" as="sourcePoint"/><mxPoint x="160" y="825" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="life-api" style="edgeStyle=none;html=1;dashed=1;endArrow=none;strokeColor=#94a3b8;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="520" y="138" as="sourcePoint"/><mxPoint x="520" y="825" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="life-db" style="edgeStyle=none;html=1;dashed=1;endArrow=none;strokeColor=#94a3b8;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="930" y="138" as="sourcePoint"/><mxPoint x="930" y="825" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="life-coordinator" style="edgeStyle=none;html=1;dashed=1;endArrow=none;strokeColor=#94a3b8;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="1270" y="138" as="sourcePoint"/><mxPoint x="1270" y="825" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="m1" value="GET /api/v1/auth/antiforgery" style="edgeStyle=none;html=1;endArrow=block;endFill=1;rounded=0;fontSize=12;labelBackgroundColor=#ffffff;strokeColor=#334155;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="160" y="180" as="sourcePoint"/><mxPoint x="520" y="180" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="m2" value="request token + antiforgery cookie" style="edgeStyle=none;html=1;dashed=1;endArrow=block;endFill=1;rounded=0;fontSize=12;labelBackgroundColor=#ffffff;strokeColor=#334155;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="520" y="215" as="sourcePoint"/><mxPoint x="160" y="215" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="beneficiary-heading" value="Beneficiary signup" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacingLeft=10;fontSize=15;fontStyle=1;fillColor=#eaf3ff;strokeColor=#6c8ebf;" vertex="1" parent="1"><mxGeometry x="60" y="245" width="1300" height="34" as="geometry"/></mxCell>
+        <mxCell id="m3" value="POST /auth/register/beneficiary + CSRF token" style="edgeStyle=none;html=1;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;strokeColor=#334155;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="160" y="305" as="sourcePoint"/><mxPoint x="520" y="305" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="m4" value="transaction: create account + Beneficiary role + linked profile + BEN reference" style="edgeStyle=none;html=1;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;strokeColor=#334155;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="520" y="350" as="sourcePoint"/><mxPoint x="930" y="350" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="m5" value="persisted account/profile IDs and BEN reference" style="edgeStyle=none;html=1;dashed=1;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;strokeColor=#334155;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="930" y="390" as="sourcePoint"/><mxPoint x="520" y="390" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="m6" value="201 IDs + reference after commit (no credentials or auth cookie)" style="edgeStyle=none;html=1;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;strokeColor=#334155;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="520" y="430" as="sourcePoint"/><mxPoint x="160" y="430" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="charity-heading" value="Charity signup" style="rounded=1;whiteSpace=wrap;html=1;align=left;verticalAlign=middle;spacingLeft=10;fontSize=15;fontStyle=1;fillColor=#fff5e6;strokeColor=#d6b656;" vertex="1" parent="1"><mxGeometry x="60" y="480" width="1300" height="34" as="geometry"/></mxCell>
+        <mxCell id="m7" value="POST /auth/register/charity + CSRF token" style="edgeStyle=none;html=1;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;strokeColor=#334155;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="160" y="540" as="sourcePoint"/><mxPoint x="520" y="540" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="m8" value="transaction: create account + RecipientRepresentative role + pending charity + membership + REC reference" style="edgeStyle=none;html=1;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;strokeColor=#334155;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="520" y="585" as="sourcePoint"/><mxPoint x="930" y="585" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="m9" value="persisted account/application IDs and REC reference; status Pending, inactive" style="edgeStyle=none;html=1;dashed=1;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;strokeColor=#334155;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="930" y="625" as="sourcePoint"/><mxPoint x="520" y="625" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="m10" value="201 IDs + reference + pending status after commit" style="edgeStyle=none;html=1;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;strokeColor=#334155;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="520" y="665" as="sourcePoint"/><mxPoint x="160" y="665" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="m11" value="later, separate P1-16 decision through the API (not part of signup)" style="edgeStyle=none;html=1;dashed=1;endArrow=block;endFill=1;fontSize=12;labelBackgroundColor=#ffffff;strokeColor=#b85450;" edge="1" parent="1"><mxGeometry relative="1" as="geometry"><mxPoint x="1270" y="725" as="sourcePoint"/><mxPoint x="520" y="725" as="targetPoint"/></mxGeometry></mxCell>
+        <mxCell id="note" value="Shared constraints: normalized email is unique across both signup routes; invalid input, duplicate email, failed related writes, or invalid antiforgery returns a safe error and leaves no partial account/profile/application. Login is separate (P1-10). `Beneficiary` is a seeded role value, not a new table or migration." style="shape=note;whiteSpace=wrap;html=1;size=18;align=left;verticalAlign=middle;spacing=10;fontSize=13;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1"><mxGeometry x="150" y="770" width="1140" height="105" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

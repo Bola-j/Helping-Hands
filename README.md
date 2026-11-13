@@ -6,7 +6,7 @@ The platform does not collect or hold money or goods, operate a warehouse, manag
 
 ## How it works
 
-1. A charity self-registers. An authorized coordinator approves, rejects, or leaves the application pending; approval activates the charity account. The existing API has not yet been aligned with this Phase 1 target.
+1. A beneficiary registers through a beneficiary-specific flow that creates a linked profile. A charity representative registers through a separate flow that creates a pending application; an authorized coordinator approves, rejects, or leaves it pending. Approval activates the charity. These signup routes are the planned P1-09 contract; the current API still uses one generic registration route and has not yet been aligned.
 2. For Phase 1, a beneficiary submits their own request. Third-party and coordinator-on-behalf intake remain later scope. Requests can be for goods, money, or an organizational referral subtype such as tutoring or transport.
 3. A coordinator reviews the request and may split mixed needs into linked requests. Any request type can be referred to an approved charity or individual contributor, and a request can be divided among several recipients.
 4. Each recipient handles its assigned portion and supplies evidence that the assistance was delivered and received, including for money. The platform tracks the reported outcome and any unresolved need.

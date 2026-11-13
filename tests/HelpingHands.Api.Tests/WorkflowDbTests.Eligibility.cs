@@ -1,4 +1,7 @@
 using System.Net;
+using HelpingHands.Api.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HelpingHands.Api.Tests;
 
@@ -23,5 +26,38 @@ public sealed partial class WorkflowDbTests
         Assert.Equal(HttpStatusCode.OK, rejected.StatusCode);
         using var refused = await WorkflowDbFixture.PostAsync(coordinator, path, body);
         Assert.Equal(HttpStatusCode.Conflict, refused.StatusCode);
+        Assert.Equal((0, 0m), await fixture.ReferralTotalsAsync(accepted.GetProperty("id").GetGuid()));
+        using var unchanged = await coordinator.GetAsync($"/api/v1/requests/{accepted.GetProperty("id").GetGuid()}");
+        var current = await WorkflowDbFixture.JsonAsync(unchanged, HttpStatusCode.OK);
+        Assert.Equal(accepted.GetProperty("version").GetGuid(), current.GetProperty("version").GetGuid());
+    }
+
+    [Fact]
+    public async Task ApprovedInactiveCharity_CannotReceiveReferral_ButActiveCharityCan()
+    {
+        using var applicant = await fixture.LoginAsync("RecipientRepresentative");
+        using var admin = await fixture.LoginAsync("Administrator");
+        using var coordinator = await fixture.LoginAsync("Coordinator");
+        using var beneficiary = await fixture.LoginAsync("Beneficiary");
+        var (charity, accepted) = await WorkflowDbFixture.AcceptedNeedAsync(applicant, admin, coordinator, beneficiary);
+        var id = charity.GetProperty("id").GetGuid();
+        await SetCharityActiveAsync(id, false);
+        var requestId = accepted.GetProperty("id").GetGuid();
+        using var denied = await WorkflowDbFixture.PostAsync(coordinator, $"/api/v1/requests/{requestId}/referrals", new
+        { RecipientId = id, AssignedQuantity = 1m, ScopeDescription = "Fictional", Version = accepted.GetProperty("version").GetGuid() });
+        Assert.Equal(HttpStatusCode.Conflict, denied.StatusCode);
+        Assert.Equal((0, 0m), await fixture.ReferralTotalsAsync(requestId));
+        await SetCharityActiveAsync(id, true);
+        await WorkflowDbFixture.CreateReferralAsync(coordinator, charity, accepted);
+        Assert.Equal((1, 1m), await fixture.ReferralTotalsAsync(requestId));
+    }
+
+    private async Task SetCharityActiveAsync(Guid id, bool active)
+    {
+        using var scope = fixture.Factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<HelpingHandsDbContext>();
+        var recipient = await db.Recipients.SingleAsync(item => item.Id == id);
+        recipient.Active = active;
+        await db.SaveChangesAsync();
     }
 }

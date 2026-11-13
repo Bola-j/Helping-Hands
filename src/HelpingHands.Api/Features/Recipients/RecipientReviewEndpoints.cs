@@ -20,7 +20,7 @@ public static partial class DemoEndpoints
         var recipient = await database.Recipients.AsNoTracking().SingleOrDefaultAsync(item => item.Id == id, cancellationToken);
         if (recipient is null || (!Staff(user) && !await Member(database, id, Actor(user), cancellationToken))) return Results.NotFound();
         var charity = await database.Charities.AsNoTracking().SingleAsync(item => item.RecipientId == id, cancellationToken);
-        return Results.Ok(new { recipient.Id, recipient.Reference, recipient.DisplayName, recipient.ContactDetails, recipient.ApprovalStatus, recipient.Active, recipient.Version, charity.RegistrationInformation });
+        return Results.Ok(await RecipientDetailAsync(database, recipient, charity, cancellationToken));
     }
 
     private static async Task<IResult> DecideRecipient(Guid id, RecipientDecisionInput input, ClaimsPrincipal user, HelpingHandsDbContext database, CancellationToken cancellationToken)

@@ -11,6 +11,7 @@ public sealed partial class WorkflowDbTests
         var email = $"requester-{Guid.NewGuid():N}@example.test";
         var password = $"{Guid.NewGuid():N}Aa1!";
         using var created = await WorkflowDbFixture.RegisterBeneficiaryAsync(client, "Fictional requester", email, password, "Fictional contact", true);
+        WorkflowDbFixture.AssertNoAuthenticationCookie(created);
         var account = await WorkflowDbFixture.JsonAsync(created, HttpStatusCode.Created);
         var id = account.GetProperty("accountId").GetGuid();
         Assert.NotEqual(Guid.Empty, account.GetProperty("beneficiaryId").GetGuid());

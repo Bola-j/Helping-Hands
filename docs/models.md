@@ -4,7 +4,7 @@ Status: supporting models for the [SRS](SRS.md). The Phase 1 roadmap takes prior
 
 The [conceptual EER](diagrams/conceptual-eer.drawio) and [relational schema](diagrams/relational-schema.drawio) show the planned Phase 1 design on one canvas each. The physical mapping, fields and cardinalities remain proposals; see [database design](database-design.md) for rules and open decisions. The earlier full-product proposal is [archived](archive/database-proposal/).
 
-The [P1-09 signup sequence](diagrams/registration-sequence.drawio) shows the beneficiary and charity account flows. PR #82 implements the two routes and seeds the `Beneficiary` role on its candidate branch; the merged `main` branch retains the former shared route until PR #82 merges. The diagram distinguishes account/profile creation from later login and coordinator approval.
+The [P1-09 signup sequence](diagrams/registration-sequence.drawio) shows the current beneficiary and charity account flows. Merged PR #82 adds the two routes and seeds the `Beneficiary` role. The diagram distinguishes account/profile creation from later login and coordinator approval.
 
 ## System context
 

@@ -156,6 +156,10 @@ The existing API source already configures secure cookies, antiforgery and ident
 - **Reminder integration:** exercise the 08:00 Cairo boundary, multiple stale services for one charity, retries, restart and idempotency with the local email catcher; document ambiguous SMTP outcomes rather than promising exactly-once delivery.
 - **End-to-end:** demonstrate Expo web, cookie/CSRF authentication, API, PostgreSQL, S3 and email catcher together with fictional data. Verify unavailable dependencies, privacy and role restrictions, restart persistence, reviewed migrations and actual individual contributions.
 
+## Existing API test baseline
+
+The API test suite covers the implemented session foundation, intake/review validation, isolated PostgreSQL eligibility and reference/concurrency checks, and a fictional charity-to-outcome flow with private S3. These checks support the existing demo; they do not complete the later Phase 1 feature and integration tickets. Full recovery remains P1-46, and browser or deployment verification remains separate. See the README for quick and real-dependency test setup.
+
 ## Reconciliation and tracking notes
 
 The previous [full-app roadmap](scrum-roadmap.md), [API v1 plan](api-v1-plan.md), [SRS](SRS.md), [PRD](PRD.md) and [database design](database-design.md) have been updated as working drafts for P1-02; the Scrum Master accepted the review and the diagrams were reconciled; physical mapping and cardinality decisions remain open: the latest Phase 1 decisions put coordinator charity approval, mixed needs, split referrals and capacity in the demo. Do not describe superseded requirements as already implemented. Update schema only with new reviewed migrations; do not rewrite applied migrations.

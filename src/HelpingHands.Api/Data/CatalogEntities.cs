@@ -11,6 +11,7 @@ public sealed class ServiceVersion
     public Guid Id { get; set; } = Guid.NewGuid();
     public Guid CategoryId { get; set; }
     public int VersionNumber { get; set; }
+    public bool IsPublished { get; set; }
     public string Name { get; set; } = "";
 }
 
@@ -26,6 +27,7 @@ public sealed class StandardVersion
     public Guid Id { get; set; } = Guid.NewGuid();
     public Guid UnitStandardId { get; set; }
     public int VersionNumber { get; set; }
+    public bool IsPublished { get; set; }
     public DateTimeOffset EffectiveAt { get; set; }
 }
 

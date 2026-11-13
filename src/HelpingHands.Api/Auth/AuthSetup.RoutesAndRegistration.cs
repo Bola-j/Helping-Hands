@@ -48,7 +48,8 @@ public static partial class AuthSetup
             return Results.Problem("Development roles have not been initialized.", statusCode: 503);
         await using var transaction = await database.Database.BeginTransactionAsync();
         var user = NewUser(request.Email.Trim(), request.DisplayName.Trim());
-        var result = await users.CreateAsync(user, request.Password);
+        var result = await CreateRegisteredUserAsync(users, user, request.Password);
+        if (result is null) return RegistrationErrors(DuplicateEmail());
         if (!result.Succeeded) return RegistrationErrors(result);
         result = await users.AddToRoleAsync(user, "Requester");
         if (!result.Succeeded)

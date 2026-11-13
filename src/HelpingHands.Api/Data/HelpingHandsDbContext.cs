@@ -12,6 +12,7 @@ public sealed partial class HelpingHandsDbContext(DbContextOptions<HelpingHandsD
     public DbSet<Charity> Charities => Set<Charity>();
     public DbSet<RecipientMember> RecipientMembers => Set<RecipientMember>();
     public DbSet<RecipientDecision> RecipientDecisions => Set<RecipientDecision>();
+    public DbSet<RequestNeed> RequestNeeds => Set<RequestNeed>();
     public DbSet<AssistanceRequest> Requests => Set<AssistanceRequest>();
     public DbSet<Referral> Referrals => Set<Referral>();
     public DbSet<Outcome> Outcomes => Set<Outcome>();
@@ -62,6 +63,7 @@ public sealed partial class HelpingHandsDbContext(DbContextOptions<HelpingHandsD
         ConfigureRecipientMember(model);
         ConfigureRecipientDecision(model);
         ConfigureAssistanceRequest(model);
+        ConfigureRequestNeed(model);
         ConfigureReferral(model);
         ConfigureOutcome(model);
         ConfigureOutcomeReview(model);

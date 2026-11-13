@@ -231,6 +231,9 @@ namespace HelpingHands.Api.Migrations
                         .HasMaxLength(4000)
                         .HasColumnType("character varying(4000)");
 
+                    b.Property<bool>("IsMultiNeed")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Reference")
                         .IsRequired()
                         .HasMaxLength(32)
@@ -279,6 +282,8 @@ namespace HelpingHands.Api.Migrations
                             t.HasCheckConstraint("CK_Request_Category", "\"Category\" IS NULL OR \"Category\" IN ('Goods', 'Money', 'OrganizationalReferral')");
 
                             t.HasCheckConstraint("CK_Request_Confirmed", "\"AuthorityConfirmed\" AND \"SharingAgreed\"");
+
+                            t.HasCheckConstraint("CK_Request_DemandMode", "NOT \"IsMultiNeed\" OR (\"Category\" IS NULL AND \"ServiceSubtype\" IS NULL AND \"RequiredQuantity\" IS NULL AND \"Unit\" IS NULL)");
 
                             t.HasCheckConstraint("CK_Request_Quantity", "\"RequiredQuantity\" IS NULL OR \"RequiredQuantity\" > 0");
 
@@ -705,6 +710,40 @@ namespace HelpingHands.Api.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HelpingHands.Api.Data.RequestNeed", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Quantity")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("numeric(18,3)");
+
+                    b.Property<Guid>("RequestId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("StandardVersionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StandardVersionId");
+
+                    b.HasIndex("RequestId", "StandardVersionId")
+                        .IsUnique();
+
+                    b.ToTable("RequestNeed", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_RequestNeed_Quantity", "\"Quantity\" > 0");
+                        });
+                });
+
             modelBuilder.Entity("HelpingHands.Api.Data.ServiceCategory", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1018,6 +1057,21 @@ namespace HelpingHands.Api.Migrations
                         .WithMany()
                         .HasForeignKey("RequestId")
                         .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("HelpingHands.Api.Data.RequestNeed", b =>
+                {
+                    b.HasOne("HelpingHands.Api.Data.AssistanceRequest", null)
+                        .WithMany()
+                        .HasForeignKey("RequestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HelpingHands.Api.Data.StandardVersion", null)
+                        .WithMany()
+                        .HasForeignKey("StandardVersionId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

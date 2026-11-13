@@ -13,6 +13,7 @@ public static partial class DemoEndpoints
         api.MapParticipantRoutes();
         api.MapRequestAndReferralRoutes();
         api.MapOutcomeRoutes();
+        api.MapNeedReviewRoutes();
         api.MapAttachmentEndpoints();
         return api;
     }

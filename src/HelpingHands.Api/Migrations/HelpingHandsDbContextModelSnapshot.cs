@@ -287,7 +287,7 @@ namespace HelpingHands.Api.Migrations
 
                             t.HasCheckConstraint("CK_Request_Quantity", "\"RequiredQuantity\" IS NULL OR \"RequiredQuantity\" > 0");
 
-                            t.HasCheckConstraint("CK_Request_Status", "\"Status\" IN ('Submitted', 'Clarification', 'Accepted', 'Rejected', 'Open', 'Completed', 'ClosedUnresolved', 'Split')");
+                            t.HasCheckConstraint("CK_Request_Status", "\"Status\" IN ('Submitted', 'Clarification', 'Accepted', 'Rejected', 'Open', 'Completed', 'ClosedUnresolved', 'Split', 'InReview', 'FullyAccepted', 'PartiallyAccepted', 'FullyRejected')");
                         });
                 });
 
@@ -438,6 +438,47 @@ namespace HelpingHands.Api.Migrations
                         {
                             t.HasCheckConstraint("CK_EvidenceAttachment_Size", "\"SizeBytes\" > 0");
                         });
+                });
+
+            modelBuilder.Entity("HelpingHands.Api.Data.NeedReviewHistory", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<Guid>("ActorUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Category")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
+                    b.Property<Guid>("NeedId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("OccurredAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Reason")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("ServiceSubtype")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ActorUserId");
+
+                    b.HasIndex("NeedId", "OccurredAt");
+
+                    b.ToTable("NeedReviewHistory", (string)null);
                 });
 
             modelBuilder.Entity("HelpingHands.Api.Data.Outcome", b =>
@@ -716,12 +757,20 @@ namespace HelpingHands.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Category")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)");
+
                     b.Property<decimal>("Quantity")
                         .HasPrecision(18, 3)
                         .HasColumnType("numeric(18,3)");
 
                     b.Property<Guid>("RequestId")
                         .HasColumnType("uuid");
+
+                    b.Property<string>("ServiceSubtype")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<Guid>("StandardVersionId")
                         .HasColumnType("uuid");
@@ -740,7 +789,10 @@ namespace HelpingHands.Api.Migrations
 
                     b.ToTable("RequestNeed", null, t =>
                         {
+                            t.HasCheckConstraint("CK_RequestNeed_Category", "\"Category\" IS NULL OR \"Category\" IN ('Goods', 'Money', 'OrganizationalReferral')");
+
                             t.HasCheckConstraint("CK_RequestNeed_Quantity", "\"Quantity\" > 0");
+
                         });
                 });
 
@@ -976,6 +1028,21 @@ namespace HelpingHands.Api.Migrations
                         .WithMany()
                         .HasForeignKey("UploadedByUserId")
                         .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("HelpingHands.Api.Data.NeedReviewHistory", b =>
+                {
+                    b.HasOne("HelpingHands.Api.Data.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("ActorUserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HelpingHands.Api.Data.RequestNeed", null)
+                        .WithMany()
+                        .HasForeignKey("NeedId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

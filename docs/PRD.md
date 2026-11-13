@@ -4,10 +4,10 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 1.1 |
+| Version | 1.2 |
 | Status | Working product baseline; Phase 1 review accepted by the Scrum Master; diagram reconciliation and external validation remain open |
 | Authors | Bola Ghaly, Ziad Walid, hussien okely and ali fathy |
-| Business source | [Business Requirements Document v1.4](BRD.md), working baseline with owner delegation; Scrum Master review accepted |
+| Business source | [Business Requirements Document v1.6](BRD.md), working baseline with owner delegation; Scrum Master review accepted |
 | Related specification | [Software Requirements Specification](SRS.md); detailed system requirements and models are maintained there |
 
 | Version | Change |
@@ -15,6 +15,7 @@
 | 0.1 | Initial traceable product requirements and proposed Agile plan. |
 | 1.0 | Finalized the working product baseline from BRD 1.3; retained open decisions and proposed validation and planning details. |
 | 1.1 | Reconciled current Phase 1 scope and coordinator charity approval; Scrum Master review accepted on 11 November 2026. |
+| 1.2 | Recorded the project decision for individual need review and the three final request review outcomes. |
 
 This working baseline applies the project owner’s request to finalize the requirements and delegation of remaining decisions. The owner validated an earlier BRD; this does not mean each product rule was individually approved. No instructor, charity, or other stakeholder approval, field validation, implementation, or test result is implied by this document.
 
@@ -65,7 +66,7 @@ Priorities: **Core** = first demonstration slice; **Next** = later first-version
 | F-01 Core | Charity application review: establishes eligibility and accountability. Users: charity, coordinator. | F-00; coordinator access. | The charity application created at signup includes organization name, contact details and optional registration information or later supporting documentation; coordinator may leave pending, reject or approve and activate; pending/rejected charity cannot receive referrals; decisions are recorded. | IS-01; BR-01, BR-02; BRule-01, BRule-10; BO-02, BO-03 |
 | F-02 Next | Individual contributor registration and coordinator approval: enables another referral recipient. Users: contributor, coordinator. | Identity/access. | Contributor registers with contact information; referral eligibility begins only after coordinator approval; pending contributor cannot be assigned. | IS-08; BR-10; BRule-11; BO-02, BO-03 |
 | F-03 Core | Request submission by beneficiary, third party or coordinator on behalf: captures needs and authority. Users: requester, beneficiary, coordinator. | F-00 identity; necessary information and sharing confirmation. | Phase 1 beneficiary submits their own request using the linked profile. Third-party and coordinator-on-behalf intake remain later full-app scope. The submitter confirms authority and necessary sharing; request is available to authorized review and requester can follow it. | IS-02; BR-03; BRule-07, BRule-12; BO-01, BO-04 |
-| F-04 Core | Request review and classification: supports a reasoned referral decision. Users: coordinator, requester. | F-03. | Coordinator may request clarification, accept for referral or reject with reason; classifies need as goods, money or organizational referral, whose subtypes include services such as tutoring, repairs and transport; decision and actor/time are retained. | IS-03; BR-04; BRule-02, BRule-09; BO-01, BO-03 |
+| F-04 Core | Request review and classification: supports a reasoned referral decision. Users: coordinator, requester. | F-03. | Coordinator independently classifies and reviews each need, requests clarification, accepts it for referral or rejects it with a reason. The beneficiary may answer a clarification with an explanation; the selected standard and quantity remain unchanged. Decision and actor/time are retained. Once all needs have final decisions, the request is fully accepted if all are accepted, partially accepted if decisions are mixed, or fully rejected if all are rejected. | IS-03; BR-04; BRule-02, BRule-09; BO-01, BO-03 |
 | F-05 Core | Separate mixed needs for referral: makes distinct assistance types independently trackable. Users: coordinator. | F-04. | Coordinator can separately review and refer mixed needs by support type; related needs preserve original context without double-counting fulfillment. | IS-04; BR-04; BRule-04; BO-01 |
 | F-06 Core | Refer accepted requests or portions: establishes responsibility for providing help outside the platform. Users: coordinator, approved charity or contributor. | F-01 or F-02, F-04; F-08 for later release and reassignment. | Any need category may be referred to an approved recipient; multiple recipients can each have a separately tracked portion; the same assigned portion cannot be simultaneously assigned twice; only information needed by the recipient is shared. | IS-04, IS-05; BR-05; BRule-02–04, BRule-07, BRule-12, BRule-14; BO-01, BO-02 |
 | F-07 Core | Record and review outcome and evidence: supports accountable reporting. Users: recipient, coordinator. | F-06; secure attachment access. | Responsible recipient supplies an outcome description and attachment(s) addressing delivery and receipt; monetary outcomes include amount and evidence of transfer and receipt; coordinator can request clarification or accept the report. Acceptance is a review, not independent proof. Independent beneficiary confirmation is not required for the course demo; optional confirmation and disagreement are recorded separately; disputed or insufficient outcomes remain unresolved. | IS-06; BR-06, BR-10; BRule-05, BRule-08, BRule-13; BO-03, BO-04 |
@@ -74,6 +75,8 @@ Priorities: **Core** = first demonstration slice; **Next** = later first-version
 | F-10 Core | Involvement-based access and significant-action history: protects sensitive information and preserves decisions. Users: all authorized roles. | Identity/access and records. | Coordinators and administrators (who inherit coordinator permissions) access information needed for their work; representatives see only records connected to active memberships and assigned referrals; Phase 1 beneficiaries see their own requests; third-party requesters are later scope. Significant decisions and updates record actor and time; unrelated users cannot access restricted data. | IS-07; BR-07, BR-08; BRule-07–09, BRule-12; BO-03, BO-04 |
 
 ### Phase 1-specific product requirements
+
+The three review outcomes describe the decisions on needs, not fulfillment. A request remains in review while any need is undecided or awaiting clarification; rejected needs do not become referral demand. Accepted needs remain subject to later allocation and outcome review.
 
 - A beneficiary submits their own request with one or more separately tracked needs; third-party and coordinator-on-behalf intake remain full-product capabilities after Phase 1. Requests retain authority and necessary-sharing confirmations.
 - Coordinators create and version service categories and unit standards with structured component names, quantities and measurement units. New requests use the current version; historical records retain their original version. For an outstanding need on older versions, [P1-33](https://github.com/Bola-j/Helping-Hands/issues/33) requires an exact-version match until the policy is reviewed; leave the need open when none is eligible.

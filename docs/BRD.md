@@ -4,9 +4,9 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 1.5 |
+| Version | 1.6 |
 | Updated | 2026-11-13 |
-| Status | Working business baseline; Administrator inheritance decision recorded |
+| Status | Working business baseline; request review outcome decision recorded |
 | Prepared by | Helping Hands project team |
 
 | Version | Change |
@@ -20,8 +20,9 @@
 | 1.3 | Distinguished unresolved from unassigned needs and partial outcomes from referral completion. |
 | 1.4 | Reconciled the latest Phase 1 scope and coordinator charity approval; Scrum Master review accepted on 11 November 2026. |
 | 1.5 | Recorded the project decision that Administrator inherits Coordinator permissions while remaining a distinct role. |
+| 1.6 | Recorded per-need review and fully accepted, partially accepted, or fully rejected request outcomes. |
 
-The [original idea and business model](references/helping-hands-full-idea.md) is background. This document supersedes its direct inventory, finance, and organizational-help management model. The project owner validated the earlier BRD, requested finalization, and delegated the remaining decisions to practical business judgment. Version 1.3 adopted those decisions as the earlier baseline; version 1.4 records the later Phase 1 project direction; version 1.5 records the explicit identity-access decision. No instructor, charity, or other stakeholder approval is implied.
+The [original idea and business model](references/helping-hands-full-idea.md) is background. This document supersedes its direct inventory, finance, and organizational-help management model. The project owner validated the earlier BRD, requested finalization, and delegated the remaining decisions to practical business judgment. Version 1.3 adopted those decisions as the earlier baseline; version 1.4 records the later Phase 1 project direction; version 1.5 records the explicit identity-access decision; version 1.6 records the project direction for mixed-need review outcomes. No instructor, charity, or other stakeholder approval is implied.
 
 ## 2. Executive summary
 
@@ -66,7 +67,7 @@ The platform does not collect or hold donations, operate a warehouse, manage a c
 | --- | --- |
 | IS-01 | A charity representative self-registers an account and pending application; an authorized coordinator leaves it pending, approves it to activate the charity, or rejects it. |
 | IS-02 | Beneficiaries self-register for the Phase 1 demo and submit their own requests. Third-party requesters and coordinators can submit on behalf in the full first version. |
-| IS-03 | Coordinators review requests and classify them as goods, money, or organizational referral. Other needs, such as tutoring, repairs, and transport, are subtypes of organizational referral; they may be fulfilled by an organization or an individual contributor. |
+| IS-03 | Coordinators review each need and classify it as goods, money, or organizational referral. Other needs, such as tutoring, repairs, and transport, are subtypes of organizational referral; they may be fulfilled by an organization or an individual contributor. |
 | IS-04 | A coordinator can separately track the different kinds of support within a request and refer any request type to approved charities or individual contributors. |
 | IS-05 | A coordinator can divide a request among multiple referral recipients, track each assigned portion separately, and see any remaining need. |
 | IS-06 | The responsible charity or donor provides evidence that its assigned help was delivered and received; the platform keeps the evidence and reported outcome with the relevant referral. |
@@ -97,7 +98,7 @@ Requests and offers may be communicated through several channels, with organizat
 
 1. A beneficiary creates an account and linked beneficiary profile through beneficiary signup. A charity representative creates an account and pending charity application through the separate charity signup flow; the coordinator can keep it pending, approve and activate it, or reject it.
 2. A beneficiary submits a request. Third-party and coordinator-on-behalf intake are full first-version scope, sequenced later than the Phase 1 demo.
-3. A coordinator reviews the request, requests clarification, declines it with a reason, or accepts it for referral. When different types of support are needed, the coordinator separately tracks the needs while retaining their relationship to the original.
+3. A coordinator reviews each need, records its classification, and accepts, rejects with a reason, or requests clarification. The beneficiary may supply an explanation without changing the selected standard or quantity. The request remains under review until each need has a final decision; it is fully accepted when all needs are accepted, partially accepted when decisions are mixed, and fully rejected when all needs are rejected.
 4. A coordinator refers a request or a defined portion to one or more approved charities or individual contributors. Each portion has its own responsible referral recipient and progress record.
 5. The referral recipient handles the assistance outside the platform and supplies evidence that it was delivered and received, including for monetary assistance.
 6. The outcome and evidence are recorded against the referral. The coordinator follows up on partial, declined, or unsuccessful referrals and records the next action. The original request remains visible while a need is unresolved.

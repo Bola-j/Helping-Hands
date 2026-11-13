@@ -6,5 +6,7 @@ public sealed class RequestNeed
     public Guid RequestId { get; set; }
     public Guid StandardVersionId { get; set; }
     public decimal Quantity { get; set; }
+    public string? Category { get; set; }
+    public string? ServiceSubtype { get; set; }
     public string Status { get; set; } = "Submitted";
 }

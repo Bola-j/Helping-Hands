@@ -19,10 +19,6 @@ public sealed partial class WorkflowDbFixture
         return await JsonAsync(response, HttpStatusCode.Created);
     }
 
-    public static async Task<JsonElement> RequestAsync(HttpClient coordinator, Guid beneficiaryId)
-    {
-        using var response = await PostAsync(coordinator, "/api/v1/requests", new
-        { BeneficiaryId = beneficiaryId, Description = "Fictional need", AuthorityConfirmed = true, SharingAgreed = true });
-        return await JsonAsync(response, HttpStatusCode.Created);
-    }
+    public static Task<JsonElement> RequestAsync(HttpClient coordinator, Guid beneficiaryId) =>
+        LegacyRequestFixture.CreateAsync("P1_WORKFLOW_POSTGRES", beneficiaryId);
 }

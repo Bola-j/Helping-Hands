@@ -1,11 +1,15 @@
 using System.Net;
+using System.Net.Http.Json;
 using System.Text.Json;
+using HelpingHands.Api.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace HelpingHands.Api.Tests;
 
 public sealed partial class EvidenceFlowTests
 {
-    private static async Task<JsonElement> CreateReferralAsync(
+    private async Task<JsonElement> CreateReferralAsync(
         HttpClient coordinator,
         HttpClient administrator,
         HttpClient beneficiary,
@@ -18,13 +22,20 @@ public sealed partial class EvidenceFlowTests
                 ContactDetails = "Fictional contact",
                 IsFamily = false
             }, HttpStatusCode.Created);
-        var request = await EvidenceFlowFixture.PostJsonAsync(beneficiary, "/api/v1/requests", new
+        using var scope = fixture.Factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<HelpingHandsDbContext>();
+        var user = await db.Users.SingleAsync(x => x.NormalizedEmail == fixture.Beneficiary.ToUpperInvariant());
+        var legacy = new AssistanceRequest
         {
-            BeneficiaryId = Id(profile),
-            Description = "Fictional request",
-            AuthorityConfirmed = true,
-            SharingAgreed = true
-        }, HttpStatusCode.Created);
+            BeneficiaryId = Id(profile), SubmittedByUserId = user.Id, Description = "Fictional request",
+            Reference = await db.NextReferenceAsync("REQ"), AuthorityConfirmed = true, SharingAgreed = true
+        };
+        db.Requests.Add(legacy);
+        db.DecisionHistory.Add(new DecisionHistory { RequestId = legacy.Id, ActorUserId = user.Id, Action = "Submitted" });
+        await db.SaveChangesAsync();
+        using var requestResponse = await beneficiary.GetAsync($"/api/v1/requests/{legacy.Id}");
+        requestResponse.EnsureSuccessStatusCode();
+        var request = await requestResponse.Content.ReadFromJsonAsync<JsonElement>();
         var accepted = await EvidenceFlowFixture.PostJsonAsync(coordinator, $"/api/v1/requests/{Id(request)}/decisions", new
         {
             Decision = "Accepted",

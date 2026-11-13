@@ -41,6 +41,19 @@ public sealed partial class WorkflowDbTests
         var history = new DecisionHistory { RequestId = requestId, ActorUserId = user.Id, Action = "Accepted" };
         db.AddRange(referral, outcome, history);
         await db.SaveChangesAsync();
+        await migrator.MigrateAsync("20261113133748_RequestNeeds");
+        var multiRequest = Guid.NewGuid(); var category = Guid.NewGuid(); var service = Guid.NewGuid(); var standard = Guid.NewGuid(); var version = Guid.NewGuid(); var need = Guid.NewGuid();
+        await db.Database.ExecuteSqlInterpolatedAsync($"""
+            INSERT INTO "AssistanceRequest" ("Id", "Reference", "BeneficiaryId", "SubmittedByUserId", "Description", "Status", "AuthorityConfirmed", "SharingAgreed", "CreatedAt", "Version", "IsMultiNeed")
+            VALUES ({multiRequest}, 'REQ-00000002', {beneficiary.Id}, {user.Id}, 'Existing multi need', 'Submitted', TRUE, TRUE, now(), {Guid.NewGuid()}, TRUE);
+            INSERT INTO "ServiceCategory" ("Id", "Code") VALUES ({category}, 'FOOD');
+            INSERT INTO "ServiceVersion" ("Id", "CategoryId", "VersionNumber", "Name", "IsPublished") VALUES ({service}, {category}, 1, 'Food', FALSE);
+            UPDATE "ServiceVersion" SET "IsPublished" = TRUE WHERE "Id" = {service};
+            INSERT INTO "UnitStandard" ("Id", "ServiceVersionId", "Name") VALUES ({standard}, {service}, 'Parcel');
+            INSERT INTO "StandardVersion" ("Id", "UnitStandardId", "VersionNumber", "EffectiveAt", "IsPublished") VALUES ({version}, {standard}, 1, now(), FALSE);
+            UPDATE "StandardVersion" SET "IsPublished" = TRUE WHERE "Id" = {version};
+            INSERT INTO "RequestNeed" ("Id", "RequestId", "StandardVersionId", "Quantity", "Status") VALUES ({need}, {multiRequest}, {version}, 1, 'PreviouslyAllowed');
+            """);
         await migrator.MigrateAsync();
         db.ChangeTracker.Clear();
         var saved = await db.Requests.SingleAsync(x => x.Id == requestId);
@@ -49,6 +62,9 @@ public sealed partial class WorkflowDbTests
         Assert.Equal(requestId, (await db.Referrals.SingleAsync(x => x.Id == referral.Id)).RequestId);
         Assert.Equal(referral.Id, (await db.Outcomes.SingleAsync(x => x.Id == outcome.Id)).ReferralId);
         Assert.Equal(requestId, (await db.DecisionHistory.SingleAsync(x => x.Id == history.Id)).RequestId);
-        Assert.Empty(await db.RequestNeeds.ToListAsync());
+        var retainedNeed = await db.RequestNeeds.SingleAsync(x => x.Id == need);
+        Assert.Equal("PreviouslyAllowed", retainedNeed.Status);
+        Assert.Equal(multiRequest, retainedNeed.RequestId);
+        Assert.Equal(version, retainedNeed.StandardVersionId);
     }
 }

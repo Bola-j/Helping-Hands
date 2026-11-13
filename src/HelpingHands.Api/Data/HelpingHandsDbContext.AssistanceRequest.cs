@@ -31,7 +31,7 @@ public sealed partial class HelpingHandsDbContext
         {
             table.HasCheckConstraint("CK_Request_DemandMode", "NOT \"IsMultiNeed\" OR (\"Category\" IS NULL AND \"ServiceSubtype\" IS NULL AND \"RequiredQuantity\" IS NULL AND \"Unit\" IS NULL)");
             table.HasCheckConstraint("CK_Request_Category", "\"Category\" IS NULL OR \"Category\" IN ('Goods', 'Money', 'OrganizationalReferral')");
-            table.HasCheckConstraint("CK_Request_Status", "\"Status\" IN ('Submitted', 'Clarification', 'Accepted', 'Rejected', 'Open', 'Completed', 'ClosedUnresolved', 'Split')");
+            table.HasCheckConstraint("CK_Request_Status", "\"Status\" IN ('Submitted', 'Clarification', 'Accepted', 'Rejected', 'Open', 'Completed', 'ClosedUnresolved', 'Split', 'InReview', 'FullyAccepted', 'PartiallyAccepted', 'FullyRejected')");
             table.HasCheckConstraint("CK_Request_Quantity", "\"RequiredQuantity\" IS NULL OR \"RequiredQuantity\" > 0");
             table.HasCheckConstraint("CK_Request_Confirmed", "\"AuthorityConfirmed\" AND \"SharingAgreed\"");
         });

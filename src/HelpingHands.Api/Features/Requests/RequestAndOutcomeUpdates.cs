@@ -1,15 +1,17 @@
 using System.Security.Claims;
 using HelpingHands.Api.Data;
+using HelpingHands.Api.Features.Needs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 namespace HelpingHands.Api.Features;
 
 public static partial class DemoEndpoints
 {
-    private static async Task<IResult> GetRequest(Guid id, ClaimsPrincipal user, HelpingHandsDbContext database, CancellationToken cancellationToken)
+    private static async Task<IResult> GetRequest(Guid id, ClaimsPrincipal user, HelpingHandsDbContext database, NeedVersionService versions, CancellationToken cancellationToken)
     {
         var request = await VisibleRequests(database, user).SingleOrDefaultAsync(item => item.Id == id, cancellationToken);
-        return request is null ? Results.NotFound() : Results.Ok(RequestView(request));
+        if (request is null) return Results.NotFound();
+        return Results.Ok(RequestView(request, await versions.GetRecordedNeedsAsync(id, cancellationToken)));
     }
 
     private static async Task<IResult> UpdateRequest(Guid id, UpdateRequestInput input, ClaimsPrincipal user, HelpingHandsDbContext database, CancellationToken cancellationToken)

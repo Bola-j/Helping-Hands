@@ -1,6 +1,6 @@
 # Phase 1 database design — proposal for review
 
-**Status: design proposal, not an implemented or verified schema.** This document describes the intended fictional-data Phase 1 demo. The existing EF model and migration cover only part of this proposal and do not establish the state of any deployed database. The [roadmap](api-demo-scrum-roadmap.md), [SRS](SRS.md), and [BRD](BRD.md) describe the requirements. The [earlier full-product proposal and prior diagrams](archive/database-proposal/) are preserved as historical working material.
+**Status: Phase 1 design proposal, with an implemented catalog schema.** This document describes the intended fictional-data Phase 1 demo. The existing EF model and migration cover only part of this proposal and do not establish the state of any deployed database. The [roadmap](api-demo-scrum-roadmap.md), [SRS](SRS.md), and [BRD](BRD.md) describe the requirements. The [earlier full-product proposal and prior diagrams](archive/database-proposal/) are preserved as historical working material.
 
 ## Models and notation
 
@@ -40,14 +40,16 @@ UUID primary and foreign keys and server-generated unique references for busines
 
 The inherited AssistanceRequest fields, status rules and DecisionHistory referral subject come from the earlier request/referral design. They are **not** a settled Phase 1 mapping: P1-27 must reconcile them with RequestNeed and ReferralPortion, preserve existing history, and prevent duplicate demand. A DecisionHistory reference to the earlier Referral is intentionally not shown as a Phase 1 foreign key until that mapping is resolved.
 
+### Implemented catalog schema (P1-12)
+
+The EF model and additive `ServiceCatalog` migration define `ServiceCategory` (UUID and unique code), `ServiceVersion` (category, positive version number and name), `UnitStandard` (service version and name), `StandardVersion` (standard, positive version number and effective timestamp), and `StandardComponent` (standard version, name, positive decimal quantity and measurement unit). Version numbers are unique within their parent; foreign keys restrict deletion of referenced parents. One service version can have multiple independently versioned standards. These tables are not yet linked to requests, capacities or referrals.
+
+These constraints do not make versions or components immutable, establish current-version selection, or protect historical references. P1-13 must implement and verify historical integrity; P1-14 and P1-51 own API and version-selection behavior. The `Down` migration removes the new catalog tables and their contents, so rollback requires a reviewed backup and explicit authorization if data exists. Existing tables are unchanged.
+
 ### Phase 1 extension candidates
 
 | Table | Candidate fields; types and nullability open |
 | --- | --- |
-| ServiceCategory | CategoryId PK; Code UQ; Name  |
-| ServiceVersion | ServiceVersionId PK; CategoryId FK ServiceCategory; VersionNumber ; Name  |
-| StandardVersion | StandardVersionId PK; ServiceVersionId FK ServiceVersion; VersionNumber ; EffectiveAt  |
-| StandardComponent | ComponentId PK; StandardVersionId FK StandardVersion; Name ; Quantity ; Unit  |
 | CharityService | CharityServiceId PK; CharityId FK Charity; ServiceVersionId FK ServiceVersion; StandardVersionId FK StandardVersion; Enabled  |
 | DailyCapacity | CapacityId PK; CharityServiceId FK CharityService; CairoDate ; Available ; UpdatedAt  |
 | CapacityUpdate | CapacityUpdateId PK; CapacityId FK DailyCapacity; ActorId FK UserAccount; Available ; UpdatedAt  |
@@ -63,7 +65,7 @@ The inherited AssistanceRequest fields, status rules and DecisionHistory referra
 
 The extension list is a starting point, not an exhaustive storage specification. In particular, report narrative, reporting actor, timestamps and evidence metadata must be resolved before this mapping can support the required outcome workflow. The drawing shows all fields listed here, not a claim that the list is migration-ready.
 
-Candidate integrity rules include unique version numbers within their parent; immutable published versions and components; unique charity/service/standard combinations; unique daily capacity per charity service and Cairo date; append-only capacity updates; and one reminder intent per charity and Cairo date with recorded attempts. Exact version compatibility must be enforced across CharityService and its standard, rather than inferred merely from separate foreign keys. UUID and reference generation, status domains, required fields, indexes and checks need reviewed EF mappings and migrations.
+Further integrity rules include immutable published versions and components; unique charity/service/standard combinations; unique daily capacity per charity service and Cairo date; append-only capacity updates; and one reminder intent per charity and Cairo date with recorded attempts. Exact version compatibility must be enforced across CharityService and its standard, rather than inferred merely from separate foreign keys. UUID and reference generation, status domains, required fields, indexes and checks need reviewed EF mappings and migrations.
 
 ## Allocation and concurrency invariant
 

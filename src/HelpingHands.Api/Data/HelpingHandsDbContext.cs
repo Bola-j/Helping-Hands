@@ -20,6 +20,12 @@ public sealed partial class HelpingHandsDbContext(DbContextOptions<HelpingHandsD
     public DbSet<EvidenceAttachment> EvidenceAttachments => Set<EvidenceAttachment>();
     public DbSet<DecisionHistory> DecisionHistory => Set<DecisionHistory>();
 
+    public DbSet<ServiceCategory> ServiceCategories => Set<ServiceCategory>();
+    public DbSet<ServiceVersion> ServiceVersions => Set<ServiceVersion>();
+    public DbSet<UnitStandard> UnitStandards => Set<UnitStandard>();
+    public DbSet<StandardVersion> StandardVersions => Set<StandardVersion>();
+    public DbSet<StandardComponent> StandardComponents => Set<StandardComponent>();
+
     // PostgreSQL sequences are nontransactional; gaps after rollback are expected.
     public async Task<string> NextReferenceAsync(string prefix, CancellationToken cancellationToken = default)
     {
@@ -42,6 +48,11 @@ public sealed partial class HelpingHandsDbContext(DbContextOptions<HelpingHandsD
     {
         foreach (var sequence in new[] { "ben_reference_seq", "rec_reference_seq", "req_reference_seq", "ref_reference_seq", "out_reference_seq" })
             model.HasSequence<long>(sequence);
+        ConfigureServiceCategory(model);
+        ConfigureServiceVersion(model);
+        ConfigureUnitStandard(model);
+        ConfigureStandardVersion(model);
+        ConfigureStandardComponent(model);
         ConfigureAppUser(model);
         ConfigureAppRole(model);
         ConfigureAppUserRole(model);

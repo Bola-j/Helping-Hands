@@ -17,6 +17,7 @@ public sealed class AssistanceRequest
 {
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Reference { get; set; } = "";
+    public bool IsMultiNeed { get; set; }
     public Guid BeneficiaryId { get; set; }
     public Guid SubmittedByUserId { get; set; }
     public string? Category { get; set; }

@@ -20,6 +20,7 @@ public static partial class DemoEndpoints
         await using var transaction = await database.Database.BeginTransactionAsync(cancellationToken);
         var request = await LockRequest(database, id, cancellationToken);
         if (request is null) return Results.NotFound();
+        if (request.IsMultiNeed) return Conflict("Multi-need review is not available yet.");
         if (request.Version != input.Version || request.Status is not ("Submitted" or "Clarification")) return Conflict("Request changed or cannot be reviewed.");
         ApplyRequestClassification(request, input);
         request.Status = input.Decision;

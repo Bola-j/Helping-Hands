@@ -19,6 +19,7 @@ public static partial class DemoEndpoints
         await using var transaction = await database.Database.BeginTransactionAsync(cancellationToken);
         var request = await LockRequest(database, id, cancellationToken);
         if (request is null || request.SubmittedByUserId != Actor(user)) return Results.NotFound();
+        if (request.IsMultiNeed) return Conflict("Multi-need clarification is not available yet.");
         if (request.Version != input.Version || request.Status != "Clarification") return Conflict("Request is not awaiting clarification or has changed.");
         request.Description = input.Description.Trim();
         request.Status = "Submitted";

@@ -12,6 +12,7 @@ public static partial class DemoEndpoints
     private static async Task<IResult?> ValidateReferralAssignment(HelpingHandsDbContext database,
         AssistanceRequest request, ReferralInput input, CancellationToken cancellationToken)
     {
+        if (request.IsMultiNeed) return Conflict("Multi-need referral is not available yet.");
         if (request.Version != input.Version || request.Status is not ("Accepted" or "Open") || request.RequiredQuantity is null)
             return Conflict("Request changed or is not eligible for referral.");
         if (request.Unit == "scope" && input.AssignedQuantity != 1) return Bad("Service scopes are indivisible.");

@@ -28,6 +28,8 @@ jobs:
           --health-retries 12
     env:
       ASPNETCORE_ENVIRONMENT: Development
+      # Integration scenarios share one TestServer and use a higher test-only auth burst.
+      RateLimiting__AuthPermitLimit: 1000
       ConnectionStrings__HelpingHands: Host=127.0.0.1;Port=5432;Database=helping_hands_ci;Username=postgres
       EvidenceStorage__ServiceUrl: http://127.0.0.1:9000
       EvidenceStorage__Bucket: helping-hands-ci

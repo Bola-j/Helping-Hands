@@ -12,6 +12,7 @@ public sealed partial class WorkflowDbTests
     private async Task AssertPendingCharitySignupAsync(HttpClient client, HttpResponseMessage response, string email, string password)
     {
         Assert.True(response.StatusCode == HttpStatusCode.Created, await response.Content.ReadAsStringAsync());
+        WorkflowDbFixture.AssertNoAuthenticationCookie(response);
         var charity = (await response.Content.ReadFromJsonAsync<JsonElement>())!;
         Assert.Equal("Pending", charity.GetProperty("approvalStatus").GetString());
         Assert.False(charity.GetProperty("active").GetBoolean());

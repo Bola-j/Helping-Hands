@@ -10,13 +10,15 @@ public sealed partial class WorkflowDbFixture
         new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
         {
             builder.UseEnvironment("Development");
+            builder.UseSetting("RateLimiting:AuthPermitLimit", "1000");
             builder.ConfigureAppConfiguration((_, config) => config.AddInMemoryCollection(new Dictionary<string, string?>
             {
                 ["ConnectionStrings:HelpingHands"] = connection,
                 ["EvidenceStorage:ServiceUrl"] = "http://127.0.0.1:1",
                 ["EvidenceStorage:Bucket"] = "workflow-test",
                 ["EvidenceStorage:AccessKey"] = "fictional",
-                ["EvidenceStorage:SecretKey"] = "fictional"
+                ["EvidenceStorage:SecretKey"] = "fictional",
+                ["RateLimiting:AuthPermitLimit"] = "1000"
             }));
         });
 

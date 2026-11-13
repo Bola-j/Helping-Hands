@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var authLimit = builder.Configuration.GetValue("RateLimiting:AuthPermitLimit", 20);
 builder.Services.AddProblemDetails();
 builder.Services.AddOpenApi();
 builder.Services.AddValidation();
@@ -17,7 +18,7 @@ builder.Services.AddScoped<AntiforgeryFilter>();
 builder.Services.AddEvidenceStorage(builder.Configuration);
 builder.Services.AddRateLimiter(options => options.AddFixedWindowLimiter("auth", limiter =>
 {
-    limiter.PermitLimit = 20;
+    limiter.PermitLimit = authLimit;
     limiter.Window = TimeSpan.FromMinutes(1);
     limiter.QueueLimit = 0;
 }));

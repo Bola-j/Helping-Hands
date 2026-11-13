@@ -240,7 +240,7 @@ Purpose: establish eligibility for charity referrals. Actors: charity representa
 3. The coordinator reviews the application and supplied information.
 4. The coordinator approves it; the system records the decision and activates the charity.
 
-Alternatives: Invalid registration or duplicate email creates no partial account/application; the coordinator may leave the application pending or reject it. Postconditions: the decision and actor/time are retained; pending or rejected charities remain ineligible. Requirements: FR-001–004, FR-032, FR-042.
+Alternatives: Invalid registration or duplicate email creates no partial account/application; the coordinator may leave the application pending or reject it. Postconditions: authorized staff and active representatives can view application attachment metadata and decision history, including actor, time and reason; pending, rejected or inactive charities remain ineligible. Approval requires registration information or an uploaded supporting document; rejection requires a reason. Requirements: FR-001–004, FR-032, FR-042.
 
 **UC-009 — Beneficiary and charity account signup**
 Purpose: create the correct account and business profile at signup. Actors: beneficiary and charity representative. Preconditions: applicant can access the public signup route and has an antiforgery token. Trigger: applicant selects the appropriate signup flow.
@@ -353,6 +353,8 @@ These are acceptance scenarios, not executed test results.
 - [P1-33](https://github.com/Bola-j/Helping-Hands/issues/33): implement and test the interim exact-version rule for an outstanding old-standard need; further conversion policy awaits review.
 - Physical mapping of needs, versioned standards and capacity remains to be designed and validated through the linked database tickets; the draw.io models depict the proposed Phase 1 design and identify unresolved mappings.
 - Scrum Master review: **accepted orally in conversation on 11 November 2026**. This does not establish a separate team review or resolve outstanding diagram and design work.
+
+P1-16 implementation on 13 November 2026 adds authorized document metadata and decision history to charity application detail. Local fictional-data tests cover coordinator and administrator decisions, eligibility and private document access using isolated PostgreSQL and S3-compatible storage. P1-17 review screens and real-world operational validation remain outstanding.
 
 # Appendix: Phase 1 implementation baseline and verification
 

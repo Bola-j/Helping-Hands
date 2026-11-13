@@ -733,6 +733,9 @@ namespace HelpingHands.Api.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
@@ -793,6 +796,9 @@ namespace HelpingHands.Api.Migrations
 
                     b.Property<DateTimeOffset>("EffectiveAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsPublished")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid>("UnitStandardId")
                         .HasColumnType("uuid");

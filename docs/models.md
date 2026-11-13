@@ -4,6 +4,8 @@ Status: supporting models for the [SRS](SRS.md). The Phase 1 roadmap takes prior
 
 The [conceptual EER](diagrams/conceptual-eer.drawio) and [relational schema](diagrams/relational-schema.drawio) show the planned Phase 1 design on one canvas each. The physical mapping, fields and cardinalities remain proposals; see [database design](database-design.md) for rules and open decisions. The earlier full-product proposal is [archived](archive/database-proposal/).
 
+The [P1-09 signup sequence](diagrams/registration-sequence.drawio) shows the planned beneficiary and charity account flows. The two routes and the `Beneficiary` role are not yet implemented; the diagram distinguishes account/profile creation from later login and coordinator approval.
+
 ## System context
 
 ```mermaid
@@ -20,10 +22,12 @@ flowchart LR
 
 ```mermaid
 flowchart LR
+ beneficiary[Beneficiary] --> beneficiarySignup([UC-009 Beneficiary signup and linked profile])
+ charity[Charity representative] --> charitySignup([UC-009 Charity signup and pending application])
+ charitySignup --> charityReview([UC-001 Coordinator reviews application])
+ coordinator[Coordinator] --> charityReview
  requester[Beneficiary / third-party requester] --> submit([UC-003 Submit and review request])
- coordinator[Coordinator] --> submit
- charity[Charity applicant] --> registration([UC-001 Review charity registration])
- coordinator --> registration
+ coordinator --> submit
  individual[Individual contributor applicant] --> contributor([UC-002 Review contributor registration])
  coordinator --> contributor
  coordinator --> review([UC-004 Split mixed request])
@@ -39,14 +43,15 @@ flowchart LR
 
 ```mermaid
 flowchart TD
- A[Charity or contributor registers] --> B[Application pending]
- B --> C{Authorized reviewer decision}
- C -->|Approve| D[Activate eligible participant]
- C -->|Reject| E[Record rejection]
- C -->|Leave pending| B
+ A[Charity representative uses charity signup] --> B[Create account, membership and pending application]
+ B --> C[Application remains inactive]
+ C --> D{Coordinator review in P1-16}
+ D -->|Approve| E[Activate eligible charity]
+ D -->|Reject| F[Record rejection]
+ D -->|Leave pending| C
 ```
 
-The coordinator reviews charities in Phase 1 and individual contributors in the later full-app scope. Administration of accounts is not evidence of beneficiary verification.
+Beneficiaries use a separate signup route that creates an account and linked beneficiary profile. Charity signup creates a pending application; it does not approve or activate the charity. The coordinator reviews charities in Phase 1 and individual contributors in the later full-app scope. Administration of accounts is not evidence of beneficiary verification. These signup routes are target behavior, not current implementation.
 
 ## Activity: review, referral and follow-up
 

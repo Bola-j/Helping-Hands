@@ -10,7 +10,7 @@ public sealed partial class WorkflowDbFixture
     {
         var roles = provider.GetRequiredService<RoleManager<AppRole>>();
         var users = provider.GetRequiredService<UserManager<AppUser>>();
-        foreach (var role in new[] { "Administrator", "Coordinator", "Requester", "RecipientRepresentative" })
+        foreach (var role in new[] { "Administrator", "Coordinator", "Requester", "Beneficiary", "RecipientRepresentative" })
             if (!await roles.RoleExistsAsync(role)) Assert.True((await roles.CreateAsync(new AppRole { Name = role })).Succeeded);
         foreach (var role in new[] { "Administrator", "Coordinator", "Requester", "Unrelated" })
             await CreateUserAsync(users, role);

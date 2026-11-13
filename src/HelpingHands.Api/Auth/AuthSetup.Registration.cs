@@ -6,10 +6,10 @@ namespace HelpingHands.Api.Auth;
 
 public static partial class AuthSetup
 {
-    private static bool IsValidRegistration(RegisterRequest request) =>
-        !string.IsNullOrWhiteSpace(request.DisplayName) && request.DisplayName.Trim().Length <= 200 &&
-        !string.IsNullOrWhiteSpace(request.Email) && request.Email.Length <= 320 &&
-        new EmailAddressAttribute().IsValid(request.Email) && !string.IsNullOrEmpty(request.Password);
+    private static bool IsValidRegistration(string displayName, string email, string password) =>
+        !string.IsNullOrWhiteSpace(displayName) && displayName.Trim().Length <= 200 &&
+        !string.IsNullOrWhiteSpace(email) && email.Length <= 320 &&
+        new EmailAddressAttribute().IsValid(email) && !string.IsNullOrEmpty(password);
 
     private static AppUser NewUser(string email, string displayName) => new()
     {

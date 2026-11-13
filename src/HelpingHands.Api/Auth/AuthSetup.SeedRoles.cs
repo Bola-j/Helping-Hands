@@ -7,7 +7,7 @@ public static partial class AuthSetup
 {
     private static async Task EnsureRoles(RoleManager<AppRole> roles)
     {
-        foreach (var name in new[] { "Administrator", "Coordinator", "Requester", "RecipientRepresentative" })
+        foreach (var name in new[] { "Administrator", "Coordinator", "Requester", "Beneficiary", "RecipientRepresentative" })
         {
             if (!await roles.RoleExistsAsync(name))
                 Ensure(await roles.CreateAsync(new AppRole { Id = Guid.NewGuid(), Name = name }));

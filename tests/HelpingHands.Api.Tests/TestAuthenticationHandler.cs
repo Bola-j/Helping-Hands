@@ -16,8 +16,8 @@ public sealed class TestAuthenticationHandler(
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, "99f5bbbf-38bb-4e3c-8b2b-4bc2fe421004"),
-            new Claim(ClaimTypes.Name, "Fictional requester"),
-            new Claim(ClaimTypes.Role, "Requester")
+            new Claim(ClaimTypes.Name, "Fictional beneficiary"),
+            new Claim(ClaimTypes.Role, "Beneficiary")
         };
         var principal = new ClaimsPrincipal(new ClaimsIdentity(claims, Scheme.Name));
         return Task.FromResult(AuthenticateResult.Success(new AuthenticationTicket(principal, Scheme.Name)));

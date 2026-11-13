@@ -2,7 +2,7 @@
 
 Status: forecast for the complete documented first version, not a delivery promise or evidence of completed functionality. **Phase 1 planning is superseded by the newer [Phase 1 Scrum backlog](api-demo-scrum-roadmap.md); the earlier sequence below remains historical context pending P1-02 reconciliation.** Each sprint is one week; dates, team capacity and velocity are unknown. Reorder and resize items during backlog refinement based on dependencies and actual capacity. The course demonstration uses fictional people, records and evidence; it is a milestone within the full app. The Phase 1 backlog covers the full web demo and does not create a second parallel sprint calendar.
 
-Identity signup was completed in [P1-09](https://github.com/Bola-j/Helping-Hands/issues/9) and merged in PR #82; its separate routes replace the former shared signup contract. The issue is closed after PR/push CI and the post-merge `main` workflow passed. Login/logout policy and role/involvement enforcement remain in P1-10.
+Identity signup was completed in [P1-09](https://github.com/Bola-j/Helping-Hands/issues/9) and merged in PR #82; its separate routes replace the former shared signup contract. The issue is closed after PR/push CI and the post-merge `main` workflow passed. P1-10 remains open; its current candidate locally passes 69/69 application tests, with PR and post-merge checks pending.
 
 | Sprint | Goal and candidate backlog | Demonstrable acceptance outcome |
 | --- | --- | --- |

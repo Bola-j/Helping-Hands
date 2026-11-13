@@ -25,7 +25,7 @@ public static partial class DemoEndpoints
 
     private static async Task<IResult> DecideRecipient(Guid id, RecipientDecisionInput input, ClaimsPrincipal user, HelpingHandsDbContext database, CancellationToken cancellationToken)
     {
-        if (!Admin(user)) return Results.Forbid();
+        if (!Coordinator(user)) return Results.Forbid();
         if (input.Decision is not ("Approved" or "Rejected") || (input.Decision == "Rejected" && Blank(input.Reason, 2000)) || input.Reason?.Length > 2000) return Bad("Choose approval or rejection; rejection requires a reason.");
         await using var transaction = await database.Database.BeginTransactionAsync(cancellationToken);
         var recipient = await database.Recipients.FromSqlInterpolated($"SELECT * FROM \"ReferralRecipient\" WHERE \"Id\" = {id} FOR UPDATE").SingleOrDefaultAsync(cancellationToken);

@@ -30,7 +30,7 @@ public static partial class DemoEndpoints
 
     private static Guid Actor(ClaimsPrincipal user) => Guid.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
-    private static bool Coordinator(ClaimsPrincipal user) => user.IsInRole("Coordinator");
+    private static bool Coordinator(ClaimsPrincipal user) => user.IsInRole("Coordinator") || Admin(user);
 
     private static bool Admin(ClaimsPrincipal user) => user.IsInRole("Administrator");
 }

@@ -5,21 +5,22 @@ namespace HelpingHands.Api.Tests;
 
 public sealed partial class EvidenceFlowTests
 {
-    private async Task OpenSessionsAsync(HttpClient admin, HttpClient coordinator, HttpClient representative, HttpClient outsider)
+    private async Task OpenSessionsAsync(HttpClient admin, HttpClient coordinator, HttpClient representative, HttpClient beneficiary, HttpClient outsider)
     {
         await fixture.LoginAsync(admin, fixture.Administrator);
         await fixture.LoginAsync(coordinator, fixture.Coordinator);
-        await fixture.RegisterAndLoginAsync(representative, fixture.Representative);
+        await fixture.RegisterCharityAndLoginAsync(representative, fixture.Representative);
+        await fixture.RegisterAndLoginAsync(beneficiary, fixture.Beneficiary);
         await fixture.RegisterAndLoginAsync(outsider, fixture.Outsider);
     }
 
     private async Task<Guid> CreateApprovedCharityAsync(HttpClient admin, HttpClient representative)
     {
-        var created = await EvidenceFlowFixture.PostJsonAsync(representative, "/api/v1/recipients", new
-        {
-            DisplayName = "Fictional charity", ContactDetails = "Fictional contact", RegistrationInformation = "Fictional registration"
-        }, HttpStatusCode.Created);
-        await fixture.RefreshLoginAsync(representative, fixture.Representative);
+        using var listResponse = await representative.GetAsync("/api/v1/recipients");
+        var list = await EvidenceFlowFixture.JsonAsync(listResponse, HttpStatusCode.OK);
+        var id = list.EnumerateArray().Single().GetProperty("id").GetGuid();
+        using var detailResponse = await representative.GetAsync($"/api/v1/recipients/{id}");
+        var created = await EvidenceFlowFixture.JsonAsync(detailResponse, HttpStatusCode.OK);
         var approved = await EvidenceFlowFixture.PostJsonAsync(admin, $"/api/v1/recipients/{Id(created)}/decisions",
             new { Decision = "Approved", Reason = (string?)null, Version = Version(created) }, HttpStatusCode.OK);
         Assert.Equal("Approved", approved.GetProperty("approvalStatus").GetString());

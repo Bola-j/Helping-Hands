@@ -14,6 +14,7 @@ public static partial class DemoEndpoints
 
     private static async Task<IResult> UpdateRequest(Guid id, UpdateRequestInput input, ClaimsPrincipal user, HelpingHandsDbContext database, CancellationToken cancellationToken)
     {
+        if (!Beneficiary(user)) return Results.NotFound();
         if (Blank(input.Description, 4000)) return Bad("Description is required.");
         await using var transaction = await database.Database.BeginTransactionAsync(cancellationToken);
         var request = await LockRequest(database, id, cancellationToken);

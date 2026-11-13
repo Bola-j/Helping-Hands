@@ -12,16 +12,18 @@ public sealed partial class WorkflowDbFixture
         var users = provider.GetRequiredService<UserManager<AppUser>>();
         foreach (var role in new[] { "Administrator", "Coordinator", "Requester", "Beneficiary", "RecipientRepresentative" })
             if (!await roles.RoleExistsAsync(role)) Assert.True((await roles.CreateAsync(new AppRole { Name = role })).Succeeded);
-        foreach (var role in new[] { "Administrator", "Coordinator", "Requester", "Unrelated" })
+        foreach (var role in new[] { "Administrator", "Coordinator", "Requester", "Beneficiary", "RecipientRepresentative", "Unrelated" })
             await CreateUserAsync(users, role);
+        await CreateUserAsync(users, "RecipientRepresentativeOther", "RecipientRepresentative");
     }
 
-    private async Task CreateUserAsync(UserManager<AppUser> users, string role)
+    private async Task CreateUserAsync(UserManager<AppUser> users, string role, string? assignedRole = null)
     {
         var email = $"{role.ToLowerInvariant()}-{Guid.NewGuid():N}@example.test";
         var user = new AppUser { UserName = email, Email = email, DisplayName = "Fictional user" };
         Assert.True((await users.CreateAsync(user, Password)).Succeeded);
-        if (role != "Unrelated") Assert.True((await users.AddToRoleAsync(user, role)).Succeeded);
+        if (role != "Unrelated") Assert.True((await users.AddToRoleAsync(user, assignedRole ?? role)).Succeeded);
         Emails.Add(role, email);
+        UserIds.Add(role, user.Id);
     }
 }

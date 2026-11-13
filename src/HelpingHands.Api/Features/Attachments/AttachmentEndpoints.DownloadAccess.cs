@@ -9,7 +9,7 @@ public static partial class DemoEndpoints
     private static async Task<AttachmentDownload?> FindApplicationDownloadAsync(ApplicationAttachment attachment,
         ClaimsPrincipal user, HelpingHandsDbContext database, CancellationToken cancellationToken)
     {
-        if (!Admin(user) && !await Member(database, attachment.RecipientId, Actor(user), cancellationToken))
+        if (!Staff(user) && !await Member(database, attachment.RecipientId, Actor(user), cancellationToken))
             return null;
         return new AttachmentDownload(attachment.StorageKey, attachment.OriginalName, attachment.MediaType);
     }

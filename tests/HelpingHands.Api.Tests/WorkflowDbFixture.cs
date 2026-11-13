@@ -11,6 +11,7 @@ public sealed partial class WorkflowDbFixture : IAsyncLifetime
     public WebApplicationFactory<Program> Factory { get; private set; } = null!;
     public string Password { get; } = $"{Guid.NewGuid():N}Aa1!";
     public Dictionary<string, string> Emails { get; } = new();
+    public Dictionary<string, Guid> UserIds { get; } = new();
     private Dictionary<string, string> SessionCookies { get; } = new();
 
     public async Task InitializeAsync()

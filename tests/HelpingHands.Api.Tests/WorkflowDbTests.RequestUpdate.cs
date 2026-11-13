@@ -9,7 +9,7 @@ public sealed partial class WorkflowDbTests
     [Fact]
     public async Task ClarificationUpdate_RequiresOwnerAndCurrentVersion()
     {
-        using var requester = await fixture.LoginAsync("Requester");
+        using var requester = await fixture.LoginAsync("Beneficiary");
         using var coordinator = await fixture.LoginAsync("Coordinator");
         using var outsider = await fixture.LoginAsync("Unrelated");
         var request = await SubmittedRequestAsync(requester);

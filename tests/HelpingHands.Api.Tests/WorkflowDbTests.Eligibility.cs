@@ -7,11 +7,12 @@ public sealed partial class WorkflowDbTests
     [Fact]
     public async Task PendingAndRejectedCharities_CannotReceiveReferrals()
     {
-        using var applicant = await fixture.LoginAsync("Requester");
+        using var applicant = await fixture.LoginAsync("RecipientRepresentative");
         using var admin = await fixture.LoginAsync("Administrator");
         using var coordinator = await fixture.LoginAsync("Coordinator");
+        using var beneficiary = await fixture.LoginAsync("Beneficiary");
         var charity = await WorkflowDbFixture.RecipientAsync(applicant);
-        var accepted = await WorkflowDbFixture.AcceptedRequestAsync(coordinator);
+        var accepted = await WorkflowDbFixture.AcceptedRequestAsync(beneficiary, coordinator);
         var charityId = charity.GetProperty("id").GetGuid();
         var path = $"/api/v1/requests/{accepted.GetProperty("id").GetGuid()}/referrals";
         var body = new { RecipientId = charityId, AssignedQuantity = 1m, ScopeDescription = "Fictional", Version = accepted.GetProperty("version").GetGuid() };

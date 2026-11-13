@@ -1,23 +1,23 @@
 # API demo walkthrough
 
-**Branch status:** the existing procedure below matches `main` before P1-09. PR #82 implements the separate signup contract described next, but is not yet merged. Execution of the procedures in this document has not been established. The implementation baseline is recorded in the [SRS capability assessment](SRS.md#appendix-phase-1-implementation-baseline-and-verification).
+**Current status (13 November 2026):** P1-09's separate signup routes are on `main` through [merged PR #82](https://github.com/Bola-j/Helping-Hands/pull/82); its PR, push and post-merge checks passed. The full local software suite passed 57/57. That result does not certify every procedure below as a manually completed demo. The implementation baseline is recorded in the [SRS capability assessment](SRS.md#appendix-phase-1-implementation-baseline-and-verification).
 
 This walkthrough is for fictional data only. Start PostgreSQL, S3 storage and the API using the [README](../README.md), apply migrations, and explicitly seed development accounts. Use an HTTPS-capable API client that keeps separate cookie jars for each fictional actor. The OpenAPI document is available at `/openapi/v1.json` in Development. Responses and exact field names should be checked there before running this walkthrough.
 
 For every actor session, first call `GET /api/v1/auth/antiforgery`; send the returned `requestToken` in the `X-CSRF-TOKEN` header on every POST or PUT, including registration, login and file uploads. The client must preserve the accompanying antiforgery cookie. Obtain a new token after login or logout. The API's secure cookies require HTTPS. Registration creates an account but does not sign the participant in; call login separately.
 
-### P1-09 signup contract in PR #82
+### Current P1-09 signup routes
 
-These routes replace the old generic route in the PR #82 candidate. Use the candidate endpoints when exercising that branch; the `main`-branch procedure below remains historical until the PR merges:
+These routes replace the former shared `/auth/register` endpoint:
 
 - `POST /api/v1/auth/register/beneficiary` accepts `displayName`, `email`, `password`, optional `contactDetails`, and `isFamily`. It creates a UUID account with the `Beneficiary` role and a linked beneficiary profile; the response returns both IDs and the profile's `BEN` reference. Login remains a separate request.
 - `POST /api/v1/auth/register/charity` accepts `representativeDisplayName`, `email`, `password`, `organizationName`, `contactDetails`, and optional `registrationInformation`. It creates a UUID account, representative membership, and pending inactive charity application; the response returns the account and application IDs and the `REC` reference. Login remains separate. Coordinator decisions are handled by P1-16.
 
 Both routes are anonymous signup operations protected by the P1-08 antiforgery contract. Email uniqueness is global across account types. A pending charity cannot receive referrals. Registration does not include email verification or third-party requester signup.
 
-### Existing `main`-branch source procedure
+### Current API demo procedure
 
-1. **Charity representative:** `POST /api/v1/auth/register` with a fictional `displayName`, `email` and `password`, then `POST /api/v1/auth/login` with that email and password. Create a charity with `POST /api/v1/recipients`, providing `displayName`, `contactDetails` and `registrationInformation`. Record the response `id`, `reference` and `version`. Sign out and back in to refresh the representative role. An application can instead upload a PDF, JPEG or PNG through `/recipients/{id}/attachments`; the administrator cannot approve it without registration information or an attachment.
+1. **Charity representative:** `POST /api/v1/auth/register/charity` with fictional `representativeDisplayName`, `email`, `password`, `organizationName`, `contactDetails`, and optional `registrationInformation`. The response returns `accountId`, `recipientId` and `reference`; the application is pending and inactive. Call `POST /api/v1/auth/login` separately, then retrieve `GET /api/v1/recipients/{recipientId}` for its current `version`. If supporting information is required, upload a fictional PDF, JPEG or PNG through `/recipients/{id}/attachments`. The current decision endpoint requires an administrator; coordinator review remains P1-16.
 2. **Administrator:** use a separate session to log in as the development-seeded administrator. Retrieve the application through `GET /api/v1/recipients/{id}` and submit `POST /api/v1/recipients/{id}/decisions` with `decision: "Approved"`, the current `version` and an optional reason. Pending and rejected charities must remain ineligible.
 3. **Coordinator:** in another session log in as the seeded coordinator. Create a fictional beneficiary through `POST /api/v1/beneficiaries` with `displayName`, optional `contactDetails` and `isFamily`. Submit `POST /api/v1/requests` with its `beneficiaryId`, a `description`, and both `authorityConfirmed` and `sharingAgreed` set to true. Record its `id` and `version`.
 4. **Coordinator:** review using `POST /api/v1/requests/{id}/decisions` with `decision: "Accepted"`, `category: "Goods"`, `requiredQuantity: 1`, `unit: "box"`, and the request `version`. Create the referral through `POST /api/v1/requests/{id}/referrals`, with the approved `recipientId`, `assignedQuantity: 1`, a `scopeDescription`, and the updated request `version`. Record the referral `id`.

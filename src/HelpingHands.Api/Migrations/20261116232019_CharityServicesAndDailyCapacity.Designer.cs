@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HelpingHands.Api.Migrations
 {
     [DbContext(typeof(HelpingHandsDbContext))]
-    [Migration("20261116231243_CharityServicesAndDailyCapacity")]
+    [Migration("20261116232019_CharityServicesAndDailyCapacity")]
     partial class CharityServicesAndDailyCapacity
     {
         /// <inheritdoc />

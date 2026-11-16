@@ -125,11 +125,54 @@ namespace HelpingHands.Api.Migrations
                 table: "DailyCapacity",
                 columns: new[] { "CharityServiceId", "CairoDate" },
                 unique: true);
+
+            migrationBuilder.Sql("""
+                CREATE OR REPLACE FUNCTION fn_enforce_charity_service_version_match()
+                RETURNS trigger AS $$
+                DECLARE
+                    v_service_id uuid;
+                    v_standard_service_id uuid;
+                BEGIN
+                    SELECT "ServiceId" INTO v_service_id FROM "ServiceVersion" WHERE "Id" = NEW."ServiceVersionId";
+                    SELECT "ServiceId" INTO v_standard_service_id FROM "StandardVersion" WHERE "Id" = NEW."StandardVersionId";
+
+                    IF v_service_id IS NULL OR v_standard_service_id IS NULL OR v_service_id <> v_standard_service_id THEN
+                        RAISE EXCEPTION 'ServiceVersionId (%) and StandardVersionId (%) must belong to the same Service', NEW."ServiceVersionId", NEW."StandardVersionId";
+                    END IF;
+
+                    RETURN NEW;
+                END;
+                $$ LANGUAGE plpgsql;
+
+                CREATE TRIGGER trg_charity_service_version_match
+                BEFORE INSERT OR UPDATE ON "CharityService"
+                FOR EACH ROW
+                EXECUTE FUNCTION fn_enforce_charity_service_version_match();
+
+                CREATE OR REPLACE FUNCTION fn_enforce_capacity_update_append_only()
+                RETURNS trigger AS $$
+                BEGIN
+                    RAISE EXCEPTION 'CapacityUpdate is append-only; UPDATE and DELETE are prohibited';
+                END;
+                $$ LANGUAGE plpgsql;
+
+                CREATE TRIGGER trg_capacity_update_append_only
+                BEFORE UPDATE OR DELETE ON "CapacityUpdate"
+                FOR EACH ROW
+                EXECUTE FUNCTION fn_enforce_capacity_update_append_only();
+                """);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("""
+                DROP TRIGGER IF EXISTS trg_capacity_update_append_only ON "CapacityUpdate";
+                DROP FUNCTION IF EXISTS fn_enforce_capacity_update_append_only();
+                DROP TRIGGER IF EXISTS trg_charity_service_version_match ON "CharityService";
+                DROP FUNCTION IF EXISTS fn_enforce_charity_service_version_match();
+                """);
+
             migrationBuilder.DropTable(
                 name: "CapacityUpdate");
 

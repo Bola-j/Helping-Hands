@@ -337,6 +337,37 @@ namespace HelpingHands.Api.Migrations
                     b.ToTable("Beneficiary", (string)null);
                 });
 
+            modelBuilder.Entity("HelpingHands.Api.Data.CapacityUpdate", b =>
+                {
+                    b.Property<Guid>("CapacityUpdateId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ActorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Available")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("numeric(18,3)");
+
+                    b.Property<Guid>("CapacityId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("CapacityUpdateId");
+
+                    b.HasIndex("ActorId");
+
+                    b.HasIndex("CapacityId", "UpdatedAt");
+
+                    b.ToTable("CapacityUpdate", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_CapacityUpdate_Available_NonNegative", "\"Available\" >= 0");
+                        });
+                });
+
             modelBuilder.Entity("HelpingHands.Api.Data.Charity", b =>
                 {
                     b.Property<Guid>("RecipientId")
@@ -349,6 +380,66 @@ namespace HelpingHands.Api.Migrations
                     b.HasKey("RecipientId");
 
                     b.ToTable("Charity", (string)null);
+                });
+
+            modelBuilder.Entity("HelpingHands.Api.Data.CharityService", b =>
+                {
+                    b.Property<Guid>("CharityServiceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CharityId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<Guid>("ServiceVersionId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("StandardVersionId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("CharityServiceId");
+
+                    b.HasIndex("ServiceVersionId");
+
+                    b.HasIndex("StandardVersionId");
+
+                    b.HasIndex("CharityId", "ServiceVersionId", "StandardVersionId")
+                        .IsUnique();
+
+                    b.ToTable("CharityService", (string)null);
+                });
+
+            modelBuilder.Entity("HelpingHands.Api.Data.DailyCapacity", b =>
+                {
+                    b.Property<Guid>("CapacityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<decimal>("Available")
+                        .HasPrecision(18, 3)
+                        .HasColumnType("numeric(18,3)");
+
+                    b.Property<DateOnly>("CairoDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("CharityServiceId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("CapacityId");
+
+                    b.HasIndex("CharityServiceId", "CairoDate")
+                        .IsUnique();
+
+                    b.ToTable("DailyCapacity", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_DailyCapacity_Available_NonNegative", "\"Available\" >= 0");
+                        });
                 });
 
             modelBuilder.Entity("HelpingHands.Api.Data.DecisionHistory", b =>
@@ -792,7 +883,6 @@ namespace HelpingHands.Api.Migrations
                             t.HasCheckConstraint("CK_RequestNeed_Category", "\"Category\" IS NULL OR \"Category\" IN ('Goods', 'Money', 'OrganizationalReferral')");
 
                             t.HasCheckConstraint("CK_RequestNeed_Quantity", "\"Quantity\" > 0");
-
                         });
                 });
 
@@ -988,12 +1078,57 @@ namespace HelpingHands.Api.Migrations
                         .OnDelete(DeleteBehavior.NoAction);
                 });
 
+            modelBuilder.Entity("HelpingHands.Api.Data.CapacityUpdate", b =>
+                {
+                    b.HasOne("HelpingHands.Api.Data.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("ActorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HelpingHands.Api.Data.DailyCapacity", null)
+                        .WithMany()
+                        .HasForeignKey("CapacityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("HelpingHands.Api.Data.Charity", b =>
                 {
                     b.HasOne("HelpingHands.Api.Data.Recipient", null)
                         .WithOne()
                         .HasForeignKey("HelpingHands.Api.Data.Charity", "RecipientId")
                         .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("HelpingHands.Api.Data.CharityService", b =>
+                {
+                    b.HasOne("HelpingHands.Api.Data.Charity", null)
+                        .WithMany()
+                        .HasForeignKey("CharityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HelpingHands.Api.Data.ServiceVersion", null)
+                        .WithMany()
+                        .HasForeignKey("ServiceVersionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HelpingHands.Api.Data.StandardVersion", null)
+                        .WithMany()
+                        .HasForeignKey("StandardVersionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("HelpingHands.Api.Data.DailyCapacity", b =>
+                {
+                    b.HasOne("HelpingHands.Api.Data.CharityService", null)
+                        .WithMany()
+                        .HasForeignKey("CharityServiceId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

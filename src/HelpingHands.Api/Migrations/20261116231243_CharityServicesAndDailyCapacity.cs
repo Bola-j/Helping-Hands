@@ -125,51 +125,11 @@ namespace HelpingHands.Api.Migrations
                 table: "DailyCapacity",
                 columns: new[] { "CharityServiceId", "CairoDate" },
                 unique: true);
-
-            migrationBuilder.Sql("""
-                CREATE OR REPLACE FUNCTION enforce_charity_service_version_match()
-                RETURNS trigger AS $$
-                BEGIN
-                    IF NOT EXISTS (
-                        SELECT 1
-                        FROM "StandardVersion" sv
-                        JOIN "UnitStandard" us ON us."Id" = sv."UnitStandardId"
-                        WHERE sv."Id" = NEW."StandardVersionId"
-                          AND us."ServiceVersionId" = NEW."ServiceVersionId"
-                    ) THEN
-                        RAISE EXCEPTION 'StandardVersion % does not belong to ServiceVersion %', NEW."StandardVersionId", NEW."ServiceVersionId";
-                    END IF;
-                    RETURN NEW;
-                END;
-                $$ LANGUAGE plpgsql;
-
-                CREATE TRIGGER trg_charity_service_version_match
-                BEFORE INSERT OR UPDATE ON "CharityService"
-                FOR EACH ROW EXECUTE FUNCTION enforce_charity_service_version_match();
-
-                CREATE OR REPLACE FUNCTION prevent_capacity_update_mutation()
-                RETURNS trigger AS $$
-                BEGIN
-                    RAISE EXCEPTION 'CapacityUpdate is append-only and cannot be modified or deleted';
-                END;
-                $$ LANGUAGE plpgsql;
-
-                CREATE TRIGGER trg_capacity_update_append_only
-                BEFORE UPDATE OR DELETE ON "CapacityUpdate"
-                FOR EACH ROW EXECUTE FUNCTION prevent_capacity_update_mutation();
-                """);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("""
-                DROP TRIGGER IF EXISTS trg_capacity_update_append_only ON "CapacityUpdate";
-                DROP FUNCTION IF EXISTS prevent_capacity_update_mutation();
-                DROP TRIGGER IF EXISTS trg_charity_service_version_match ON "CharityService";
-                DROP FUNCTION IF EXISTS enforce_charity_service_version_match();
-                """);
-
             migrationBuilder.DropTable(
                 name: "CapacityUpdate");
 

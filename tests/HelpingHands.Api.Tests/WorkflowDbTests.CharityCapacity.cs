@@ -48,12 +48,13 @@ public sealed partial class WorkflowDbTests
         db.CapacityUpdates.Add(update);
         await db.SaveChangesAsync();
 
-        await RejectAsync(db, $"UPDATE \"DailyCapacity\" SET \"Available\" = -1 WHERE \"CapacityId\" = '{capacity.CapacityId}'");
+        var negativeEx = await Assert.ThrowsAsync<PostgresException>(() => db.Database.ExecuteSqlRawAsync($"UPDATE \"DailyCapacity\" SET \"Available\" = -1 WHERE \"CapacityId\" = '{capacity.CapacityId}'"));
+        Assert.Equal(PostgresErrorCodes.CheckViolation, negativeEx.SqlState);
         await RejectAsync(db, $"UPDATE \"CapacityUpdate\" SET \"Available\" = 99 WHERE \"CapacityUpdateId\" = '{update.CapacityUpdateId}'");
         await RejectAsync(db, $"DELETE FROM \"CapacityUpdate\" WHERE \"CapacityUpdateId\" = '{update.CapacityUpdateId}'");
     }
 
-   private static async Task<Charity> CreateApprovedCharityAsync(HelpingHandsDbContext db)
+    private static async Task<Charity> CreateApprovedCharityAsync(HelpingHandsDbContext db)
     {
         var recipient = new Recipient
         {

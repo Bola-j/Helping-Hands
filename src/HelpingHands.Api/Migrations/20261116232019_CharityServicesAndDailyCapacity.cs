@@ -129,17 +129,16 @@ namespace HelpingHands.Api.Migrations
             migrationBuilder.Sql("""
                 CREATE OR REPLACE FUNCTION fn_enforce_charity_service_version_match()
                 RETURNS trigger AS $$
-                DECLARE
-                    v_service_id uuid;
-                    v_standard_service_id uuid;
                 BEGIN
-                    SELECT "ServiceId" INTO v_service_id FROM "ServiceVersion" WHERE "Id" = NEW."ServiceVersionId";
-                    SELECT "ServiceId" INTO v_standard_service_id FROM "StandardVersion" WHERE "Id" = NEW."StandardVersionId";
-
-                    IF v_service_id IS NULL OR v_standard_service_id IS NULL OR v_service_id <> v_standard_service_id THEN
-                        RAISE EXCEPTION 'ServiceVersionId (%) and StandardVersionId (%) must belong to the same Service', NEW."ServiceVersionId", NEW."StandardVersionId";
+                    IF NOT EXISTS (
+                        SELECT 1
+                        FROM "StandardVersion" sv
+                        JOIN "UnitStandard" us ON us."Id" = sv."UnitStandardId"
+                        WHERE sv."Id" = NEW."StandardVersionId"
+                          AND us."ServiceVersionId" = NEW."ServiceVersionId"
+                    ) THEN
+                        RAISE EXCEPTION 'StandardVersion % does not belong to ServiceVersion %', NEW."StandardVersionId", NEW."ServiceVersionId";
                     END IF;
-
                     RETURN NEW;
                 END;
                 $$ LANGUAGE plpgsql;

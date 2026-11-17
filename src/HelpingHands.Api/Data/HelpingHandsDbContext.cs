@@ -28,6 +28,10 @@ public sealed partial class HelpingHandsDbContext(DbContextOptions<HelpingHandsD
     public DbSet<StandardVersion> StandardVersions => Set<StandardVersion>();
     public DbSet<StandardComponent> StandardComponents => Set<StandardComponent>();
 
+    public DbSet<CharityService> CharityServices => Set<CharityService>();
+    public DbSet<DailyCapacity> DailyCapacities => Set<DailyCapacity>();
+    public DbSet<CapacityUpdate> CapacityUpdates => Set<CapacityUpdate>();
+
     // PostgreSQL sequences are nontransactional; gaps after rollback are expected.
     public async Task<string> NextReferenceAsync(string prefix, CancellationToken cancellationToken = default)
     {
@@ -72,5 +76,13 @@ public sealed partial class HelpingHandsDbContext(DbContextOptions<HelpingHandsD
         ConfigureApplicationAttachment(model);
         ConfigureEvidenceAttachment(model);
         ConfigureDecisionHistory(model);
+        ConfigureCapacitySchema(model);
+    }
+
+    private static void ConfigureCapacitySchema(ModelBuilder model)
+    {
+        ConfigureCharityService(model);
+        ConfigureDailyCapacity(model);
+        ConfigureCapacityUpdate(model);
     }
 }

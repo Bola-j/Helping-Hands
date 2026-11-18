@@ -8,6 +8,7 @@ public static partial class DemoEndpoints
         api.MapGet("/recipients", ListRecipients).RequireAuthorization();
         api.MapGet("/recipients/{id:guid}", GetRecipient).RequireAuthorization();
         api.MapPost("/recipients/{id:guid}/decisions", DecideRecipient).RequireAuthorization();
+        api.MapRecipientServiceRoutes();
         api.MapPost("/beneficiaries", CreateBeneficiary).RequireAuthorization();
         api.MapGet("/beneficiaries", ListBeneficiaries).RequireAuthorization();
         api.MapGet("/beneficiaries/{id:guid}", GetBeneficiary).RequireAuthorization();

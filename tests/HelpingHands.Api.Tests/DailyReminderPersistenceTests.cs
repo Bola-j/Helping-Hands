@@ -50,6 +50,14 @@ public sealed partial class WorkflowDbTests
             Assert.Null(begin1.Intent.DeliveredAt);
         }
 
+        using (var recoveryScope = fixture.Factory.Services.CreateScope())
+        {
+            var database = recoveryScope.ServiceProvider.GetRequiredService<HelpingHandsDbContext>();
+            var firstAttempt = await database.ReminderDeliveryAttempts.SingleAsync(row => row.IntentId == intentId);
+            firstAttempt.StartedAt = DateTimeOffset.UtcNow.AddMinutes(-6);
+            await database.SaveChangesAsync();
+        }
+
         // 2. Simulate process restart / new DI scope while Attempt 1 was still InProgress:
         // EnsureDailyIntent returns same intent without claiming delivery, and BeginDeliveryAttempt recovers Attempt 1 as Failed before starting Attempt 2
         using (var scopeAfterRestart = fixture.Factory.Services.CreateScope())

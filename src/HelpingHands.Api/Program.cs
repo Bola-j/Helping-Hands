@@ -6,6 +6,7 @@ using HelpingHands.Api.Data;
 using HelpingHands.Api.Features;
 using HelpingHands.Api.Features.Catalog;
 using HelpingHands.Api.Features.Needs;
+using HelpingHands.Api.Features.Reminders;
 using HelpingHands.Api.Storage;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ builder.Services.AddOptions<SmtpOptions>().BindConfiguration(SmtpOptions.Section
 builder.Services.AddDbContext<HelpingHandsDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("HelpingHands")));
 builder.Services.AddHelpingHandsIdentity();
 builder.Services.AddScoped<NeedVersionService>();
+builder.Services.AddScoped<DailyReminderStateService>();
 builder.Services.AddScoped<AntiforgeryFilter>();
 builder.Services.AddEvidenceStorage(builder.Configuration);
 builder.Services.AddRateLimiter(options => options.AddFixedWindowLimiter("auth", limiter =>

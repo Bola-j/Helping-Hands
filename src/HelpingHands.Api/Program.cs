@@ -1,8 +1,8 @@
 using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.RateLimiting;
 using HelpingHands.Api.Auth;
-using HelpingHands.Api.Configuration;
 using HelpingHands.Api.Data;
+using HelpingHands.Api.Email;
 using HelpingHands.Api.Features;
 using HelpingHands.Api.Features.Catalog;
 using HelpingHands.Api.Features.Needs;
@@ -17,7 +17,7 @@ builder.Services.AddProblemDetails();
 builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddOpenApi();
 builder.Services.AddValidation();
-builder.Services.AddOptions<SmtpOptions>().BindConfiguration(SmtpOptions.SectionName);
+builder.Services.AddSmtpEmailSender();
 builder.Services.AddDbContext<HelpingHandsDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("HelpingHands")));
 builder.Services.AddHelpingHandsIdentity();
 builder.Services.AddScoped<NeedVersionService>();

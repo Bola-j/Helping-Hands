@@ -18,17 +18,10 @@ public sealed partial class WorkflowDbFixture
         return (charity, await AcceptAsync(coordinator, request));
     }
 
-    public static async Task<JsonElement> CreateReferralAsync(HttpClient coordinator, JsonElement charity, JsonElement accepted)
+    public static async Task<JsonElement> CreateReferralAsync(WorkflowDbFixture fixture, HttpClient coordinator, JsonElement charity, JsonElement accepted)
     {
-        var requestId = accepted.GetProperty("id").GetGuid();
-        var response = await WorkflowDbFixture.PostAsync(coordinator, $"/api/v1/requests/{requestId}/referrals", new
-        {
-            RecipientId = charity.GetProperty("id").GetGuid(),
-            AssignedQuantity = 1m,
-            ScopeDescription = "Fictional assignment",
-            Version = accepted.GetProperty("version").GetGuid()
-        });
-        return await WorkflowDbFixture.JsonAsync(response, HttpStatusCode.Created);
+        var setup = await WorkflowDbFixture.PrepareLegacyReferralAsync(fixture, coordinator, charity, accepted);
+        return await WorkflowDbFixture.PostMappedReferralAsync(coordinator, charity, setup);
     }
 
     public async Task<(int Count, decimal Quantity)> ReferralTotalsAsync(Guid id)

@@ -12,14 +12,17 @@ public sealed partial class WorkflowDbTests
         using var coordinator = await fixture.LoginAsync("Coordinator");
         using var beneficiary = await fixture.LoginAsync("Beneficiary");
         var (charity, accepted) = await WorkflowDbFixture.AcceptedNeedAsync(applicant, admin, coordinator, beneficiary);
-        var requestId = accepted.GetProperty("id").GetGuid();
+        var setup = await WorkflowDbFixture.PrepareLegacyReferralAsync(fixture, coordinator, charity, accepted);
+        var requestId = setup.Accepted.GetProperty("id").GetGuid();
         var path = $"/api/v1/requests/{requestId}/referrals";
         var body = new
         {
             RecipientId = charity.GetProperty("id").GetGuid(),
             AssignedQuantity = 1m,
             ScopeDescription = "Fictional assignment",
-            Version = accepted.GetProperty("version").GetGuid()
+            Version = setup.Accepted.GetProperty("version").GetGuid(),
+            ServiceVersionId = setup.ServiceVersionId,
+            StandardVersionId = setup.StandardVersionId
         };
         var responses = await Task.WhenAll(
             WorkflowDbFixture.PostAsync(coordinator, path, body),
@@ -46,7 +49,7 @@ public sealed partial class WorkflowDbTests
         using var coordinator = await fixture.LoginAsync("Coordinator");
         using var beneficiary = await fixture.LoginAsync("Beneficiary");
         var (charity, accepted) = await WorkflowDbFixture.AcceptedNeedAsync(representative, admin, coordinator, beneficiary);
-        var referral = await WorkflowDbFixture.CreateReferralAsync(coordinator, charity, accepted);
+        var referral = await WorkflowDbFixture.CreateReferralAsync(fixture, coordinator, charity, accepted);
         var outcome = await WorkflowDbFixture.CreateOutcomeAsync(representative, referral);
         using var hiddenReferral = await otherRepresentative.GetAsync($"/api/v1/referrals/{referral.GetProperty("id").GetGuid()}");
         using var hiddenOutcome = await otherRepresentative.GetAsync($"/api/v1/outcomes/{outcome.GetProperty("id").GetGuid()}");

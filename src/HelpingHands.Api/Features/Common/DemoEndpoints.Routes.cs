@@ -13,6 +13,7 @@ public static partial class DemoEndpoints
         api.MapPost("/beneficiaries", CreateBeneficiary).RequireAuthorization();
         api.MapGet("/beneficiaries", ListBeneficiaries).RequireAuthorization();
         api.MapGet("/beneficiaries/{id:guid}", GetBeneficiary).RequireAuthorization();
+        api.MapReminderRoutes();
     }
 
     private static void MapRequestAndReferralRoutes(this RouteGroupBuilder api)
@@ -29,6 +30,7 @@ public static partial class DemoEndpoints
         api.MapGet("/referrals/{id:guid}", GetReferral).RequireAuthorization();
         api.MapGet("/referrals/{id:guid}/history", ReferralHistory).RequireAuthorization();
         api.MapPost("/referrals/{id:guid}/outcomes", CreateOutcome).RequireAuthorization();
+        api.MapEligibleCharityMatchingRoute();
     }
 
     private static void MapOutcomeRoutes(this RouteGroupBuilder api)

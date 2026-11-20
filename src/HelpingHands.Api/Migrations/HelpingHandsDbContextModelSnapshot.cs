@@ -457,6 +457,59 @@ namespace HelpingHands.Api.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HelpingHands.Api.Data.DailyReminderIntent", b =>
+                {
+                    b.Property<Guid>("IntentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("AttemptCount")
+                        .HasColumnType("integer");
+
+                    b.Property<DateOnly>("CairoDate")
+                        .HasColumnType("date");
+
+                    b.Property<Guid>("CharityId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("DeliveredAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset?>("LastAttemptAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTimeOffset>("ScheduledForUtc")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.Property<Guid>("Version")
+                        .IsConcurrencyToken()
+                        .HasColumnType("uuid");
+
+                    b.HasKey("IntentId");
+
+                    b.HasIndex("CairoDate", "Status");
+
+                    b.HasIndex("CharityId", "CairoDate")
+                        .IsUnique();
+
+                    b.ToTable("DailyReminderIntent", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_DailyReminderIntent_AttemptCount", "\"AttemptCount\" >= 0");
+
+                            t.HasCheckConstraint("CK_DailyReminderIntent_DeliveredAt", "(\"Status\" = 'Delivered' AND \"DeliveredAt\" IS NOT NULL) OR (\"Status\" <> 'Delivered' AND \"DeliveredAt\" IS NULL)");
+
+                            t.HasCheckConstraint("CK_DailyReminderIntent_Status", "\"Status\" IN ('Pending', 'Delivered', 'Failed')");
+                        });
+                });
+
             modelBuilder.Entity("HelpingHands.Api.Data.DecisionHistory", b =>
                 {
                     b.Property<Guid>("Id")
@@ -857,6 +910,52 @@ namespace HelpingHands.Api.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HelpingHands.Api.Data.ReminderDeliveryAttempt", b =>
+                {
+                    b.Property<Guid>("AttemptId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("AttemptNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTimeOffset?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FailureReason")
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<Guid>("IntentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("RecipientEmail")
+                        .HasMaxLength(320)
+                        .HasColumnType("character varying(320)");
+
+                    b.Property<DateTimeOffset>("StartedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
+
+                    b.HasKey("AttemptId");
+
+                    b.HasIndex("IntentId", "AttemptNumber")
+                        .IsUnique();
+
+                    b.HasIndex("IntentId", "StartedAt");
+
+                    b.ToTable("ReminderDeliveryAttempt", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_ReminderDeliveryAttempt_Number", "\"AttemptNumber\" > 0");
+
+                            t.HasCheckConstraint("CK_ReminderDeliveryAttempt_Status", "\"Status\" IN ('InProgress', 'Succeeded', 'Failed')");
+                        });
+                });
+
             modelBuilder.Entity("HelpingHands.Api.Data.RequestNeed", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1157,6 +1256,15 @@ namespace HelpingHands.Api.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("HelpingHands.Api.Data.DailyReminderIntent", b =>
+                {
+                    b.HasOne("HelpingHands.Api.Data.Charity", null)
+                        .WithMany()
+                        .HasForeignKey("CharityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("HelpingHands.Api.Data.DecisionHistory", b =>
                 {
                     b.HasOne("HelpingHands.Api.Data.AppUser", null)
@@ -1284,6 +1392,15 @@ namespace HelpingHands.Api.Migrations
                         .WithMany()
                         .HasForeignKey("RequestId")
                         .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("HelpingHands.Api.Data.ReminderDeliveryAttempt", b =>
+                {
+                    b.HasOne("HelpingHands.Api.Data.DailyReminderIntent", null)
+                        .WithMany()
+                        .HasForeignKey("IntentId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
                 });
 

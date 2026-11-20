@@ -1,5 +1,7 @@
 using System.Net;
 using HelpingHands.Api.Features.Reminders;
+using HelpingHands.Api.Data;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 
@@ -57,6 +59,10 @@ internal static class ReminderLockOrderScenario
         var service = scope.ServiceProvider.GetRequiredService<DailyReminderStateService>();
         var intent = await service.EnsureDailyIntentAsync(charityId, new DateOnly(2026, 11, 20));
         var attempt = await service.BeginDeliveryAttemptAsync(intent.Intent.IntentId, email);
+        var database = scope.ServiceProvider.GetRequiredService<HelpingHandsDbContext>();
+        var row = await database.ReminderDeliveryAttempts.SingleAsync(item => item.AttemptId == attempt.Attempt!.AttemptId);
+        row.StartedAt = DateTimeOffset.UtcNow.AddMinutes(-6);
+        await database.SaveChangesAsync();
         return new Seed(intent.Intent.IntentId, attempt.Attempt!.AttemptId);
     }
 }

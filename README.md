@@ -51,6 +51,8 @@ if (-not (Test-Path .env)) { Copy-Item .env.example .env }
 New-Item -ItemType Directory -Force .local/https | Out-Null
 # Substitute the value you chose for DEV_CERT_PASSWORD; avoid storing it in shell history.
 dotnet dev-certs https -ep .local/https/dev.pfx -p '<local-certificate-password>'
+# Export the same development certificate for the web proxy. The PEM key is unencrypted.
+dotnet dev-certs https -ep .local/https/dev.crt --format PEM --no-password
 dotnet dev-certs https --trust
 docker compose up -d --wait postgres
 docker compose up -d storage storage-init
@@ -59,9 +61,10 @@ docker compose ps -a
 ./scripts/run-api.ps1 -Migrate
 docker compose run --rm api --seed-demo
 docker compose up -d api
+docker compose up -d --build web
 ```
 
-For an isolated second stack, use a distinct Compose project name and set unique loopback `API_HOST_PORT`, `POSTGRES_HOST_PORT`, `S3_API_HOST_PORT` values in its separate environment file. Update the host-side `ConnectionStrings__HelpingHands` and `EvidenceStorage__ServiceUrl` to match those host ports, and keep the host connection username aligned with `POSTGRES_USER`; containers continue to use internal service names and ports. A project name isolates Compose-managed volumes but does not by itself prevent host-port collisions. Keep existing volumes intact.
+For an isolated second stack, use a distinct Compose project name and set unique loopback `WEB_HOST_PORT`, `API_HOST_PORT`, `POSTGRES_HOST_PORT`, and `S3_API_HOST_PORT` values in its separate environment file. Set `DEV_HTTPS_DIR` to that stack's certificate directory, containing `dev.pfx`, `dev.crt` and `dev.key` exported from the same certificate. Update the host-side `ConnectionStrings__HelpingHands` and `EvidenceStorage__ServiceUrl` to match those host ports, and keep the host connection username aligned with `POSTGRES_USER`; containers continue to use internal service names and ports. A project name isolates Compose-managed volumes but does not by itself prevent host-port collisions. Keep existing volumes intact.
 
 If you have an existing `.env`, preserve it and rename `MINIO_ROOT_USER`, `MINIO_ROOT_PASSWORD`, and `MINIO_API_HOST_PORT` to `S3_ACCESS_KEY`, `S3_SECRET_KEY`, and `S3_API_HOST_PORT`; update the matching `EvidenceStorage__...` host settings. Remove the obsolete console-port setting. Do not overwrite the existing file.
 
@@ -69,7 +72,11 @@ SeaweedFS uses a private S3 identity generated from the local environment. Its v
 
 Inside the development container, the API receives the PostgreSQL password separately from the connection string through its environment. The migration command runs on the host using the loopback connection from `.env`. The API container uses Compose service names for PostgreSQL and the S3 service; it does not run migrations automatically. The explicit seed command works only in Development and does not promote an existing unrelated account. The launcher reads unquoted `KEY=VALUE` entries from `.env` into the process, restores previous values on exit, and supports values containing `=`. `.env` and `.local` are ignored by Git and excluded from the Docker build context. Never commit credentials; use a secret manager or deployment environment for real deployments.
 
-Use `https://localhost:8443/health` for liveness, `/ready` for PostgreSQL readiness, and `/openapi/v1.json` for the development OpenAPI document. Authentication uses secure cookies: an HTTP client must retain cookies, request `/api/v1/auth/antiforgery`, and send its token in the `X-CSRF-TOKEN` header on each unsafe request. If a requester creates a charity application, sign out and in again to refresh the representative role in the cookie. The web application currently provides navigation and information pages; API integration and the same-origin HTTPS proxy are tracked separately. To run the API directly on the host instead, use `./scripts/run-api.ps1` and `https://localhost:5087`.
+Open `https://localhost:8444` for the web application. Its HTTPS proxy serves the exported web app and forwards `/api/v1` to the API over HTTPS, verifying the API certificate against `dev.crt` for `localhost`. `DEV_HTTPS_DIR` defaults to `.local/https`; keep `dev.key` private because its PEM key is not encrypted, and never commit any certificate or key. `WEB_HOST_PORT` changes the loopback port. The web and API certificates must be exports of the same local development certificate; regenerate both exports together if it changes.
+
+The proxy resolves the API service through Docker DNS and refreshes the address periodically, so it can reconnect after the API container is replaced. It bounds DNS and connection attempts; an unavailable API returns a gateway error. Requests already connected to an unresponsive API can take up to 30 seconds of inactivity to time out.
+
+Use `https://localhost:8443/health` for API liveness, `/ready` for PostgreSQL readiness, and `/openapi/v1.json` for the development OpenAPI document. Authentication uses secure cookies: an HTTP client must retain cookies, request `/api/v1/auth/antiforgery`, and send its token in the `X-CSRF-TOKEN` header on each unsafe request. If a requester creates a charity application, sign out and in again to refresh the representative role in the cookie. To run the API directly on the host instead, use `./scripts/run-api.ps1` and `https://localhost:5087`.
 
 Build with `dotnet build HelpingHands.slnx`. For a containerized API, use `docker compose stop` to stop local services and `docker compose up -d` to restart them; stopping retains volumes. For an API running directly on the host, press Ctrl+C. If startup fails, inspect `docker compose ps -a` and `docker compose logs storage storage-init api`; confirm credentials, available ports, certificate access and image pulls before retrying. Do not delete volumes containing data you need. The current file-processing policy is intended only for fictional demo evidence and is not approved for production.
 
@@ -85,7 +92,9 @@ npm run web
 
 Open the URL printed by Expo. Run `npm run typecheck` and `npm run build:web` from `web` to check the frontend. This foundation does not yet connect to the API.
 
-For browser navigation tests, install the Python dependencies with `python -m pip install -r tests/requirements.txt` and run `python -m playwright install chromium`. With the web server running at `http://localhost:8081`, run `python -m unittest discover -s tests` from `web`. Set `WEB_TEST_URL` if Expo uses another port.
+For browser navigation tests, install the Python dependencies with `python -m pip install -r tests/requirements.txt` and run `python -m playwright install chromium`. With the web server running at `http://localhost:8081`, run `python -m unittest discover -s tests -p test_navigation.py` from `web`. Set `WEB_TEST_URL` if Expo uses another port.
+
+To test the containerized proxy, install Docker and OpenSSL and start the Docker engine. From the repository root, run `python -m unittest discover -s web/tests -p test_proxy_integration.py`. The tests build the web image and use an isolated HTTPS fixture, temporary certificates and uniquely named Docker resources; they do not test the real API or database.
 
 ## Automated tests
 

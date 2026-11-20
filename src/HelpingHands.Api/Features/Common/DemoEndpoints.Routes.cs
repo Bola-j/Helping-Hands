@@ -29,6 +29,7 @@ public static partial class DemoEndpoints
         api.MapGet("/referrals/{id:guid}", GetReferral).RequireAuthorization();
         api.MapGet("/referrals/{id:guid}/history", ReferralHistory).RequireAuthorization();
         api.MapPost("/referrals/{id:guid}/outcomes", CreateOutcome).RequireAuthorization();
+        api.MapEligibleCharityMatchingRoute();
     }
 
     private static void MapOutcomeRoutes(this RouteGroupBuilder api)

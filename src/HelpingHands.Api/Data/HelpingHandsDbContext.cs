@@ -32,6 +32,9 @@ public sealed partial class HelpingHandsDbContext(DbContextOptions<HelpingHandsD
     public DbSet<DailyCapacity> DailyCapacities => Set<DailyCapacity>();
     public DbSet<CapacityUpdate> CapacityUpdates => Set<CapacityUpdate>();
 
+    public DbSet<DailyReminderIntent> DailyReminderIntents => Set<DailyReminderIntent>();
+    public DbSet<ReminderDeliveryAttempt> ReminderDeliveryAttempts => Set<ReminderDeliveryAttempt>();
+
     // PostgreSQL sequences are nontransactional; gaps after rollback are expected.
     public async Task<string> NextReferenceAsync(string prefix, CancellationToken cancellationToken = default)
     {
@@ -77,6 +80,7 @@ public sealed partial class HelpingHandsDbContext(DbContextOptions<HelpingHandsD
         ConfigureEvidenceAttachment(model);
         ConfigureDecisionHistory(model);
         ConfigureCapacitySchema(model);
+        ConfigureReminderSchema(model);
     }
 
     private static void ConfigureCapacitySchema(ModelBuilder model)

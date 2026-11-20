@@ -23,6 +23,7 @@ builder.Services.AddDbContext<HelpingHandsDbContext>(options => options.UseNpgsq
 builder.Services.AddHelpingHandsIdentity();
 builder.Services.AddScoped<NeedVersionService>();
 builder.Services.AddScoped<ExactVersionRequestResolutionService>();
+builder.Services.AddScoped<SplitReferralAllocationService>();
 builder.Services.AddScoped<DailyReminderStateService>();
 builder.Services.AddScoped<CairoCapacityReminderRunner>();
 builder.Services.AddHostedService<CairoCapacityReminderHostedService>();

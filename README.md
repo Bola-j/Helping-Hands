@@ -90,7 +90,11 @@ npm ci
 npm run web
 ```
 
-Open the URL printed by Expo. Run `npm run typecheck` and `npm run build:web` from `web` to check the frontend. This foundation does not yet connect to the API.
+Open the URL printed by Expo. Run `npm run typecheck` and `npm run build:web` from `web` to check the frontend. The app's session client uses the same-origin API proxy described above; use the HTTPS container setup to exercise sessions. Registration and login screens are tracked separately.
+
+The session provider checks the current user when the app opens. It obtains an antiforgery token for each state-changing request, sends it with the browser's same-origin cookies, and obtains a new token for the next request after login or logout. Writes are queued; a queued action is cancelled if this app instance observes a session change before dispatch. An expired session is treated as signed out; a denied action or an unavailable API is reported separately. Tokens and passwords are not stored by the client. Consumers should use the session provider's `request` method for authenticated API calls and handle its typed errors without automatically retrying a failed write. For protected requests, the provider sends the account ID held when the action began. The API rejects the request if the authenticated account differs; the provider clears stale session state and does not retry the action. The in-memory queue does not coordinate tabs, and simultaneous first token requests in different tabs may require the user to retry after an antiforgery error.
+
+Run `npm run test:session` from `web` for the session client and provider checks. The optional live browser test creates a fictional beneficiary: only use a disposable isolated stack, then set `SESSION_TEST_URL` to its HTTPS web origin and `SESSION_TEST_ALLOW_WRITE=isolated` before running `python -m unittest discover -s web/tests/browser -p "test_live*.py"` from the repository root. The environment flag does not itself establish isolation.
 
 For browser navigation tests, install the Python dependencies with `python -m pip install -r tests/requirements.txt` and run `python -m playwright install chromium`. With the web server running at `http://localhost:8081`, run `python -m unittest discover -s tests -p test_navigation.py` from `web`. Set `WEB_TEST_URL` if Expo uses another port.
 

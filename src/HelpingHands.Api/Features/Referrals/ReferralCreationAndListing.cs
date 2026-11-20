@@ -6,14 +6,14 @@ namespace HelpingHands.Api.Features;
 
 public static partial class DemoEndpoints
 {
-    private static async Task<IResult> CreateReferral(Guid id, ReferralInput input, ClaimsPrincipal user, HelpingHandsDbContext database, CancellationToken cancellationToken)
+    private static async Task<IResult> CreateReferral(Guid id, ReferralInput input, ClaimsPrincipal user, HelpingHandsDbContext database, TimeProvider timeProvider, CancellationToken cancellationToken)
     {
         if (!Coordinator(user)) return Results.Forbid();
         if (InvalidReferralInput(input)) return Bad("A positive quantity and scope description are required.");
         await using var transaction = await database.Database.BeginTransactionAsync(cancellationToken);
         var request = await LockRequest(database, id, cancellationToken);
         if (request is null) return Results.NotFound();
-        var error = await ValidateReferralAssignment(database, request, input, cancellationToken);
+        var error = await ValidateReferralAssignment(database, request, input, timeProvider, cancellationToken);
         if (error is not null) return error;
         var referral = await BuildReferral(database, id, input.RecipientId, input, user, cancellationToken);
         RecordReferralAssignment(database, request, referral, user);
@@ -21,7 +21,7 @@ public static partial class DemoEndpoints
         await transaction.CommitAsync(cancellationToken);
         return Results.Created($"/api/v1/referrals/{referral.Id}", ReferralView(referral));
     }
-
+    
     private static IQueryable<Referral> VisibleReferrals(HelpingHandsDbContext database, ClaimsPrincipal user)
     {
         var query = database.Referrals.AsNoTracking();

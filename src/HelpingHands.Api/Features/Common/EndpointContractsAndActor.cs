@@ -17,7 +17,13 @@ public static partial class DemoEndpoints
 
     public sealed record RequestDecisionInput(string Decision, string? Reason, string? Category, string? ServiceSubtype, decimal? RequiredQuantity, string? Unit, Guid Version);
 
-    public sealed record ReferralInput(Guid RecipientId, decimal AssignedQuantity, string ScopeDescription, Guid Version);
+    public sealed record ReferralInput(
+        Guid RecipientId,
+        decimal AssignedQuantity,
+        string ScopeDescription,
+        Guid Version,
+        Guid? ServiceVersionId = null,
+        Guid? StandardVersionId = null);
 
     public sealed record OutcomeInput(decimal ReportedQuantity, string Description);
 

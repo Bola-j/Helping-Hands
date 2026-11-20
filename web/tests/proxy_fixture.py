@@ -75,4 +75,3 @@ class ProxyCase(unittest.TestCase):
                 return response.status, response.headers, response.read()
         except urllib.error.HTTPError as error:
             return error.code, error.headers, error.read()
-

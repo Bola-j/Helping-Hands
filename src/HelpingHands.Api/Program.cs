@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 var authLimit = builder.Configuration.GetValue("RateLimiting:AuthPermitLimit", 20);
 builder.Services.AddProblemDetails();
+builder.Services.AddSingleton(TimeProvider.System);
 builder.Services.AddOpenApi();
 builder.Services.AddValidation();
 builder.Services.AddDbContext<HelpingHandsDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("HelpingHands")));

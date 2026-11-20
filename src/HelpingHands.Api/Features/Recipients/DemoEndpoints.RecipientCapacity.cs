@@ -11,7 +11,7 @@ public static partial class DemoEndpoints
     public sealed record UpdateCharityCapacityInput(IReadOnlyList<CharityCapacityItemInput>? Capacities);
 
     public sealed record CharityDailyCapacityView(
-        Guid CapacityId,
+        Guid? CapacityId,
         Guid CharityServiceId,
         Guid ServiceVersionId,
         string ServiceName,
@@ -20,8 +20,12 @@ public static partial class DemoEndpoints
         string UnitStandardName,
         int StandardVersionNumber,
         DateOnly CairoDate,
-        decimal Available,
-        DateTimeOffset UpdatedAt);
+        string Status,
+        bool IsStale,
+        decimal? Available,
+        DateTimeOffset? UpdatedAt,
+        DateOnly? LastUpdatedCairoDate,
+        decimal? LastKnownAvailable);
 
     private static readonly TimeZoneInfo CairoTimeZone = ResolveCairoTimeZone();
 
@@ -53,6 +57,7 @@ public static partial class DemoEndpoints
         Guid id,
         ClaimsPrincipal user,
         HelpingHandsDbContext database,
+        TimeProvider timeProvider,
         CancellationToken cancellationToken)
     {
         var userId = Actor(user);
@@ -64,7 +69,7 @@ public static partial class DemoEndpoints
         if (!charityExists)
             return Results.NotFound();
 
-        var cairoDate = GetCurrentCairoDate(DateTimeOffset.UtcNow);
+        var cairoDate = GetCurrentCairoDate(timeProvider.GetUtcNow());
         var capacities = await BuildDailyCapacityViewAsync(database, id, cairoDate, cancellationToken);
 
         return Results.Ok(new
@@ -80,6 +85,7 @@ public static partial class DemoEndpoints
         UpdateCharityCapacityInput input,
         ClaimsPrincipal user,
         HelpingHandsDbContext database,
+        TimeProvider timeProvider,
         CancellationToken cancellationToken)
     {
         if (!user.IsInRole("RecipientRepresentative"))
@@ -125,7 +131,7 @@ public static partial class DemoEndpoints
         if (enabledServices.Count != distinctIds.Count)
             return Bad("All capacity updates must target enabled services belonging to this charity.");
 
-        var now = DateTimeOffset.UtcNow;
+        var now = timeProvider.GetUtcNow();
         var cairoDate = GetCurrentCairoDate(now);
 
         var existingCapacities = await database.DailyCapacities
@@ -187,26 +193,83 @@ public static partial class DemoEndpoints
         DateOnly cairoDate,
         CancellationToken cancellationToken)
     {
-        return await (
-            from dc in database.DailyCapacities.AsNoTracking()
-            join cs in database.CharityServices.AsNoTracking() on dc.CharityServiceId equals cs.CharityServiceId
+        var services = await (
+            from cs in database.CharityServices.AsNoTracking()
             join sv in database.ServiceVersions.AsNoTracking() on cs.ServiceVersionId equals sv.Id
             join stv in database.StandardVersions.AsNoTracking() on cs.StandardVersionId equals stv.Id
             join us in database.UnitStandards.AsNoTracking() on stv.UnitStandardId equals us.Id
-            where cs.CharityId == recipientId && cs.Enabled && dc.CairoDate == cairoDate
+            where cs.CharityId == recipientId && cs.Enabled
             orderby sv.Name, sv.VersionNumber, us.Name, stv.VersionNumber
-            select new CharityDailyCapacityView(
-                dc.CapacityId,
+            select new
+            {
                 cs.CharityServiceId,
-                sv.Id,
-                sv.Name,
-                sv.VersionNumber,
-                stv.Id,
-                us.Name,
-                stv.VersionNumber,
-                dc.CairoDate,
-                dc.Available,
-                dc.UpdatedAt)
+                ServiceVersionId = sv.Id,
+                ServiceName = sv.Name,
+                ServiceVersionNumber = sv.VersionNumber,
+                StandardVersionId = stv.Id,
+                UnitStandardName = us.Name,
+                StandardVersionNumber = stv.VersionNumber
+            }
         ).ToListAsync(cancellationToken);
+
+        if (services.Count == 0)
+            return [];
+
+        var serviceIds = services.Select(s => s.CharityServiceId).ToList();
+
+        var latestCapacities = await database.DailyCapacities.AsNoTracking()
+            .Where(dc => serviceIds.Contains(dc.CharityServiceId) && dc.CairoDate <= cairoDate)
+            .OrderByDescending(dc => dc.CairoDate)
+            .ToListAsync(cancellationToken);
+
+        var latestByService = latestCapacities
+            .GroupBy(dc => dc.CharityServiceId)
+            .ToDictionary(g => g.Key, g => g.First());
+
+        var result = new List<CharityDailyCapacityView>(services.Count);
+        foreach (var s in services)
+        {
+            if (latestByService.TryGetValue(s.CharityServiceId, out var latest) && latest.CairoDate == cairoDate)
+            {
+                var status = latest.Available == 0 ? "Zero" : "Available";
+                result.Add(new CharityDailyCapacityView(
+                    latest.CapacityId,
+                    s.CharityServiceId,
+                    s.ServiceVersionId,
+                    s.ServiceName,
+                    s.ServiceVersionNumber,
+                    s.StandardVersionId,
+                    s.UnitStandardName,
+                    s.StandardVersionNumber,
+                    cairoDate,
+                    status,
+                    IsStale: false,
+                    Available: latest.Available,
+                    UpdatedAt: latest.UpdatedAt,
+                    LastUpdatedCairoDate: latest.CairoDate,
+                    LastKnownAvailable: latest.Available));
+            }
+            else
+            {
+                result.Add(new CharityDailyCapacityView(
+                    CapacityId: null,
+                    s.CharityServiceId,
+                    s.ServiceVersionId,
+                    s.ServiceName,
+                    s.ServiceVersionNumber,
+                    s.StandardVersionId,
+                    s.UnitStandardName,
+                    s.StandardVersionNumber,
+                    cairoDate,
+                    Status: "Stale",
+                    IsStale: true,
+                    Available: null,
+                    UpdatedAt: null,
+                    LastUpdatedCairoDate: latest?.CairoDate,
+                    LastKnownAvailable: latest?.Available));
+            }
+        }
+
+        return result;
     }
 }

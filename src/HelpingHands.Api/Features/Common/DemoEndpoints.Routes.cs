@@ -13,6 +13,7 @@ public static partial class DemoEndpoints
         api.MapPost("/beneficiaries", CreateBeneficiary).RequireAuthorization();
         api.MapGet("/beneficiaries", ListBeneficiaries).RequireAuthorization();
         api.MapGet("/beneficiaries/{id:guid}", GetBeneficiary).RequireAuthorization();
+        api.MapReminderRoutes();
     }
 
     private static void MapRequestAndReferralRoutes(this RouteGroupBuilder api)

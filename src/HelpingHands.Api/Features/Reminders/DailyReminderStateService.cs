@@ -119,7 +119,7 @@ public sealed class DailyReminderStateService(HelpingHandsDbContext database, Ti
 
         // Recover any orphaned InProgress attempts left behind by a process crash or restart
         var orphanedAttempts = await database.ReminderDeliveryAttempts
-            .Where(a => a.IntentId == intentId && a.Status == "InProgress")
+            .FromSqlInterpolated($"SELECT * FROM \"ReminderDeliveryAttempt\" WHERE \"IntentId\" = {intentId} AND \"Status\" = 'InProgress' ORDER BY \"AttemptNumber\" FOR UPDATE")
             .ToListAsync(cancellationToken);
 
         foreach (var orphan in orphanedAttempts)
@@ -165,16 +165,17 @@ public sealed class DailyReminderStateService(HelpingHandsDbContext database, Ti
     {
         await using var transaction = await database.Database.BeginTransactionAsync(cancellationToken);
 
-        var attempt = await database.ReminderDeliveryAttempts
-            .FromSqlInterpolated($"SELECT * FROM \"ReminderDeliveryAttempt\" WHERE \"AttemptId\" = {attemptId} FOR UPDATE")
-            .SingleOrDefaultAsync(cancellationToken);
-
-        if (attempt is null)
+        var attemptIntentId = await FindAttemptIntentIdAsync(database, attemptId, cancellationToken);
+        if (attemptIntentId is null)
             throw new InvalidOperationException($"Reminder delivery attempt '{attemptId}' does not exist.");
 
         var intent = await database.DailyReminderIntents
-            .FromSqlInterpolated($"SELECT * FROM \"DailyReminderIntent\" WHERE \"IntentId\" = {attempt.IntentId} FOR UPDATE")
+            .FromSqlInterpolated($"SELECT * FROM \"DailyReminderIntent\" WHERE \"IntentId\" = {attemptIntentId.Value} FOR UPDATE")
             .SingleAsync(cancellationToken);
+
+        var attempt = await LockAttemptAsync(database, attemptId, cancellationToken);
+        if (attempt.IntentId != intent.IntentId)
+            throw new InvalidOperationException("Reminder attempt changed its parent intent while being completed.");
 
         if (attempt.Status != "InProgress")
         {
@@ -214,4 +215,21 @@ public sealed class DailyReminderStateService(HelpingHandsDbContext database, Ti
 
         return (intent, attempt);
     }
+
+    private static Task<Guid?> FindAttemptIntentIdAsync(
+        HelpingHandsDbContext database,
+        Guid attemptId,
+        CancellationToken cancellationToken) =>
+        database.ReminderDeliveryAttempts.AsNoTracking()
+            .Where(attempt => attempt.AttemptId == attemptId)
+            .Select(attempt => (Guid?)attempt.IntentId)
+            .SingleOrDefaultAsync(cancellationToken);
+
+    private static async Task<ReminderDeliveryAttempt> LockAttemptAsync(
+        HelpingHandsDbContext database,
+        Guid attemptId,
+        CancellationToken cancellationToken) =>
+        await database.ReminderDeliveryAttempts
+            .FromSqlInterpolated($"SELECT * FROM \"ReminderDeliveryAttempt\" WHERE \"AttemptId\" = {attemptId} FOR UPDATE")
+            .SingleAsync(cancellationToken);
 }

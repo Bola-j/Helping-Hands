@@ -1,5 +1,15 @@
 name: helping-hands
 services:
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    ports:
+      - "127.0.0.1:${WEB_HOST_PORT:-8444}:8443"
+    volumes:
+      - ${DEV_HTTPS_DIR:-./.local/https}:/https:ro
+    depends_on:
+      - api
   api:
     build:
       context: .
@@ -23,7 +33,7 @@ services:
     ports:
       - "127.0.0.1:${API_HOST_PORT:-8443}:8443"
     volumes:
-      - ./.local/https:/https:ro
+      - ${DEV_HTTPS_DIR:-./.local/https}:/https:ro
     depends_on:
       postgres:
         condition: service_healthy

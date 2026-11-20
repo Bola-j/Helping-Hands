@@ -1,6 +1,6 @@
 import os
 import unittest
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect, sync_playwright
 
 
 class NavigationTests(unittest.TestCase):
@@ -19,11 +19,11 @@ class NavigationTests(unittest.TestCase):
         page = self.browser.new_page()
         page.goto(self.base, wait_until='networkidle')
         page.get_by_role('link', name='See how it works').click()
-        self.assertTrue(page.get_by_role('heading', name='How it works').is_visible())
+        expect(page.get_by_role('heading', name='How it works')).to_be_visible()
         page.reload(wait_until='networkidle')
-        self.assertTrue(page.get_by_text('A person makes a request').is_visible())
+        expect(page.get_by_text('A person makes a request')).to_be_visible()
         page.go_back(wait_until='networkidle')
-        self.assertTrue(page.get_by_role('heading', name='Coordinate requests for assistance.').is_visible())
+        expect(page.get_by_role('heading', name='Coordinate requests for assistance.')).to_be_visible()
         page.close()
 
     def test_mobile_layout_and_keyboard_navigation(self):
@@ -34,7 +34,7 @@ class NavigationTests(unittest.TestCase):
         self.assertEqual(page.evaluate('document.activeElement.getAttribute("aria-label")'), 'Helping Hands home')
         page.keyboard.press('Tab')
         page.keyboard.press('Enter')
-        self.assertTrue(page.get_by_role('heading', name='How it works').is_visible())
+        expect(page.get_by_role('heading', name='How it works')).to_be_visible()
         page.close()
 
 

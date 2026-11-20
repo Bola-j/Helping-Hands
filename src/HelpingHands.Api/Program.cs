@@ -39,6 +39,7 @@ app.UseExceptionHandler(handler => handler.Run(async context =>
     await Results.Problem(statusCode: status, title: status == 409 ? "The record was changed" : "An error occurred").ExecuteAsync(context);
 }));
 app.UseAuthentication();
+app.UseMiddleware<ExpectedUserMiddleware>();
 app.UseAuthorization();
 app.UseRateLimiter();
 app.UseAntiforgery();

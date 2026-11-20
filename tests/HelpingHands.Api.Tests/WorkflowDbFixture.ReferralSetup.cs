@@ -52,11 +52,15 @@ public sealed partial class WorkflowDbFixture
         using var scope = fixture.Factory.Services.CreateScope();
         var database = scope.ServiceProvider.GetRequiredService<HelpingHandsDbContext>();
         var category = new ServiceCategory { Code = $"TEST-{Guid.NewGuid():N}" };
-        var service = new ServiceVersion { CategoryId = category.Id, VersionNumber = 1, IsPublished = true, Name = "Fictional goods" };
+        var service = new ServiceVersion { CategoryId = category.Id, VersionNumber = 1, Name = "Fictional goods" };
         var unit = new UnitStandard { ServiceVersionId = service.Id, Name = "Fictional box" };
-        var standard = new StandardVersion { UnitStandardId = unit.Id, VersionNumber = 1, IsPublished = true, EffectiveAt = DateTimeOffset.UtcNow.AddMinutes(-1) };
+        var standard = new StandardVersion { UnitStandardId = unit.Id, VersionNumber = 1, EffectiveAt = DateTimeOffset.UtcNow.AddMinutes(-1) };
         database.AddRange(category, service, unit, standard, new StandardComponent
         { StandardVersionId = standard.Id, Name = "Fictional item", Quantity = 1m, Unit = "item" });
+        await database.SaveChangesAsync();
+        service.IsPublished = true;
+        await database.SaveChangesAsync();
+        standard.IsPublished = true;
         await database.SaveChangesAsync();
 
         var selection = new CharityService

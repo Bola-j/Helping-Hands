@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Helping Hands",
+    "slug": "helping-hands",
+    "scheme": "helping-hands",
+    "version": "1.0.0",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      "expo-router"
+    ],
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}

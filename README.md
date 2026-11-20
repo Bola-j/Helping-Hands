@@ -69,9 +69,23 @@ SeaweedFS uses a private S3 identity generated from the local environment. Its v
 
 Inside the development container, the API receives the PostgreSQL password separately from the connection string through its environment. The migration command runs on the host using the loopback connection from `.env`. The API container uses Compose service names for PostgreSQL and the S3 service; it does not run migrations automatically. The explicit seed command works only in Development and does not promote an existing unrelated account. The launcher reads unquoted `KEY=VALUE` entries from `.env` into the process, restores previous values on exit, and supports values containing `=`. `.env` and `.local` are ignored by Git and excluded from the Docker build context. Never commit credentials; use a secret manager or deployment environment for real deployments.
 
-Use `https://localhost:8443/health` for liveness, `/ready` for PostgreSQL readiness, and `/openapi/v1.json` for the development OpenAPI document. Authentication uses secure cookies: an HTTP client must retain cookies, request `/api/v1/auth/antiforgery`, and send its token in the `X-CSRF-TOKEN` header on each unsafe request. If a requester creates a charity application, sign out and in again to refresh the representative role in the cookie. The future web UI should call the API through a same-origin HTTPS proxy; there is no frontend project or frontend container in the repository yet. To run the API directly on the host instead, use `./scripts/run-api.ps1` and `https://localhost:5087`.
+Use `https://localhost:8443/health` for liveness, `/ready` for PostgreSQL readiness, and `/openapi/v1.json` for the development OpenAPI document. Authentication uses secure cookies: an HTTP client must retain cookies, request `/api/v1/auth/antiforgery`, and send its token in the `X-CSRF-TOKEN` header on each unsafe request. If a requester creates a charity application, sign out and in again to refresh the representative role in the cookie. The web application currently provides navigation and information pages; API integration and the same-origin HTTPS proxy are tracked separately. To run the API directly on the host instead, use `./scripts/run-api.ps1` and `https://localhost:5087`.
 
 Build with `dotnet build HelpingHands.slnx`. For a containerized API, use `docker compose stop` to stop local services and `docker compose up -d` to restart them; stopping retains volumes. For an API running directly on the host, press Ctrl+C. If startup fails, inspect `docker compose ps -a` and `docker compose logs storage storage-init api`; confirm credentials, available ports, certificate access and image pulls before retrying. Do not delete volumes containing data you need. The current file-processing policy is intended only for fictional demo evidence and is not approved for production.
+
+## Web application
+
+Install Node.js and run the Expo web development server:
+
+```powershell
+cd web
+npm ci
+npm run web
+```
+
+Open the URL printed by Expo. Run `npm run typecheck` and `npm run build:web` from `web` to check the frontend. This foundation does not yet connect to the API.
+
+For browser navigation tests, install the Python dependencies with `python -m pip install -r tests/requirements.txt` and run `python -m playwright install chromium`. With the web server running at `http://localhost:8081`, run `python -m unittest discover -s tests` from `web`. Set `WEB_TEST_URL` if Expo uses another port.
 
 ## Automated tests
 

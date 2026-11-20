@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using HelpingHands.Api.Data;
+using HelpingHands.Api.Features.Reminders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -44,12 +45,20 @@ public sealed partial class EvidenceFlowTests
             Unit = "box",
             Version = Version(request)
         }, HttpStatusCode.OK);
+        var (serviceVersionId, standardVersionId) = await SeedReferralSupportAsync(charity);
+        var mapped = await EvidenceFlowFixture.PostJsonAsync(coordinator, $"/api/v1/requests/{Id(request)}/legacy-standard", new
+        {
+            StandardVersionId = standardVersionId,
+            Version = Version(accepted)
+        }, HttpStatusCode.OK);
         return await EvidenceFlowFixture.PostJsonAsync(administrator, $"/api/v1/requests/{Id(request)}/referrals", new
         {
             RecipientId = charity,
             AssignedQuantity = 1,
             ScopeDescription = "Fictional goods",
-            Version = Version(accepted)
+            Version = Version(mapped),
+            ServiceVersionId = serviceVersionId,
+            StandardVersionId = standardVersionId
         }, HttpStatusCode.Created);
     }
 }

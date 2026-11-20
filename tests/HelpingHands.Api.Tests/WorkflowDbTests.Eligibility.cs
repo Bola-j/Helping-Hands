@@ -40,15 +40,23 @@ public sealed partial class WorkflowDbTests
         using var coordinator = await fixture.LoginAsync("Coordinator");
         using var beneficiary = await fixture.LoginAsync("Beneficiary");
         var (charity, accepted) = await WorkflowDbFixture.AcceptedNeedAsync(applicant, admin, coordinator, beneficiary);
+        var setup = await WorkflowDbFixture.PrepareLegacyReferralAsync(fixture, coordinator, charity, accepted);
         var id = charity.GetProperty("id").GetGuid();
         await SetCharityActiveAsync(id, false);
-        var requestId = accepted.GetProperty("id").GetGuid();
+        var requestId = setup.Accepted.GetProperty("id").GetGuid();
         using var denied = await WorkflowDbFixture.PostAsync(coordinator, $"/api/v1/requests/{requestId}/referrals", new
-        { RecipientId = id, AssignedQuantity = 1m, ScopeDescription = "Fictional", Version = accepted.GetProperty("version").GetGuid() });
+        {
+            RecipientId = id,
+            AssignedQuantity = 1m,
+            ScopeDescription = "Fictional",
+            Version = setup.Accepted.GetProperty("version").GetGuid(),
+            ServiceVersionId = setup.ServiceVersionId,
+            StandardVersionId = setup.StandardVersionId
+        });
         Assert.Equal(HttpStatusCode.Conflict, denied.StatusCode);
         Assert.Equal((0, 0m), await fixture.ReferralTotalsAsync(requestId));
         await SetCharityActiveAsync(id, true);
-        await WorkflowDbFixture.CreateReferralAsync(coordinator, charity, accepted);
+        await WorkflowDbFixture.PostMappedReferralAsync(coordinator, charity, setup);
         Assert.Equal((1, 1m), await fixture.ReferralTotalsAsync(requestId));
     }
 

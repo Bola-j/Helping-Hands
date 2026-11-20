@@ -24,12 +24,15 @@ public sealed partial class HelpingHandsDbContext
             builder.Property(entity => entity.Version).IsConcurrencyToken();
             builder.HasOne<Beneficiary>().WithMany().HasForeignKey(entity => entity.BeneficiaryId).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne<AppUser>().WithMany().HasForeignKey(entity => entity.SubmittedByUserId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne<AppUser>().WithMany().HasForeignKey(entity => entity.LegacyMappingActorId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne<StandardVersion>().WithMany().HasForeignKey(entity => entity.LegacyStandardVersionId).OnDelete(DeleteBehavior.Restrict);
         });
 
     private static void ConfigureRequestTable(EntityTypeBuilder<AssistanceRequest> builder) =>
         builder.ToTable("AssistanceRequest", table =>
         {
             table.HasCheckConstraint("CK_Request_DemandMode", "NOT \"IsMultiNeed\" OR (\"Category\" IS NULL AND \"ServiceSubtype\" IS NULL AND \"RequiredQuantity\" IS NULL AND \"Unit\" IS NULL)");
+            table.HasCheckConstraint("CK_Request_LegacyMapping", "(\"LegacyStandardVersionId\" IS NULL AND \"LegacyMappingActorId\" IS NULL AND \"LegacyMappedAt\" IS NULL) OR (NOT \"IsMultiNeed\" AND \"LegacyStandardVersionId\" IS NOT NULL AND \"LegacyMappingActorId\" IS NOT NULL AND \"LegacyMappedAt\" IS NOT NULL)");
             table.HasCheckConstraint("CK_Request_Category", "\"Category\" IS NULL OR \"Category\" IN ('Goods', 'Money', 'OrganizationalReferral')");
             table.HasCheckConstraint("CK_Request_Status", "\"Status\" IN ('Submitted', 'Clarification', 'Accepted', 'Rejected', 'Open', 'Completed', 'ClosedUnresolved', 'Split', 'InReview', 'FullyAccepted', 'PartiallyAccepted', 'FullyRejected')");
             table.HasCheckConstraint("CK_Request_Quantity", "\"RequiredQuantity\" IS NULL OR \"RequiredQuantity\" > 0");

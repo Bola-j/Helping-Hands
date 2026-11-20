@@ -43,6 +43,11 @@ jobs:
       PGDATABASE: helping_hands_ci
       PGUSER: postgres
     steps:
+      - name: Free disk space for API verification
+        run: |
+          df -h /
+          sudo rm -rf /usr/local/lib/android
+          df -h /
       - name: Check out source
         uses: actions/checkout@v7.0.1
         with:
@@ -78,10 +83,17 @@ jobs:
         run: docker run --rm --network host -e AWS_ACCESS_KEY_ID -e AWS_SECRET_ACCESS_KEY -e AWS_DEFAULT_REGION amazon/aws-cli:2.27.49 --endpoint-url http://127.0.0.1:8333 s3api create-bucket --bucket "$P1_TEST_S3_BUCKET"
       - name: Application end-to-end tests (evidence workflow)
         run: dotnet test HelpingHands.slnx --configuration Release --no-build --no-restore --filter 'FullyQualifiedName~EvidenceFlowTests' --logger 'trx;LogFileName=e2e.trx' --results-directory TestResults
+      - name: Release evidence test storage
+        run: |
+          docker rm -f -v p1-ci-storage
+          docker image rm amazon/aws-cli:2.27.49 chrislusf/seaweedfs:3.90
+          df -h /
+          docker system df
       - name: Install EF Core tools
         run: dotnet tool install dotnet-ef --version 10.0.0 --tool-path "$RUNNER_TEMP/dotnet-tools"
       - name: Check migration model and apply to isolated database
         run: |
+          trap 'df -h /; docker system df' EXIT
           "$RUNNER_TEMP/dotnet-tools/dotnet-ef" migrations has-pending-model-changes --project src/HelpingHands.Api --configuration Release --no-build
           "$RUNNER_TEMP/dotnet-tools/dotnet-ef" database update --project src/HelpingHands.Api --configuration Release --no-build
       - name: Verify PostgreSQL schema

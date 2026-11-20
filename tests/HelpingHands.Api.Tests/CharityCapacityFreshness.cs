@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http.Json;
 using System.Text.Json;
 using HelpingHands.Api.Data;
+using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,13 @@ public sealed partial class WorkflowDbTests
         public override DateTimeOffset GetUtcNow() => _utcNow;
         public void SetUtcNow(DateTimeOffset utcNow) => _utcNow = utcNow;
     }
+
+    private static HttpClient CreateHttpsClient(WebApplicationFactory<Program> factory) =>
+        factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            BaseAddress = new Uri("https://localhost"),
+            AllowAutoRedirect = false
+        });
 
     [Fact]
     public async Task DailyCapacityFreshness_DistinguishesStaleFromZeroAndFreezesAtCairoMidnight()
@@ -40,7 +48,7 @@ public sealed partial class WorkflowDbTests
         var (_, service2, _, version2) = await PublishedCatalogAsync(db);
 
         // Register charity representative on customFactory
-        var repClient = customFactory.CreateClient();
+        var repClient = CreateHttpsClient(customFactory);
         var repEmail = $"rep-fresh-{Guid.NewGuid():N}@example.test";
         var regRep = await WorkflowDbFixture.RegisterCharityAsync(
             repClient, "Rep Freshness", repEmail, fixture.Password, "Freshness Charity", "fresh@example.test", "REG-P121");
@@ -51,13 +59,13 @@ public sealed partial class WorkflowDbTests
         var recipientId = charity.GetProperty("id").GetGuid();
 
         // Approve charity as Administrator
-        var adminClient = customFactory.CreateClient();
+        var adminClient = CreateHttpsClient(customFactory);
         Assert.Equal(HttpStatusCode.NoContent,
             (await WorkflowDbFixture.LoginRegisteredAsync(adminClient, fixture.Emails["Administrator"], fixture.Password)).StatusCode);
         await WorkflowDbFixture.ApproveAsync(adminClient, charity);
 
         // Login as Coordinator
-        var coordinatorClient = customFactory.CreateClient();
+        var coordinatorClient = CreateHttpsClient(customFactory);
         Assert.Equal(HttpStatusCode.NoContent,
             (await WorkflowDbFixture.LoginRegisteredAsync(coordinatorClient, fixture.Emails["Coordinator"], fixture.Password)).StatusCode);
 
@@ -105,7 +113,7 @@ public sealed partial class WorkflowDbTests
         Assert.Equal(JsonValueKind.Null, item2.GetProperty("available").ValueKind);
 
         // 3. Create an accepted request & verify referral succeeds for fresh service1, but is blocked for stale service2
-        var benClient = customFactory.CreateClient();
+        var benClient = CreateHttpsClient(customFactory);
         var benEmail = $"ben-fresh-{Guid.NewGuid():N}@example.test";
         Assert.Equal(HttpStatusCode.Created, (await WorkflowDbFixture.RegisterBeneficiaryAsync(benClient, "Ben Fresh", benEmail, fixture.Password)).StatusCode);
         Assert.Equal(HttpStatusCode.NoContent, (await WorkflowDbFixture.LoginRegisteredAsync(benClient, benEmail, fixture.Password)).StatusCode);

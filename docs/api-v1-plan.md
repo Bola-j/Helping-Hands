@@ -40,6 +40,8 @@ Versioned business endpoints require authentication except `GET /api/v1/auth/ant
 
 `GET /api/v1/auth/antiforgery` is anonymous and returns a request token and the header name `X-CSRF-TOKEN`; retain its antiforgery cookie and send both cookie and token on unsafe `/api/v1` requests, including registration and login. Obtain a fresh token after authentication changes. Missing or invalid tokens return 400 Problem Details. Authentication and authorization challenges return HTTP 401 and 403 without browser redirects; their responses currently have no promised Problem Details body.
 
+Authenticated web requests also send `X-Expected-User-Id` with the account ID visible when the action began. When this optional header is present on a `/api/v1` request, the API compares it with the authenticated principal and returns 401 when the session is unauthenticated, and rejects an invalid header or different principal with 409 and `X-Session-Changed: true` before executing the handler. Omitting the header preserves existing API client behavior; it is a precondition, not authentication or authorization.
+
 The Identity authentication cookie and antiforgery cookie are configured as `Secure`, `HttpOnly` and `SameSite=Strict`. Authentication tickets expire after eight hours without sliding renewal. Cookies require HTTPS. The local setup is for fictional data; production key persistence and deployment policies are separate work. P1-10's current candidate verifies login/logout and applies the role policy above; the local full software suite passed 69/69 on 13 November against isolated PostgreSQL and private S3-compatible storage. The candidate remains unmerged until its PR checks and post-merge workflow pass.
 
 ## Integrity, evidence and verification

@@ -133,7 +133,13 @@ public sealed partial class WorkflowDbTests
             Version = reqVersion
         });
         var acceptedReq = await WorkflowDbFixture.JsonAsync(acceptReqRes, HttpStatusCode.OK);
-        var acceptedVersion = acceptedReq.GetProperty("version").GetGuid();
+        using var mapRes = await PostWithAntiforgeryAsync(coordinatorClient, $"/api/v1/requests/{requestId}/legacy-standard", new
+        {
+            StandardVersionId = version1.Id,
+            Version = acceptedReq.GetProperty("version").GetGuid()
+        });
+        var mappedReq = await WorkflowDbFixture.JsonAsync(mapRes, HttpStatusCode.OK);
+        var acceptedVersion = mappedReq.GetProperty("version").GetGuid();
 
         // Blocked for stale service2
         using var staleRefRes = await PostWithAntiforgeryAsync(coordinatorClient, $"/api/v1/requests/{requestId}/referrals", new
@@ -188,6 +194,23 @@ public sealed partial class WorkflowDbTests
             StandardVersionId = version1.Id
         });
         Assert.Equal(HttpStatusCode.Conflict, frozenRefRes.StatusCode);
+
+        // A fresh but unrelated selected version must not unfreeze the request's service.
+        using var otherUpdate = await PutWithAntiforgeryAsync(repClient, $"/api/v1/recipients/{recipientId}/capacity", new
+        {
+            Capacities = new[] { new { CharityServiceId = cs2Id, Available = 3m } }
+        });
+        Assert.Equal(HttpStatusCode.OK, otherUpdate.StatusCode);
+        using var bypass = await PostWithAntiforgeryAsync(coordinatorClient, $"/api/v1/requests/{requestId}/referrals", new
+        {
+            RecipientId = recipientId,
+            AssignedQuantity = 1m,
+            ScopeDescription = "Try another service version",
+            Version = versionAfterFirstRef,
+            ServiceVersionId = service2.Id,
+            StandardVersionId = version2.Id
+        });
+        Assert.Equal(HttpStatusCode.Conflict, bypass.StatusCode);
 
         // Existing referral created before midnight is preserved intact
         using var existingRefGet = await coordinatorClient.GetAsync($"/api/v1/referrals/{existingReferralId}");

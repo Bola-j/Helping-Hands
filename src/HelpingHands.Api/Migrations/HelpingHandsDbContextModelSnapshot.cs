@@ -234,6 +234,15 @@ namespace HelpingHands.Api.Migrations
                     b.Property<bool>("IsMultiNeed")
                         .HasColumnType("boolean");
 
+                    b.Property<DateTimeOffset?>("LegacyMappedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("LegacyMappingActorId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("LegacyStandardVersionId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("Reference")
                         .IsRequired()
                         .HasMaxLength(32)
@@ -268,6 +277,10 @@ namespace HelpingHands.Api.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LegacyMappingActorId");
+
+                    b.HasIndex("LegacyStandardVersionId");
+
                     b.HasIndex("Reference")
                         .IsUnique();
 
@@ -284,6 +297,8 @@ namespace HelpingHands.Api.Migrations
                             t.HasCheckConstraint("CK_Request_Confirmed", "\"AuthorityConfirmed\" AND \"SharingAgreed\"");
 
                             t.HasCheckConstraint("CK_Request_DemandMode", "NOT \"IsMultiNeed\" OR (\"Category\" IS NULL AND \"ServiceSubtype\" IS NULL AND \"RequiredQuantity\" IS NULL AND \"Unit\" IS NULL)");
+
+                            t.HasCheckConstraint("CK_Request_LegacyMapping", "(\"LegacyStandardVersionId\" IS NULL AND \"LegacyMappingActorId\" IS NULL AND \"LegacyMappedAt\" IS NULL) OR (NOT \"IsMultiNeed\" AND \"LegacyStandardVersionId\" IS NOT NULL AND \"LegacyMappingActorId\" IS NOT NULL AND \"LegacyMappedAt\" IS NOT NULL)");
 
                             t.HasCheckConstraint("CK_Request_Quantity", "\"RequiredQuantity\" IS NULL OR \"RequiredQuantity\" > 0");
 
@@ -1056,6 +1071,16 @@ namespace HelpingHands.Api.Migrations
                         .HasForeignKey("BeneficiaryId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("HelpingHands.Api.Data.AppUser", null)
+                        .WithMany()
+                        .HasForeignKey("LegacyMappingActorId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("HelpingHands.Api.Data.StandardVersion", null)
+                        .WithMany()
+                        .HasForeignKey("LegacyStandardVersionId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("HelpingHands.Api.Data.AppUser", null)
                         .WithMany()

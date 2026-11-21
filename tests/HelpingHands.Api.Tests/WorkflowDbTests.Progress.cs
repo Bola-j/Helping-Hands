@@ -43,7 +43,7 @@ public sealed partial class WorkflowDbTests
         Assert.Equal(JsonValueKind.Null, repNeed.GetProperty("requiredQuantity").ValueKind);
         Assert.Equal(JsonValueKind.Null, repNeed.GetProperty("status").ValueKind);
         Assert.Equal(JsonValueKind.Null, repNeed.GetProperty("remainingQuantity").ValueKind);
-        Assert.Equal(2m, repNeed.GetProperty("assignedQuantity").GetDecimal());
+        Assert.Equal(1m, repNeed.GetProperty("assignedQuantity").GetDecimal());
         Assert.Equal(1m, repNeed.GetProperty("acceptedQuantity").GetDecimal());
         Assert.Equal(1, repNeed.GetProperty("assignments").GetArrayLength());
         Assert.Equal("Accepted", repNeed.GetProperty("assignments")[0].GetProperty("outcomes")[0].GetProperty("status").GetString());

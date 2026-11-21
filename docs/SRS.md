@@ -392,3 +392,9 @@ Assessment date: 9 November 2026. This is a historical assessment of the local s
 - Do not mark a capability done based on this inventory. Recheck S3 availability and run isolated upgrade, recovery, representative API and storage verification; record actual results.
 - The P1-10 role policy is now explicit: Administrator inherits Coordinator permissions; Phase 1 self-requesting uses `Beneficiary`; legacy `Requester` grants no Phase 1 access; third-party requesters remain later scope. Current automatic request completion remains a separate behavior to reconcile under P1-02/P1-44.
 - At assessment time P1-33 was a product decision; an interim exact-version rule was selected subsequently. The Scrum Master accepted the assessment review; remaining blockers are tracked separately.
+
+### Dated implementation evidence — 21 November 2026
+
+P1-55 now implements explicit coordinator closure, with isolated PostgreSQL checks for partial and full multi-need fulfillment, competing closure attempts, audit actor/time, stale versions, accepted-quantity replay and post-close allocation rejection. The API build and focused checks passed locally. See the [API demo walkthrough](api-demo-walkthrough.md) for the route and behavior. Branch publication, CI, required review and merge are not complete.
+
+P1-56's isolated Docker exercise verified API liveness/readiness and retained PostgreSQL plus private evidence after a full container restart, and recorded PostgreSQL and storage outage behavior. Mailpit accepted a retried reminder before restart; its inbox history did not persist. The storage outage download did not return an HTTP response within the 45-second client limit. This exercise is not a database backup/restore test or production recovery certification; details and boundaries are recorded in [local service recovery verification](local-service-recovery-verification.md). P1-56 remains open pending issue review and CI evidence.

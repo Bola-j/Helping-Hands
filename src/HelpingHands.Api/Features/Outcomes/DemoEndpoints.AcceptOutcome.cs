@@ -13,11 +13,6 @@ public static partial class DemoEndpoints
         if (accepted + outcome.ReportedQuantity > referral.AssignedQuantity) return false;
         referral.Status = accepted + outcome.ReportedQuantity == referral.AssignedQuantity ? "Completed" : "PartiallyFulfilled";
         referral.Version = Guid.NewGuid();
-        var total = await (from item in database.Outcomes
-                           join assigned in database.Referrals on item.ReferralId equals assigned.Id
-                           where assigned.RequestId == request.Id && item.Status == "Accepted"
-                           select (decimal?)item.ReportedQuantity).SumAsync(cancellationToken) ?? 0;
-        if (total + outcome.ReportedQuantity == request.RequiredQuantity) request.Status = "Completed";
         request.Version = Guid.NewGuid();
         return true;
     }

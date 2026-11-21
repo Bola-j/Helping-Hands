@@ -35,7 +35,7 @@ public static partial class DemoEndpoints
     {
         if (!await VisibleRequests(database, user).AnyAsync(item => item.Id == id, cancellationToken)) return Results.NotFound();
         var query = database.DecisionHistory.AsNoTracking().Where(item => item.RequestId == id).OrderBy(item => item.OccurredAt);
-        if (Staff(user)) return Results.Ok(await query.Select(item => new { item.Action, item.Reason, item.OccurredAt }).ToListAsync(cancellationToken));
+        if (Staff(user)) return Results.Ok(await query.Select(item => new { item.Action, item.Reason, item.ActorUserId, item.OccurredAt }).ToListAsync(cancellationToken));
         // Limit requester history to the status event, without staff-only reasons.
         return Results.Ok(await query.Select(item => new { item.Action, item.OccurredAt }).ToListAsync(cancellationToken));
     }

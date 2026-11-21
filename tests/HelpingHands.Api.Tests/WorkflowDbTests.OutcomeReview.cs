@@ -42,8 +42,8 @@ public sealed partial class WorkflowDbTests
         var after = DateTimeOffset.UtcNow;
         Assert.Equal(HttpStatusCode.Conflict, (await WorkflowDbFixture.PostAsync(coordinator, $"/api/v1/outcomes/{id}/reviews", new { Decision = "Accepted", Version = version })).StatusCode);
         await AssertOutcomeReviewAuditAsync(id, "Coordinator", "Accepted", null, before, after);
-        // Request closure remains P1-55; this ticket verifies the review and referral result only.
-        await AssertOutcomeFlowStateAsync(id, referral.GetProperty("id").GetGuid(), referral.GetProperty("requestId").GetGuid(), "Accepted", "Completed", null, 1m);
+        // Outcome acceptance completes the referral; request closure is a separate coordinator action.
+        await AssertOutcomeFlowStateAsync(id, referral.GetProperty("id").GetGuid(), referral.GetProperty("requestId").GetGuid(), "Accepted", "Completed", "Open", 1m);
     }
 
     [Fact]

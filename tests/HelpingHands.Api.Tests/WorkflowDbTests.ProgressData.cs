@@ -7,7 +7,9 @@ namespace HelpingHands.Api.Tests;
 
 public sealed partial class WorkflowDbTests
 {
-    private sealed record ProgressSeed(Guid RequestId, Guid FirstNeedId, Guid SecondNeedId, Guid FirstReferralId, Guid SecondReferralId);
+    private sealed record ProgressSeed(Guid RequestId, Guid FirstNeedId, Guid SecondNeedId,
+        Guid FirstReferralId, Guid SecondReferralId, Guid AcceptedOutcomeId,
+        Guid ClarificationOutcomeId, Guid UnresolvedOutcomeId);
 
     private async Task<ProgressSeed> SeedRequestProgressAsync()
     {

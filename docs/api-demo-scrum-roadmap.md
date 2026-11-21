@@ -8,7 +8,7 @@ Status: **current backlog and forecast; verify live issue/project status before 
 
 **P1-53 reassessment (21 November 2026):** after the audit found that merged PR #107 did not lock `CharityService` rows or prove real PostgreSQL writer contention, issue #56 was reopened and its Project card returned to In progress. The earlier implementation summary above is retained as history; it is not the current ticket status.
 
-**P1-53 progress (21 November 2026):** the follow-up implementation and isolated PostgreSQL evidence are complete on a fresh branch based on current `main`. Issue #56 and its Project card remain open/In progress pending the follow-up PR checks and required approval; do not treat the checklist mark as final closure.
+**P1-53 progress (21 November 2026):** the follow-up implementation and isolated PostgreSQL evidence are complete on a fresh branch based on current `main`; follow-up PR #123 is open. Issue #56 and its Project card remain open/In review pending the required API and Web checks and one approval; do not treat the checklist mark as final closure.
 
 **P1-39 review candidate (21 November 2026):** the existing API requires active charity representative membership for outcome reports and evidence uploads, validates evidence type, size and file signature, and mediates downloads. PR #118 adds integration coverage for an unassigned representative, unsupported media, a mismatched file signature and an oversized upload. API CI passed with its isolated PostgreSQL/S3 dependencies; P1-39 remains open pending PR review.
 

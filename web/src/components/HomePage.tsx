@@ -12,6 +12,7 @@ export function HomePage() {
           <Text accessibilityRole="header" style={styles.title}>Coordinate requests for assistance.</Text>
           <Text style={styles.lead}>Helping Hands helps beneficiaries, charities and coordinators follow a request from review to reported outcome.</Text>
           <Link href="/how-it-works" style={styles.primaryLink}>See how it works  →</Link>
+          <Link href="/demo" style={styles.demoLink}>Try the beneficiary demo →</Link>
         </View>
         <Journey />
       </View>

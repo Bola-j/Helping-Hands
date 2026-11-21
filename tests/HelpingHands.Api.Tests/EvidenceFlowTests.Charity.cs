@@ -5,13 +5,14 @@ namespace HelpingHands.Api.Tests;
 
 public sealed partial class EvidenceFlowTests
 {
-    private async Task OpenSessionsAsync(HttpClient admin, HttpClient coordinator, HttpClient representative, HttpClient beneficiary, HttpClient outsider)
+    private async Task<Guid> OpenSessionsAsync(HttpClient admin, HttpClient coordinator, HttpClient representative, HttpClient beneficiary, HttpClient outsider)
     {
         await fixture.LoginAsync(admin, fixture.Administrator);
         await fixture.LoginAsync(coordinator, fixture.Coordinator);
         await fixture.RegisterCharityAndLoginAsync(representative, fixture.Representative);
-        await fixture.RegisterAndLoginAsync(beneficiary, fixture.Beneficiary);
+        var signup = await fixture.RegisterAndLoginAsync(beneficiary, fixture.Beneficiary);
         await fixture.RegisterAndLoginAsync(outsider, fixture.Outsider);
+        return signup.GetProperty("beneficiaryId").GetGuid();
     }
 
     private async Task<Guid> CreateApprovedCharityAsync(HttpClient admin, HttpClient representative)

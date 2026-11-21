@@ -9,6 +9,7 @@ export function PageShell({ children }: { children: ReactNode }) {
       <View style={styles.header}>
         <Link href="/" style={styles.brand} accessibilityLabel="Helping Hands home">Helping Hands</Link>
         <Link href="/how-it-works" style={styles.navLink}>How it works</Link>
+        <Link href="/demo" style={styles.navLink}>Try the demo</Link>
       </View>
       <View style={styles.content}>{children}</View>
       <View style={styles.footer}><Text style={styles.footerText}>Helping Hands · Assistance happens in the community</Text></View>

@@ -4,7 +4,7 @@
 
 **P1-39 validation update (21 November 2026):** [PR #118](https://github.com/Bola-j/Helping-Hands/pull/118), linked to [issue #39](https://github.com/Bola-j/Helping-Hands/issues/39), merged at `af0d57a` after API full verification (including isolated PostgreSQL/S3), web checks and GitGuardian passed on head `82c45f6`. It was merged with administrator bypass and received no approving review. Issue #39 remains open with its acceptance and evidence checklist incomplete. This walkthrough does not claim a clean-start rehearsal.
 
-**P1-37 progress candidate (21 November 2026):** [PR #120](https://github.com/Bola-j/Helping-Hands/pull/120), linked to [issue #37](https://github.com/Bola-j/Helping-Hands/issues/37) and stacked on PR #118, adds role-scoped request progress/history and the referral-to-need association. The previous head passed API PostgreSQL, evidence, migration/schema and web checks; the updated stack needs a fresh CI run. Both issues remain open pending review and acceptance.
+**P1-37 progress update (21 November 2026):** [PR #120](https://github.com/Bola-j/Helping-Hands/pull/120) links to [issue #37](https://github.com/Bola-j/Helping-Hands/issues/37) and depends on merged PR #118. After synchronizing with `main` at `af0d57a`, updated head `98b91c3` passed API full verification (including PostgreSQL, evidence and migration/schema checks), web checks and GitGuardian. Issue #37 remains open because its acceptance/evidence checklist is incomplete; no approving review is claimed. This walkthrough does not claim a clean-start rehearsal.
 
 ### Phase 1 discussion walkthrough
 

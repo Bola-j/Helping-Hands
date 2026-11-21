@@ -7,18 +7,6 @@ namespace HelpingHands.Api.Tests;
 
 public sealed partial class EvidenceFlowFixture
 {
-    public static async Task<HttpStatusCode> UploadInvalidAsync(HttpClient client, Guid outcome)
-    {
-        using var content = new MultipartFormDataContent();
-        var file = new ByteArrayContent("not evidence"u8.ToArray());
-        file.Headers.ContentType = new MediaTypeHeaderValue("text/plain");
-        content.Add(file, "file", "notes.txt");
-        using var request = new HttpRequestMessage(HttpMethod.Post, $"/api/v1/outcomes/{outcome}/attachments") { Content = content };
-        request.Headers.Add("X-CSRF-TOKEN", await TokenAsync(client));
-        using var response = await client.SendAsync(request);
-        return response.StatusCode;
-    }
-
     public static async Task<JsonElement> UploadAsync(HttpClient client, Guid outcome, HttpStatusCode expected)
     {
         using var content = new MultipartFormDataContent();

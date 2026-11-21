@@ -14,7 +14,9 @@ public sealed partial class EvidenceFlowTests
         var missingEvidence = await EvidenceFlowFixture.PostJsonAsync(representative, $"/api/v1/outcomes/{Id(created)}/submit",
             new { Version = Version(created) }, HttpStatusCode.BadRequest);
         Assert.Equal("An evidence attachment is required.", missingEvidence.GetProperty("detail").GetString());
-        Assert.Equal(HttpStatusCode.BadRequest, await EvidenceFlowFixture.UploadInvalidAsync(representative, Id(created)));
+        Assert.Equal(HttpStatusCode.BadRequest, await EvidenceFlowFixture.UploadRejectedAsync(representative, Id(created), "text/plain", "notes.txt", "not evidence"u8.ToArray()));
+        Assert.Equal(HttpStatusCode.BadRequest, await EvidenceFlowFixture.UploadRejectedAsync(representative, Id(created), "application/pdf", "fictional.pdf", "invalid signature"u8.ToArray()));
+        Assert.Equal(HttpStatusCode.BadRequest, await EvidenceFlowFixture.UploadRejectedAsync(representative, Id(created), "application/pdf", "large.pdf", new byte[10 * 1024 * 1024 + 1]));
         var attachment = await EvidenceFlowFixture.UploadAsync(representative, Id(created), HttpStatusCode.Created);
         await AssertAttachmentAccessAsync(representative, outsider, Id(attachment));
         var submitted = await EvidenceFlowFixture.PostJsonAsync(representative, $"/api/v1/outcomes/{Id(created)}/submit",

@@ -8,7 +8,7 @@ Status: **planned, pending team refinement and verification**. This roadmap impl
 
 Implementation status for P1-14, P1-28, P1-30 and P1-51 reflects this change after its required pull-request checks and merge; their matching GitHub issues close on merge. Matching, capacity, allocation and the complete rehearsal remain separate work.
 
-**P1-39 validation candidate (21 November 2026):** the existing API requires active charity representative membership for outcome reports and evidence uploads, validates evidence type, size and file signature, and mediates downloads. This candidate adds integration coverage for an unassigned representative and an unsupported evidence type. P1-39 remains open until isolated PostgreSQL/S3 acceptance checks and PR review pass.
+**P1-39 validation candidate (21 November 2026):** the existing API requires active charity representative membership for outcome reports and evidence uploads, validates evidence type, size and file signature, and mediates downloads. This candidate adds integration coverage for an unassigned representative, unsupported media, a mismatched file signature and an oversized upload. P1-39 remains open until isolated PostgreSQL/S3 acceptance checks and PR review pass.
 
 ## Phase 1 goal
 

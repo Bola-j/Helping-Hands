@@ -70,6 +70,9 @@
         <mxCell id="RequestNeed" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#fff2cc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;RequestNeed&lt;/b&gt;&lt;hr&gt;NeedId PK&lt;br&gt;RequestId FK AssistanceRequest&lt;br&gt;StandardVersionId FK StandardVersion&lt;br&gt;Quantity&lt;br&gt;Status" vertex="1">
           <mxGeometry height="137" width="710" x="6683" y="1013.58" as="geometry" />
         </mxCell>
+        <mxCell id="Referral" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#fff2cc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;Referral (implemented)&lt;/b&gt;&lt;hr&gt;Id uuid PK&lt;br&gt;Reference varchar(32)! UQ&lt;br&gt;RequestId uuid! FK AssistanceRequest&lt;br&gt;NeedId uuid? FK RequestNeed&lt;br&gt;RecipientId uuid! FK ReferralRecipient&lt;br&gt;AssignedQuantity decimal(18,3)!&lt;br&gt;ScopeDescription varchar(2000)!&lt;br&gt;Status varchar(30)!&lt;br&gt;CreatedByUserId uuid! FK UserAccount&lt;br&gt;CreatedAt timestamptz!&lt;br&gt;Version uuid!" vertex="1">
+          <mxGeometry height="270" width="1530" x="7905" y="1013.58" as="geometry" />
+        </mxCell>
         <mxCell id="ReferralPortion" parent="1" style="rounded=0;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacing=10;fontSize=14;fillColor=#f8cecc;strokeColor=#4b5563;fontColor=#111827;" value="&lt;b&gt;ReferralPortion&lt;/b&gt;&lt;hr&gt;PortionId PK&lt;br&gt;NeedId FK RequestNeed&lt;br&gt;CharityServiceId FK CharityService&lt;br&gt;Reference UQ&lt;br&gt;AssignedQuantity" vertex="1">
           <mxGeometry height="137" width="760" x="7905" y="212.92" as="geometry" />
         </mxCell>
@@ -391,6 +394,15 @@
               <mxPoint x="8720" y="281.42" />
             </Array>
           </mxGeometry>
+        </mxCell>
+        <mxCell id="e38" edge="1" parent="1" source="RequestNeed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.5;entryX=0;entryY=0.6;" target="Referral" value="NeedId (nullable)">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e39" edge="1" parent="1" source="AssistanceRequest" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.7;entryX=0;entryY=0.35;" target="Referral" value="RequestId">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e40" edge="1" parent="1" source="ReferralRecipient" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=ERone;startFill=0;endArrow=ERzeroToMany;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.9;entryX=0;entryY=0.9;" target="Referral" value="RecipientId">
+          <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="e33" edge="1" parent="1" source="PortionOutcome" style="edgeStyle=orthogonalEdgeStyle;rounded=1;html=1;startArrow=none;startFill=0;endArrow=none;endFill=0;fontSize=11;strokeColor=#475569;fontColor=#172554;labelBackgroundColor=#ffffff;curved=0;exitX=1;exitY=0.3333;entryX=0;entryY=0.5;dashed=1;" target="PortionEvidence" value="OutcomeId (?)">
           <mxGeometry relative="1" as="geometry">

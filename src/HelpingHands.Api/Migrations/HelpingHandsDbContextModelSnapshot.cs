@@ -866,6 +866,9 @@ namespace HelpingHands.Api.Migrations
                     b.Property<Guid>("CreatedByUserId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("NeedId")
+                        .HasColumnType("uuid");
+
                     b.Property<Guid>("RecipientId")
                         .HasColumnType("uuid");
 
@@ -895,12 +898,16 @@ namespace HelpingHands.Api.Migrations
 
                     b.HasIndex("CreatedByUserId");
 
+                    b.HasIndex("NeedId");
+
                     b.HasIndex("Reference")
                         .IsUnique();
 
                     b.HasIndex("RecipientId", "Status");
 
                     b.HasIndex("RequestId", "Id");
+
+                    b.HasIndex("RequestId", "NeedId");
 
                     b.ToTable("Referral", null, t =>
                         {
@@ -1393,6 +1400,12 @@ namespace HelpingHands.Api.Migrations
                         .HasForeignKey("RequestId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("HelpingHands.Api.Data.RequestNeed", null)
+                        .WithMany()
+                        .HasForeignKey("RequestId", "NeedId")
+                        .HasPrincipalKey("RequestId", "Id")
+                        .OnDelete(DeleteBehavior.Restrict);
                 });
 
             modelBuilder.Entity("HelpingHands.Api.Data.ReminderDeliveryAttempt", b =>

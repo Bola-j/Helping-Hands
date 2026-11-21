@@ -41,7 +41,7 @@ public sealed record SplitReferralAllocationResult(
     bool SilentConversionApplied,
     IReadOnlyList<SplitAllocationLegOutcome> Legs);
 
-public sealed class SplitReferralAllocationService(
+public sealed partial class SplitReferralAllocationService(
     HelpingHandsDbContext database,
     TimeProvider timeProvider)
 {
@@ -106,9 +106,10 @@ public sealed class SplitReferralAllocationService(
         }
 
         var requestedTotal = command.Allocations.Sum(a => a.Quantity);
-        var alreadyAssigned = await database.Referrals
-            .Where(refItem => refItem.RequestId == request.Id)
-            .SumAsync(refItem => (decimal?)refItem.AssignedQuantity, cancellationToken) ?? 0m;
+        var requestReferrals = database.Referrals.Where(refItem => refItem.RequestId == request.Id);
+        requestReferrals = need is null ? requestReferrals.Where(refItem => refItem.NeedId == null) :
+            requestReferrals.Where(refItem => refItem.NeedId == need.Id);
+        var alreadyAssigned = await requestReferrals.SumAsync(refItem => (decimal?)refItem.AssignedQuantity, cancellationToken) ?? 0m;
 
         var remainingBeforeAllocation = targetQuantity.Value - alreadyAssigned;
         if (requestedTotal > remainingBeforeAllocation)
@@ -292,6 +293,7 @@ public sealed class SplitReferralAllocationService(
             var referral = new Referral
             {
                 RequestId = request.Id,
+                NeedId = need?.Id,
                 RecipientId = leg.RecipientId,
                 AssignedQuantity = leg.Quantity,
                 ScopeDescription = leg.ScopeDescription.Trim(),
@@ -322,7 +324,7 @@ public sealed class SplitReferralAllocationService(
         var totalAllocatedAfter = alreadyAssigned + requestedTotal;
         var remainingAfter = decimal.Round(targetQuantity.Value - totalAllocatedAfter, 3);
 
-        request.Status = remainingAfter == 0m ? "Allocated" : "Open";
+        request.Status = await RequestAllocationStatusAsync(database, request, need, remainingAfter, cancellationToken);
         request.Version = Guid.NewGuid();
 
         if (need is not null)

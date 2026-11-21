@@ -12,6 +12,7 @@ public sealed partial class HelpingHandsDbContext
             table.HasCheckConstraint("CK_RequestNeed_Category", "\"Category\" IS NULL OR \"Category\" IN ('Goods', 'Money', 'OrganizationalReferral')");
         });
         builder.HasKey(x => x.Id);
+        builder.HasAlternateKey(x => new { x.RequestId, x.Id });
         builder.Property(x => x.Quantity).HasPrecision(18, 3);
         builder.Property(x => x.Category).HasMaxLength(30);
         builder.Property(x => x.ServiceSubtype).HasMaxLength(100);

@@ -74,7 +74,7 @@ Further integrity rules include immutable published versions and components; uni
 
 Matching and allocation need a consistent transactional decision over charity approval, supported service, exact version, daily freshness, remaining need and available capacity. Cross-row sums, evidence counts, state transitions and role/involvement authorization cannot be guaranteed by simple column checks alone. Re-read relevant balances and eligibility after locking, and commit allocation, capacity changes and history together.
 
-The earlier candidate lock order was hierarchy advisory lock, affected requests by UUID, then capacity rows by UUID; capacity-only updates skip request locks. This is an **unvalidated proposal**, not an existing guarantee. P1-53 must settle every writer's lock order and validate races between allocations and capacity updates against isolated PostgreSQL. No new migration or database change follows from this document.
+The early candidate lock order (hierarchy advisory lock, affected requests by UUID, then capacity rows by UUID) was a proposal and is not the implemented protocol. P1-53 completed the relevant allocation scope in PR [#123](https://github.com/Bola-j/Helping-Hands/pull/123): request, recipient/charity, charity service, then daily capacity rows, ordered by UUID within each tier. Capacity updates and split allocations share this transaction-scoped order. Isolated PostgreSQL contention evidence and remaining verification limits are recorded in the [locking protocol guide](postgres-allocation-locking.md). This document introduces no migration or database change.
 
 ## Open decisions
 
@@ -82,7 +82,7 @@ The earlier candidate lock order was hierarchy advisory lock, affected requests 
 - Review the proposed one-to-one linked beneficiary account constraint and charity representative membership cardinalities before implementation. `Beneficiary` is planned role seed data, not a schema entity; no migration is implied by the signup decision. Remaining field types, nullability, status domains, reference generation, retention, indexes and cardinalities still require review.
 - Decide how decision history associates with a Phase 1 portion, and how reports retain actor, narrative, time, attachment metadata and reviewer history. The source candidate does not fully specify these fields.
 - Define version consistency constraints between service, standard, supported service, need and allocation; review P1-33's interim matching rule before any change.
-- Design authorization, private evidence access and storage reconciliation; define and test the P1-53 concurrency protocol and migration/upgrade path. Later dispute, correction, contributor onboarding and third-party intake designs remain in the archive rather than being represented as Phase 1 commitments.
+- Continue validation of authorization, private evidence access and storage reconciliation, and migration/upgrade paths. P1-53 locking protocol is implemented and verified as recorded in the [locking guide](postgres-allocation-locking.md). Later dispute, correction, contributor onboarding and third-party intake designs remain in the archive rather than being represented as Phase 1 commitments.
 
 ## Proposed verification scenarios
 

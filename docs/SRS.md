@@ -387,6 +387,10 @@ Assessment date: 9 November 2026. This is a historical assessment of the local s
 | Outcome review and closure (P1-42, P1-43, P1-55) | Outcome submission requires evidence; coordinator review records accepted/clarification/unresolved decisions. P1-55 adds explicit Coordinator/Admin closure after all needs are accepted and their linked accepted outcome quantities cover demand; legacy single-need requests use their required quantity. It uses the existing nullable `Referral.NeedId` association, so no new migration was needed. Closure records actor/time, rejects stale or repeated closure, leaves outcome acceptance separate, and blocks later split allocation. | Focused PostgreSQL race, stale replay, partial/full multi-need, no-double-counting and post-close allocation checks passed locally. CI/review/merge and broader full-suite verification remain pending. |
 | Team, UI and full demo (P1-03, P1-04, P1-07, P1-44–P1-48, P1-57) | GitHub issues and project exist; Ziad access is recorded. No `package.json` or web project was found by repository file search. | Confirm remaining team access; implement screens and browser/API integration, broader access and workflow tests, a fictional-data rehearsal, and genuine individual contributions. |
 
+## P1-53 reassessment — 22 November 2026
+
+The 9 November capability inventory above is a historical baseline. Since that assessment, PR [#123](https://github.com/Bola-j/Helping-Hands/pull/123) merged the shared PostgreSQL lock protocol to `main`; its isolated contention and workflow results are recorded in [the locking guide](postgres-allocation-locking.md). Failure-path rollback and the dedicated P108/P1 end-to-end fixtures were not separately verified locally, and the broader browser-to-API demo remains separate work.
+
 ## Open verification and handoff
 
 - Do not mark a capability done based on this inventory. Recheck S3 availability and run isolated upgrade, recovery, representative API and storage verification; record actual results.

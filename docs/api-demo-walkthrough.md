@@ -6,6 +6,8 @@
 
 **P1-37 progress update (21 November 2026):** [PR #120](https://github.com/Bola-j/Helping-Hands/pull/120) links to [issue #37](https://github.com/Bola-j/Helping-Hands/issues/37) and depends on merged PR #118. After synchronizing with `main` at `af0d57a`, updated head `98b91c3` passed API full verification (including PostgreSQL, evidence and migration/schema checks), web checks and GitGuardian. Issue #37 remains open because its acceptance/evidence checklist is incomplete; no approving review is claimed. This walkthrough does not claim a clean-start rehearsal.
 
+**Merge completion update (21 November 2026):** PR #120 merged to `main` at `5a4e96a` at 14:14:19 UTC using the requested administrator bypass, after all five checks passed on final head `1d27e69`. PR #118 had merged at `af0d57a` at 14:00:35 UTC after all five checks passed on `82c45f6`. Neither PR has an approving review. Issues [#37](https://github.com/Bola-j/Helping-Hands/issues/37) and [#39](https://github.com/Bola-j/Helping-Hands/issues/39) remain open because their acceptance/evidence checklists are incomplete.
+
 ### Phase 1 discussion walkthrough
 
 1. Open the [Phase 1 Project board](https://github.com/users/Bola-j/projects/4) and show the current 60 items, statuses and planning fields. Explain that issue assignments and forecasts describe coordination, not contribution or completed effort.

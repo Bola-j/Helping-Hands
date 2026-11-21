@@ -6,13 +6,15 @@ namespace HelpingHands.Api.Tests;
 
 public sealed partial class EvidenceFlowTests
 {
-    private async Task<(Guid OutcomeId, Guid Version)> SubmitEvidenceAsync(HttpClient representative, HttpClient outsider, JsonElement referral)
+    private async Task<(Guid OutcomeId, Guid Version)> SubmitEvidenceAsync(HttpClient representative, HttpClient unassignedRepresentative, HttpClient outsider, JsonElement referral)
     {
         var created = await EvidenceFlowFixture.PostJsonAsync(representative, $"/api/v1/referrals/{Id(referral)}/outcomes",
             new { ReportedQuantity = 1, Description = "Fictional delivery and receipt" }, HttpStatusCode.Created);
+        await EvidenceFlowFixture.UploadAsync(unassignedRepresentative, Id(created), HttpStatusCode.NotFound);
         var missingEvidence = await EvidenceFlowFixture.PostJsonAsync(representative, $"/api/v1/outcomes/{Id(created)}/submit",
             new { Version = Version(created) }, HttpStatusCode.BadRequest);
         Assert.Equal("An evidence attachment is required.", missingEvidence.GetProperty("detail").GetString());
+        Assert.Equal(HttpStatusCode.BadRequest, await EvidenceFlowFixture.UploadInvalidAsync(representative, Id(created)));
         var attachment = await EvidenceFlowFixture.UploadAsync(representative, Id(created), HttpStatusCode.Created);
         await AssertAttachmentAccessAsync(representative, outsider, Id(attachment));
         var submitted = await EvidenceFlowFixture.PostJsonAsync(representative, $"/api/v1/outcomes/{Id(created)}/submit",

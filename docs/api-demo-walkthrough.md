@@ -1,6 +1,6 @@
 # API demo walkthrough
 
-**Current status (13 November 2026):** P1-09's separate signup routes are on `main` through [merged PR #82](https://github.com/Bola-j/Helping-Hands/pull/82). P1-10's role and session changes are on an unmerged candidate branch; its local full software suite passed 69/69 against isolated PostgreSQL and private S3-compatible storage. No full API-client demo is claimed. The implementation baseline is recorded in the [SRS capability assessment](SRS.md#appendix-phase-1-implementation-baseline-and-verification).
+**Current status (21 November 2026):** the API exposes the outcome report and private evidence routes described below. P1-39 adds acceptance-focused coverage for an unassigned representative and unsupported evidence; isolated PostgreSQL/S3 checks have not yet been run for that candidate. This procedure is not evidence that every workflow has been verified. The implementation baseline is recorded in the [SRS capability assessment](SRS.md#appendix-phase-1-implementation-baseline-and-verification).
 
 This walkthrough is for fictional data only. Start PostgreSQL, S3 storage and the API using the [README](../README.md), apply migrations, and explicitly seed development accounts. Use an HTTPS-capable API client that keeps separate cookie jars for each fictional actor. The OpenAPI document is available at `/openapi/v1.json` in Development. Responses and exact field names should be checked there before running this walkthrough.
 

@@ -5,9 +5,9 @@
 ### Phase 1 discussion walkthrough
 
 1. Open the [Phase 1 Project board](https://github.com/users/Bola-j/projects/4) and show the current 60 items, statuses and planning fields. Explain that issue assignments and forecasts describe coordination, not contribution or completed effort.
-2. Show #116, branch `phase1/p1-116-beneficiary-demo-web`, and PR #117 (based on `phase1/p1-113-public-single-need`); it references #116 and depends on #113. The checks passed, but an approving review and merge are still pending. Do not present either as complete.
+2. Show #116, branch `phase1/p1-116-beneficiary-demo-web`, and merged PR #117. PR #117 referenced #116, depended on #113, and was retargeted to `main` after #115 merged. Its checks passed; both PRs were merged with owner bypass and have no approving review. Do not present them as reviewed-PR evidence.
 3. Open `/demo` with the HTTPS web proxy and use fictional details to register, sign in, submit one request with both confirmations, then show its reference/status and the own-requests list. The issue scope excludes multi-need and charity/coordinator screens.
-4. Show passing API and web Actions checks on PR #117. The API evidence-flow check also passed on PR #115 for commit `e4e3d47`.
+4. Show the passing API and web Actions checks on PR #117 and the API evidence-flow check on PR #115. The PR workflow review requirement remains unmet because both PRs were merged without an approving review.
 5. State that a clean-start end-to-end rehearsal remains pending until the full browser session has actually been run against isolated dependencies. The API test does not prove this browser journey.
 
 This walkthrough is for fictional data only. Start PostgreSQL, S3 storage and the API using the [README](../README.md), apply migrations, and explicitly seed development accounts. Use an HTTPS-capable API client that keeps separate cookie jars for each fictional actor. The OpenAPI document is available at `/openapi/v1.json` in Development. Responses and exact field names should be checked there before running this walkthrough.

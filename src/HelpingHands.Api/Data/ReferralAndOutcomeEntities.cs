@@ -6,6 +6,7 @@ public sealed class Referral
     public Guid Id { get; set; } = Guid.NewGuid();
     public string Reference { get; set; } = "";
     public Guid RequestId { get; set; }
+    public Guid? NeedId { get; set; }
     public Guid RecipientId { get; set; }
     public decimal AssignedQuantity { get; set; }
     public string ScopeDescription { get; set; } = "";

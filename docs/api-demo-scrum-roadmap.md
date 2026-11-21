@@ -8,7 +8,9 @@ Status: **planned, pending team refinement and verification**. This roadmap impl
 
 Implementation status for P1-14, P1-28, P1-30 and P1-51 reflects this change after its required pull-request checks and merge; their matching GitHub issues close on merge. Matching, capacity, allocation and the complete rehearsal remain separate work.
 
-**P1-39 validation candidate (21 November 2026):** the existing API requires active charity representative membership for outcome reports and evidence uploads, validates evidence type, size and file signature, and mediates downloads. This candidate adds integration coverage for an unassigned representative, unsupported media, a mismatched file signature and an oversized upload. P1-39 remains open until isolated PostgreSQL/S3 acceptance checks and PR review pass.
+**P1-39 review candidate (21 November 2026):** the existing API requires active charity representative membership for outcome reports and evidence uploads, validates evidence type, size and file signature, and mediates downloads. PR #118 adds integration coverage for an unassigned representative, unsupported media, a mismatched file signature and an oversized upload. API CI passed with its isolated PostgreSQL/S3 dependencies; P1-39 remains open pending PR review.
+
+**P1-37 review candidate (21 November 2026):** role-scoped request progress and history now covers beneficiary needs and fulfilled amounts, only the assigned charity's needs and portions for representatives, and full decision history for coordinators. An additive nullable referral-to-need link and same-request composite foreign key preserve legacy rows and guard new links. Existing referrals cannot be safely mapped because earlier allocation code did not persist their need ID; progress totals exclude these unlinked historical referrals pending reconciliation. The ticket remains open pending PostgreSQL acceptance checks and PR review.
 
 ## Phase 1 goal
 

@@ -59,7 +59,9 @@ public sealed partial class WorkflowDbTests
         var saved = await db.Requests.SingleAsync(x => x.Id == requestId);
         Assert.False(saved.IsMultiNeed);
         Assert.Equal(2, saved.RequiredQuantity);
-        Assert.Equal(requestId, (await db.Referrals.SingleAsync(x => x.Id == referral.Id)).RequestId);
+        var retainedReferral = await db.Referrals.SingleAsync(x => x.Id == referral.Id);
+        Assert.Equal(requestId, retainedReferral.RequestId);
+        Assert.Null(retainedReferral.NeedId);
         Assert.Equal(referral.Id, (await db.Outcomes.SingleAsync(x => x.Id == outcome.Id)).ReferralId);
         Assert.Equal(requestId, (await db.DecisionHistory.SingleAsync(x => x.Id == history.Id)).RequestId);
         var retainedNeed = await db.RequestNeeds.SingleAsync(x => x.Id == need);

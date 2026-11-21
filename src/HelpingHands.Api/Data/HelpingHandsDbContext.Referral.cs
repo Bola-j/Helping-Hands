@@ -12,6 +12,7 @@ public sealed partial class HelpingHandsDbContext
             builder.HasKey(entity => entity.Id);
             builder.HasIndex(entity => entity.Reference).IsUnique();
             builder.HasIndex(entity => new { entity.RequestId, entity.Id });
+            builder.HasIndex(entity => entity.NeedId);
             builder.HasIndex(entity => new { entity.RecipientId, entity.Status });
             builder.Property(entity => entity.Reference).HasMaxLength(32).IsRequired();
             builder.Property(entity => entity.AssignedQuantity).HasPrecision(18, 3);
@@ -19,6 +20,8 @@ public sealed partial class HelpingHandsDbContext
             builder.Property(entity => entity.Status).HasMaxLength(30).IsRequired();
             builder.Property(entity => entity.Version).IsConcurrencyToken();
             builder.HasOne<AssistanceRequest>().WithMany().HasForeignKey(entity => entity.RequestId).OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne<RequestNeed>().WithMany().HasForeignKey(entity => new { entity.RequestId, entity.NeedId })
+                .HasPrincipalKey(need => new { need.RequestId, need.Id }).OnDelete(DeleteBehavior.Restrict);
             builder.HasOne<Recipient>().WithMany().HasForeignKey(entity => entity.RecipientId).OnDelete(DeleteBehavior.NoAction);
             builder.HasOne<AppUser>().WithMany().HasForeignKey(entity => entity.CreatedByUserId).OnDelete(DeleteBehavior.NoAction);
         });

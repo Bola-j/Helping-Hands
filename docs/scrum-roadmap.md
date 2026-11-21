@@ -21,6 +21,8 @@ Identity signup was completed in [P1-09](https://github.com/Bola-j/Helping-Hands
 
 API CI is pulled forward into Phase 1; live deployment and frontend CI remain in the [Phase 2 deployment project](https://github.com/users/Bola-j/projects/5). Phase 1 workstream views remain in the [Phase 1 Scrum backlog](api-demo-scrum-roadmap.md). The [backend delivery breakdown](phase1-backend-delivery-breakdown.md) and [foundation milestone](phase1-foundation-milestone.md) describe the 12 November forecast; capacity and dependencies may require replanning.
 
+The current Phase 1 backlog separates [backend readiness rehearsal and evidence (P1-58)](https://github.com/Bola-j/Helping-Hands/issues/132) from the [complete browser-to-API rehearsal (P1-47)](https://github.com/Bola-j/Helping-Hands/issues/47) and [final evaluation evidence (P1-48)](https://github.com/Bola-j/Helping-Hands/issues/48). API-client results can demonstrate the backend increment; the full-app gates require their own observed browser and evaluation evidence. This is a 22 November 2026 planning update; the sprint forecast table above remains historical context.
+
 ## Team and collaboration
 
 | Member | Primary contribution | Coordination |

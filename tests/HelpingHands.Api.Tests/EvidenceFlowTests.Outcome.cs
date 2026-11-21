@@ -6,13 +6,17 @@ namespace HelpingHands.Api.Tests;
 
 public sealed partial class EvidenceFlowTests
 {
-    private async Task<(Guid OutcomeId, Guid Version)> SubmitEvidenceAsync(HttpClient representative, HttpClient outsider, JsonElement referral)
+    private async Task<(Guid OutcomeId, Guid Version)> SubmitEvidenceAsync(HttpClient representative, HttpClient unassignedRepresentative, HttpClient outsider, JsonElement referral)
     {
         var created = await EvidenceFlowFixture.PostJsonAsync(representative, $"/api/v1/referrals/{Id(referral)}/outcomes",
             new { ReportedQuantity = 1, Description = "Fictional delivery and receipt" }, HttpStatusCode.Created);
+        await EvidenceFlowFixture.UploadAsync(unassignedRepresentative, Id(created), HttpStatusCode.NotFound);
         var missingEvidence = await EvidenceFlowFixture.PostJsonAsync(representative, $"/api/v1/outcomes/{Id(created)}/submit",
             new { Version = Version(created) }, HttpStatusCode.BadRequest);
         Assert.Equal("An evidence attachment is required.", missingEvidence.GetProperty("detail").GetString());
+        Assert.Equal(HttpStatusCode.BadRequest, await EvidenceFlowFixture.UploadRejectedAsync(representative, Id(created), "text/plain", "notes.txt", "not evidence"u8.ToArray()));
+        Assert.Equal(HttpStatusCode.BadRequest, await EvidenceFlowFixture.UploadRejectedAsync(representative, Id(created), "application/pdf", "fictional.pdf", "invalid signature"u8.ToArray()));
+        Assert.Equal(HttpStatusCode.BadRequest, await EvidenceFlowFixture.UploadRejectedAsync(representative, Id(created), "application/pdf", "large.pdf", new byte[10 * 1024 * 1024 + 1]));
         var attachment = await EvidenceFlowFixture.UploadAsync(representative, Id(created), HttpStatusCode.Created);
         await AssertAttachmentAccessAsync(representative, outsider, Id(attachment));
         var submitted = await EvidenceFlowFixture.PostJsonAsync(representative, $"/api/v1/outcomes/{Id(created)}/submit",

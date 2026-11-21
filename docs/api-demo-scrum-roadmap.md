@@ -6,6 +6,8 @@ Status: **current backlog and forecast; verify live issue/project status before 
 
 **Implementation update (21 November 2026):** the Project records the backend and local integration tickets through P1-54 as Done, including matching, need review, split referral allocation, capacity concurrency checks, reminders and SMTP integration. This status is ticket-level progress; it does not demonstrate the public browser-to-API path or the full evaluation demo. The remaining work is tracked on the Project.
 
+**P1-39 validation candidate (21 November 2026):** the existing API requires active charity representative membership for outcome reports and evidence uploads, validates evidence type, size and file signature, and mediates downloads. This candidate adds integration coverage for an unassigned representative, unsupported media, a mismatched file signature and an oversized upload. P1-39 remains open until isolated PostgreSQL/S3 acceptance checks and PR review pass.
+
 ## Phase 1 goal
 
 Using fictional data, demonstrate a React Native Web application with beneficiary and charity registration/login; coordinator charity approval; coordinator-managed services and versioned standard units with structured contents; charity daily capacity, an in-app task and email reminder; beneficiary mixed needs; coordinator matching and split referrals; and charity evidence followed by coordinator review, progress and closure. The backend is ASP.NET Core/.NET 10, PostgreSQL via reviewed EF migrations, with private S3-compatible evidence storage. Expo web, API, database, storage and a local email catcher must work together.

@@ -2,6 +2,8 @@
 
 **Status updated 21 November 2026:** signup, session/authorization and charity decisions are merged and their GitHub issues are closed. The #113 implementation adds a public single-need request route compatible with the existing coordinator review and charity referral flow, while leaving multi-need submission unchanged. The API evidence-flow test now starts at this public route and passed in Actions for base `e4e3d47`. Issue #116 adds a browser flow for beneficiary signup, login/logout, single-need submission and own-request listing. This walkthrough describes the available paths; it is not a record of a clean-start browser/API rehearsal. See the [dated roadmap assessment](api-demo-scrum-roadmap.md#current-readiness-and-replanning--21-november-2026) and [implementation baseline](SRS.md#appendix-phase-1-implementation-baseline-and-verification).
 
+**P1-39 validation candidate (21 November 2026):** [PR #118](https://github.com/Bola-j/Helping-Hands/pull/118), linked to [issue #39](https://github.com/Bola-j/Helping-Hands/issues/39), adds PostgreSQL-backed coverage for an unassigned representative and rejected evidence uploads. The conflict-resolved branch needs a fresh isolated PostgreSQL/S3 CI run; earlier checks apply to the previous head. This walkthrough does not claim a clean-start rehearsal.
+
 ### Phase 1 discussion walkthrough
 
 1. Open the [Phase 1 Project board](https://github.com/users/Bola-j/projects/4) and show the current 60 items, statuses and planning fields. Explain that issue assignments and forecasts describe coordination, not contribution or completed effort.

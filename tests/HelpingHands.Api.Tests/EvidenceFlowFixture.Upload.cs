@@ -17,6 +17,6 @@ public sealed partial class EvidenceFlowFixture
         request.Headers.Add("X-CSRF-TOKEN", await TokenAsync(client));
         using var response = await client.SendAsync(request);
         Assert.Equal(expected, response.StatusCode);
-        return await response.Content.ReadFromJsonAsync<JsonElement>();
+        return expected == HttpStatusCode.Created ? await response.Content.ReadFromJsonAsync<JsonElement>() : default;
     }
 }

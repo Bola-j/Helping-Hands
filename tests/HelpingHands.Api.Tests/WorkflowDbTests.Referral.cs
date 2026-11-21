@@ -56,4 +56,20 @@ public sealed partial class WorkflowDbTests
         Assert.Equal(HttpStatusCode.NotFound, hiddenReferral.StatusCode);
         Assert.Equal(HttpStatusCode.NotFound, hiddenOutcome.StatusCode);
     }
+
+    [Fact]
+    public async Task RepresentativeWithoutAssignmentCannotCreateOutcome()
+    {
+        using var representative = await fixture.LoginAsync("RecipientRepresentative");
+        using var otherRepresentative = await fixture.LoginAsync("RecipientRepresentativeOther");
+        using var admin = await fixture.LoginAsync("Administrator");
+        using var coordinator = await fixture.LoginAsync("Coordinator");
+        using var beneficiary = await fixture.LoginAsync("Beneficiary");
+        var (charity, accepted) = await WorkflowDbFixture.AcceptedNeedAsync(representative, admin, coordinator, beneficiary);
+        var referral = await WorkflowDbFixture.CreateReferralAsync(fixture, coordinator, charity, accepted);
+        var id = referral.GetProperty("id").GetGuid();
+        using var response = await WorkflowDbFixture.PostAsync(otherRepresentative, $"/api/v1/referrals/{id}/outcomes", new
+        { ReportedQuantity = 1m, Description = "Fictional report" });
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
 }

@@ -14,12 +14,14 @@ public sealed partial class EvidenceFlowTests(EvidenceFlowFixture fixture) : ICl
         using var admin = fixture.Client();
         using var coordinator = fixture.Client();
         using var representative = fixture.Client();
+        using var unassignedRepresentative = fixture.Client();
         using var beneficiary = fixture.Client();
         using var outsider = fixture.Client();
         var beneficiaryId = await OpenSessionsAsync(admin, coordinator, representative, beneficiary, outsider);
+        await fixture.RegisterCharityAndLoginAsync(unassignedRepresentative, $"unassigned-{Guid.NewGuid():N}@example.test");
         var charity = await CreateApprovedCharityAsync(admin, representative);
         var referral = await CreateReferralAsync(coordinator, admin, beneficiary, beneficiaryId, charity);
-        var result = await SubmitEvidenceAsync(representative, outsider, referral);
+        var result = await SubmitEvidenceAsync(representative, unassignedRepresentative, outsider, referral);
         await AssertCleanupAfterSubmissionAsync(representative, result.OutcomeId);
         await AcceptAndCheckHistoryAsync(coordinator, result.OutcomeId, result.Version, referral);
     }

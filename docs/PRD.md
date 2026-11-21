@@ -4,10 +4,10 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 1.2 |
+| Version | 1.3 |
 | Status | Working product baseline; Phase 1 review accepted by the Scrum Master; diagram reconciliation and external validation remain open |
 | Authors | Bola Ghaly, Ziad Walid, hussien okely and ali fathy |
-| Business source | [Business Requirements Document v1.6](BRD.md), working baseline with owner delegation; Scrum Master review accepted |
+| Business source | [Business Requirements Document v1.7](BRD.md), working baseline with owner delegation; Scrum Master review accepted |
 | Related specification | [Software Requirements Specification](SRS.md); detailed system requirements and models are maintained there |
 
 | Version | Change |
@@ -16,6 +16,7 @@
 | 1.0 | Finalized the working product baseline from BRD 1.3; retained open decisions and proposed validation and planning details. |
 | 1.1 | Reconciled current Phase 1 scope and coordinator charity approval; Scrum Master review accepted on 11 November 2026. |
 | 1.2 | Recorded the project decision for individual need review and the three final request review outcomes. |
+| 1.3 | Added a distinct backend readiness rehearsal and evidence gate ahead of full-app rehearsal and evaluation. |
 
 This working baseline applies the project owner’s request to finalize the requirements and delegation of remaining decisions. The owner validated an earlier BRD; this does not mean each product rule was individually approved. No instructor, charity, or other stakeholder approval, field validation, implementation, or test result is implied by this document.
 
@@ -55,6 +56,8 @@ Excluded: custody, purchasing, processing, storage or distribution of money or g
 ### Backend delivery milestones
 
 The first proposed milestone is a reproducible local API foundation: reviewed PostgreSQL migrations, protected S3-compatible storage, development configuration and an API CI baseline. It is a prerequisite for complete workflow and integration verification, not proof of a finished demonstration. Later milestones cover identity and approvals; standards, capacity and requests; allocation, evidence, reminders and closure; and final verification. See the [backend delivery breakdown](phase1-backend-delivery-breakdown.md) for ticket dependencies, checks, the 12 November forecast and the explicitly partial fallback. The existing [demo roadmap](api-demo-scrum-roadmap.md) retains the web and overall Phase 1 scope.
+
+Backend readiness is assessed separately in [P1-58](https://github.com/Bola-j/Helping-Hands/issues/132): an API client must exercise the fictional multi-role workflow against isolated PostgreSQL, private evidence storage and email, with actual results for failure and denied-access cases, reproducible steps and known gaps. Automated API regression belongs to [P1-44](https://github.com/Bola-j/Helping-Hands/issues/44). The browser rehearsal [P1-47](https://github.com/Bola-j/Helping-Hands/issues/47) and final evaluation package [P1-48](https://github.com/Bola-j/Helping-Hands/issues/48) require full-app evidence and cannot be closed by backend results alone.
 
 ## 5. Product capabilities and acceptance criteria
 

@@ -4,14 +4,61 @@
 
 **Goal:** establish a repeatable, isolated development foundation for the Phase 1 API: .NET build and tests, reviewed PostgreSQL migration, API/PostgreSQL/private S3-compatible storage through Docker Compose, and API CI. The target is the team's 12 November 2026 backend forecast, not a delivery commitment. This milestone prepares subsequent identity and workflow work; it does not claim a complete charity-to-closure demo or live deployment.
 
-**Status:** in progress. The baseline, API CI, design and local-services PRs have been merged. [P1-02](https://github.com/Bola-j/Helping-Hands/issues/2) and [P1-06](https://github.com/Bola-j/Helping-Hands/issues/6) are closed; [P1-05](https://github.com/Bola-j/Helping-Hands/issues/5) and [API CI #50](https://github.com/Bola-j/Helping-Hands/issues/50) remain open pending their own review and acceptance. The dated sections below retain historical observations, not current blockers. See the [backend delivery breakdown](phase1-backend-delivery-breakdown.md).
+**Status (21 November 2026):** the baseline, API CI, design and local-services PRs are merged. [P1-02](https://github.com/Bola-j/Helping-Hands/issues/2), [P1-05](https://github.com/Bola-j/Helping-Hands/issues/5), [P1-06](https://github.com/Bola-j/Helping-Hands/issues/6) and [API CI #50](https://github.com/Bola-j/Helping-Hands/issues/50) are closed. P1-46 migration and recovery evidence is recorded below; see [PR #125](https://github.com/Bola-j/Helping-Hands/pull/125) for its review and CI history. Dated execution sections below preserve their original observations. See the [backend delivery breakdown](phase1-backend-delivery-breakdown.md).
 
-## Current verification — 12 November 2026
+## P1-46 verification — 21 November 2026
+
+The verification used a clean worktree at `7825444` and two uniquely named Docker Compose projects with fresh PostgreSQL and SeaweedFS volumes, fresh fictional credentials, and loopback-only ports. The primary checkout and its existing dirty work were not used. No shared or production database or storage was touched.
+
+- .NET SDK `10.0.204`; Docker Engine `29.8.2`; PostgreSQL `17`; SeaweedFS `3.90`. Source PostgreSQL, SeaweedFS and Mailpit became healthy, and the private evidence bucket initialized successfully.
+- `dotnet build HelpingHands.slnx --configuration Release --nologo` passed with zero errors and one existing `EF1002` warning in `WorkflowDbTests.CharityCapacity.cs`. `dotnet ef migrations has-pending-model-changes --project src/HelpingHands.Api --configuration Release --no-build` reported no model changes.
+- `dotnet ef database update --project src/HelpingHands.Api --configuration Release --no-build` applied all nine migrations to the empty isolated database. The database recorded nine migration-history rows and 28 public tables.
+- Existing PostgreSQL upgrade tests `UpgradePreservesAndProtectsExistingCatalogData` and `NeedMigrationPreservesLegacyRequestReferralOutcomeAndHistory` passed **2/2** against the isolated PostgreSQL service. The fictional API evidence flow `FictionalCharityToOutcome_UsesPrivateEvidenceAndRetainsHistory` passed **1/1** against isolated PostgreSQL and SeaweedFS.
+- With API writes quiescent after that test, a custom-format `pg_dump` and an S3 object backup were made from the source pair. Both were restored to a second Compose project with different, fresh volumes and a separately initialized private bucket. The restored database retained nine migration records and the evidence attachment row. The attachment's 33-byte object matched its source SHA-256 (`F309ED73692404FAD110332AF75FA5250C4E92E1C0094208927621C1970E9CD7`).
+- The restored PostgreSQL and SeaweedFS services were stopped and restarted. The evidence row and object remained, with the same content hash. The restored API then returned the same evidence to an authenticated Coordinator (HTTP 200); an unrelated Beneficiary received HTTP 404.
+
+This records local fictional-data migration, paired restore and restart checks, not production recovery readiness, backup automation, recovery-time objectives or real-data recovery. The full suite and CI were not run during this local verification; see PR #125 for subsequent checks and review status.
+
+### Sanitized invocation forms
+
+The commands below reflect the observed run; ephemeral project names, ports, credentials, database names and attachment IDs have been replaced with placeholders. The generated environment files, backup archive and object copies were removed after verification, so this is not a copy-and-paste replay record.
+
+```powershell
+$sourceProject = '<unique-source-project>'
+$sourceEnv = '<ignored-source-env-file>'
+$restoreProject = '<unique-restore-project>'
+$restoreEnv = '<ignored-restore-env-file>'
+
+docker compose -p $sourceProject --env-file $sourceEnv config --quiet
+docker compose -p $sourceProject --env-file $sourceEnv up -d --wait postgres storage mailpit
+docker compose -p $sourceProject --env-file $sourceEnv run --rm storage-init
+
+dotnet build HelpingHands.slnx --configuration Release --nologo
+dotnet ef migrations has-pending-model-changes --project src/HelpingHands.Api --configuration Release --no-build
+dotnet ef database update --project src/HelpingHands.Api --configuration Release --no-build
+dotnet test tests/HelpingHands.Api.Tests/HelpingHands.Api.Tests.csproj --configuration Release --no-build --filter 'FullyQualifiedName~UpgradePreservesAndProtectsExistingCatalogData|FullyQualifiedName~NeedMigrationPreservesLegacyRequestReferralOutcomeAndHistory' --logger 'console;verbosity=minimal'
+dotnet test tests/HelpingHands.Api.Tests/HelpingHands.Api.Tests.csproj --configuration Release --no-build --filter 'FullyQualifiedName~FictionalCharityToOutcome_UsesPrivateEvidenceAndRetainsHistory' --logger 'console;verbosity=minimal'
+
+docker exec <source-postgres-container> pg_dump -U <source-db-user> -Fc -f /tmp/p146-pair.dump <fictional-source-database>
+docker cp <source-postgres-container>:/tmp/p146-pair.dump <local-backup-dir>/database.dump
+docker run --rm --network <source-compose-network> --env AWS_ACCESS_KEY_ID=<source-access-key> --env AWS_SECRET_ACCESS_KEY=<source-secret-key> --env AWS_DEFAULT_REGION=us-east-1 --env AWS_EC2_METADATA_DISABLED=true --mount type=bind,source=<local-evidence-backup-dir>,target=/backup amazon/aws-cli:2.27.49 --endpoint-url http://storage:8333 s3 sync s3://<source-bucket> /backup
+
+docker cp <local-backup-dir>/database.dump <restore-postgres-container>:/tmp/p146-pair.dump
+docker exec <restore-postgres-container> pg_restore -U <restore-db-user> -d helping_hands --no-owner --no-privileges /tmp/p146-pair.dump
+docker run --rm --network <restore-compose-network> --env AWS_ACCESS_KEY_ID=<restore-access-key> --env AWS_SECRET_ACCESS_KEY=<restore-secret-key> --env AWS_DEFAULT_REGION=us-east-1 --env AWS_EC2_METADATA_DISABLED=true --mount type=bind,source=<local-evidence-backup-dir>,target=/backup amazon/aws-cli:2.27.49 s3 sync /backup s3://<restore-bucket> --endpoint-url http://storage:8333
+docker compose -p $restoreProject --env-file $restoreEnv stop postgres storage
+docker compose -p $restoreProject --env-file $restoreEnv up -d --wait postgres storage
+docker compose -p $restoreProject --env-file $restoreEnv run --rm storage-init
+```
+
+The restored API verification used HTTPS on the isolated API port: retrieve the antiforgery token, log in as the seeded Coordinator, and `GET /api/v1/attachments/<attachment-id>/content` (200 with the recorded hash). Register and log in an unrelated fictional Beneficiary in a separate cookie session, then request the same route (404). The sanitized forms omit the ephemeral credentials and IDs.
+
+## Verification as of 12 November 2026
 
 - On merged commit `c94f271`, PostgreSQL 17 in a new disposable container applied the initial migration to an empty database. The EF model/snapshot check reported no pending changes and `.github/scripts/verify-postgres-schema.sql` passed. The initial migration-history lookup reported an expected missing-table error before EF created the history table and migration completed successfully.
 - Generated migration SQL contained 16 tables including EF history, five business-reference sequences, 13 unique indexes, 25 foreign keys and 17 checks. The database reported all 25 foreign keys and 17 checks validated. The schema script checked UUID application primary keys and expected reference sequences and unique reference indexes. This is not a full concurrency, authorization or recovery verification.
 - [Local services PR #76](https://github.com/Bola-j/Helping-Hands/pull/76) is merged and P1-06 is Done. Its [verification record](https://github.com/Bola-j/Helping-Hands/pull/76#issuecomment-6811322391) reports the actual Dockerfile build, isolated migration, HTTPS and readiness, private storage, fictional attachment upload/download and restart persistence. SeaweedFS replaces the unavailable MinIO images.
-- Only one migration currently exists; an upgrade between migrations is not yet applicable. Full database/evidence backup-restore and upgrade exercises remain under [P1-46](https://github.com/Bola-j/Helping-Hands/issues/46).
+- At that time, only the initial migration existed, so an upgrade between migrations was not yet applicable. Full database/evidence backup-restore and upgrade exercises remained under [P1-46](https://github.com/Bola-j/Helping-Hands/issues/46); see the dated 21 November verification above for later results.
 
 
 ## Historical execution evidence — 11 November 2026

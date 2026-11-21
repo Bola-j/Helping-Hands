@@ -19,6 +19,7 @@ public static partial class DemoEndpoints
     private static void MapRequestAndReferralRoutes(this RouteGroupBuilder api)
     {
         api.MapPost("/requests", CreateRequest).RequireAuthorization();
+        api.MapPost("/requests/single-need", CreateSingleNeedRequest).RequireAuthorization();
         api.MapGet("/requests", ListRequests).RequireAuthorization();
         api.MapGet("/requests/{id:guid}", GetRequest).RequireAuthorization();
         api.MapPut("/requests/{id:guid}", UpdateRequest).RequireAuthorization();

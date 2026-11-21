@@ -39,7 +39,11 @@ public sealed partial class WorkflowDbTests
         var referral = new Referral { RequestId = requestId, RecipientId = recipient.Id, CreatedByUserId = user.Id, Reference = "REF-00000001", AssignedQuantity = 2, ScopeDescription = "Fictional" };
         var outcome = new Outcome { ReferralId = referral.Id, ReportedByUserId = user.Id, Reference = "OUT-00000001", ReportedQuantity = 1, Description = "Fictional" };
         var history = new DecisionHistory { RequestId = requestId, ActorUserId = user.Id, Action = "Accepted" };
-        db.AddRange(referral, outcome, history);
+        await db.Database.ExecuteSqlInterpolatedAsync($"""
+            INSERT INTO "Referral" ("Id", "Reference", "RequestId", "RecipientId", "AssignedQuantity", "ScopeDescription", "Status", "CreatedByUserId", "CreatedAt", "Version")
+            VALUES ({referral.Id}, {referral.Reference}, {referral.RequestId}, {referral.RecipientId}, {referral.AssignedQuantity}, {referral.ScopeDescription}, {referral.Status}, {referral.CreatedByUserId}, {referral.CreatedAt}, {referral.Version})
+            """);
+        db.AddRange(outcome, history);
         await db.SaveChangesAsync();
         await migrator.MigrateAsync("20261113133748_RequestNeeds");
         var multiRequest = Guid.NewGuid(); var category = Guid.NewGuid(); var service = Guid.NewGuid(); var standard = Guid.NewGuid(); var version = Guid.NewGuid(); var need = Guid.NewGuid();

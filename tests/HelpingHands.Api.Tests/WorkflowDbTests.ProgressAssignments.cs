@@ -15,7 +15,7 @@ public sealed partial class WorkflowDbTests
             RecipientId = item.Id, AssignedQuantity = 1m, ScopeDescription = $"Need {index + 1}",
             CreatedByUserId = fixture.UserIds["Coordinator"], Reference = refs[index] }).ToArray();
         db.Referrals.AddRange(referrals);
-        db.DecisionHistory.AddRange(referrals.Select(item => new DecisionHistory { RequestId = request.Id, ReferralId = item.Id,
+        db.DecisionHistory.AddRange(referrals.Select(item => new DecisionHistory { ReferralId = item.Id,
             ActorUserId = fixture.UserIds["Coordinator"], Action = "SplitAllocated", Reason = "Fictional allocation" }));
         var outcome = new Outcome { ReferralId = referrals[0].Id, ReportedByUserId = fixture.UserIds["RecipientRepresentative"],
             ReportedQuantity = 1m, Description = "Fictional accepted report", Status = "Accepted", Reference = await db.NextReferenceAsync("OUT") };

@@ -22,6 +22,7 @@ public sealed partial class EvidenceFlowTests(EvidenceFlowFixture fixture) : ICl
         var charity = await CreateApprovedCharityAsync(admin, representative);
         var referral = await CreateReferralAsync(coordinator, admin, beneficiary, beneficiaryId, charity);
         var result = await SubmitEvidenceAsync(representative, unassignedRepresentative, outsider, referral);
+        await AssertOrphanReconciliationAsync(result.OutcomeId);
         await AssertCleanupAfterSubmissionAsync(representative, result.OutcomeId);
         await AcceptAndCheckHistoryAsync(coordinator, result.OutcomeId, result.Version, referral);
     }

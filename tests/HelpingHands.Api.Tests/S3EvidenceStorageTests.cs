@@ -44,4 +44,5 @@ public sealed class S3EvidenceStorageTests
         await Assert.ThrowsAsync<IOException>(() => storage.PromoteAsync("staging/fixture", CancellationToken.None));
         Assert.Equal(["CopyObjectAsync", "DeleteObjectAsync", "DeleteObjectAsync"], stub.Calls);
     }
+
 }

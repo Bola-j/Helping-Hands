@@ -22,6 +22,7 @@ public sealed partial class EvidenceFlowTests
         var id = list.EnumerateArray().Single().GetProperty("id").GetGuid();
         using var detailResponse = await representative.GetAsync($"/api/v1/recipients/{id}");
         var created = await EvidenceFlowFixture.JsonAsync(detailResponse, HttpStatusCode.OK);
+        await EvidenceFlowFixture.UploadApplicationAsync(representative, id);
         var approved = await EvidenceFlowFixture.PostJsonAsync(admin, $"/api/v1/recipients/{Id(created)}/decisions",
             new { Decision = "Approved", Reason = (string?)null, Version = Version(created) }, HttpStatusCode.OK);
         Assert.Equal("Approved", approved.GetProperty("approvalStatus").GetString());

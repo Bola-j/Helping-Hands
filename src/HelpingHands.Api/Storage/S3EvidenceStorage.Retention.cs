@@ -26,4 +26,23 @@ public sealed partial class S3EvidenceStorage
         } while (token is not null);
         return count;
     }
+
+    public async Task<int> CleanupOrphanedFinalBeforeAsync(IReadOnlySet<string> retainedKeys, DateTimeOffset cutoff, CancellationToken cancellationToken)
+    {
+        var count = 0;
+        string? token = null;
+        do
+        {
+            var response = await ListPrivatePageAsync(token, cancellationToken);
+            foreach (var item in response.S3Objects)
+            {
+                if (item.LastModified.ToUniversalTime() >= cutoff.UtcDateTime || retainedKeys.Contains(item.Key))
+                    continue;
+                await DeleteAsync(item.Key, cancellationToken);
+                count++;
+            }
+            token = response.IsTruncated ? response.NextContinuationToken : null;
+        } while (token is not null);
+        return count;
+    }
 }

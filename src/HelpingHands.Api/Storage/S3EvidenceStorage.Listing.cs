@@ -11,4 +11,12 @@ public sealed partial class S3EvidenceStorage
             Prefix = StagingPrefix,
             ContinuationToken = token
         }, ct);
+
+    private Task<ListObjectsV2Response> ListPrivatePageAsync(string? token, CancellationToken ct) =>
+        client.ListObjectsV2Async(new ListObjectsV2Request
+        {
+            BucketName = _bucket,
+            Prefix = FinalPrefix,
+            ContinuationToken = token
+        }, ct);
 }

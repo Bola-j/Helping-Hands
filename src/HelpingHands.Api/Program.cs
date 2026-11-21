@@ -29,6 +29,8 @@ builder.Services.AddScoped<CairoCapacityReminderRunner>();
 builder.Services.AddHostedService<CairoCapacityReminderHostedService>();
 builder.Services.AddScoped<AntiforgeryFilter>();
 builder.Services.AddEvidenceStorage(builder.Configuration);
+builder.Services.AddScoped<EvidenceStorageReconciliationService>();
+builder.Services.AddHostedService<EvidenceStorageReconciliationHostedService>();
 builder.Services.AddRateLimiter(options => options.AddFixedWindowLimiter("auth", limiter =>
 {
     limiter.PermitLimit = authLimit;

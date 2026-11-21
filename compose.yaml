@@ -26,6 +26,8 @@ services:
       EvidenceStorage__Bucket: ${EVIDENCE_BUCKET:-helping-hands-evidence}
       EvidenceStorage__AccessKey: ${S3_ACCESS_KEY:?}
       EvidenceStorage__SecretKey: ${S3_SECRET_KEY:?}
+      EvidenceStorage__CleanupIntervalMinutes: ${EVIDENCE_CLEANUP_INTERVAL_MINUTES:-60}
+      EvidenceStorage__OrphanRetentionHours: ${EVIDENCE_ORPHAN_RETENTION_HOURS:-24}
       Smtp__Host: mailpit
       Smtp__Port: "1025"
       Smtp__Username: ${SMTP_USER:?}

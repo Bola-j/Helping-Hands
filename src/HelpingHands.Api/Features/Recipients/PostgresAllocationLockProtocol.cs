@@ -95,6 +95,28 @@ public static class PostgresAllocationLockProtocol
         return locked;
     }
 
+    public static async Task<IReadOnlyList<CharityService>> LockCharityServicesOrderedAsync(
+        HelpingHandsDbContext database,
+        IEnumerable<Guid> charityServiceIds,
+        CancellationToken cancellationToken = default)
+    {
+        var orderedIds = OrderIdsDeterministically(charityServiceIds);
+        if (orderedIds.Count == 0)
+            return [];
+
+        var locked = new List<CharityService>(orderedIds.Count);
+        foreach (var id in orderedIds)
+        {
+            var row = await database.CharityServices
+                .FromSqlInterpolated($"SELECT * FROM \"CharityService\" WHERE \"CharityServiceId\" = {id} FOR UPDATE")
+                .SingleOrDefaultAsync(cancellationToken);
+            if (row is not null)
+                locked.Add(row);
+        }
+
+        return locked;
+    }
+
     public static async Task<IReadOnlyList<DailyCapacity>> LockDailyCapacitiesOrderedAsync(
         HelpingHandsDbContext database,
         IEnumerable<Guid> capacityIds,
@@ -121,6 +143,7 @@ public static class PostgresAllocationLockProtocol
         HelpingHandsDbContext database,
         IEnumerable<Guid>? requestIds = null,
         IEnumerable<Guid>? recipientOrCharityIds = null,
+        IEnumerable<Guid>? charityServiceIds = null,
         IEnumerable<Guid>? capacityIds = null,
         CancellationToken cancellationToken = default)
     {
@@ -135,6 +158,10 @@ public static class PostgresAllocationLockProtocol
             await LockRecipientsOrderedAsync(database, orderedRecipients, cancellationToken);
             await LockCharitiesOrderedAsync(database, orderedRecipients, cancellationToken);
         }
+
+        // Tier 3: CharityService
+        if (charityServiceIds is not null)
+            await LockCharityServicesOrderedAsync(database, charityServiceIds, cancellationToken);
 
         // Tier 4: DailyCapacity (after service/capacity target resolution)
         if (capacityIds is not null)

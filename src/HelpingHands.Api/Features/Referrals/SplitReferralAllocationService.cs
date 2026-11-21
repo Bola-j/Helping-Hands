@@ -207,6 +207,11 @@ public sealed partial class SplitReferralAllocationService(
         }
 
         var serviceIds = matchedServicesByLeg.Values.Select(s => s.CharityServiceId).Distinct().ToList();
+        await PostgresAllocationLockProtocol.LockCharityServicesOrderedAsync(
+            database,
+            serviceIds,
+            cancellationToken);
+
         var todayCapacities = await database.DailyCapacities
             .Where(dc => serviceIds.Contains(dc.CharityServiceId) && dc.CairoDate == cairoDate)
             .ToListAsync(cancellationToken);
@@ -302,14 +307,21 @@ public sealed partial class SplitReferralAllocationService(
             };
 
             database.Referrals.Add(referral);
-            database.DecisionHistory.Add(new DecisionHistory
-            {
-                ReferralId = referral.Id,
-                RequestId = request.Id,
-                ActorUserId = command.ActorUserId,
-                Action = "SplitAllocated",
-                OccurredAt = now
-            });
+            database.DecisionHistory.AddRange(
+                new DecisionHistory
+                {
+                    ReferralId = referral.Id,
+                    ActorUserId = command.ActorUserId,
+                    Action = "SplitAllocated",
+                    OccurredAt = now
+                },
+                new DecisionHistory
+                {
+                    RequestId = request.Id,
+                    ActorUserId = command.ActorUserId,
+                    Action = "SplitAllocated",
+                    OccurredAt = now
+                });
 
             legOutcomes.Add(new SplitAllocationLegOutcome(
                 RecipientId: leg.RecipientId,
@@ -324,13 +336,8 @@ public sealed partial class SplitReferralAllocationService(
         var totalAllocatedAfter = alreadyAssigned + requestedTotal;
         var remainingAfter = decimal.Round(targetQuantity.Value - totalAllocatedAfter, 3);
 
-        request.Status = await RequestAllocationStatusAsync(database, request, need, remainingAfter, cancellationToken);
+        request.Status = "Open";
         request.Version = Guid.NewGuid();
-
-        if (need is not null)
-        {
-            need.Status = remainingAfter == 0m ? "Allocated" : "Open";
-        }
 
         await database.SaveChangesAsync(cancellationToken);
         await transaction.CommitAsync(cancellationToken);

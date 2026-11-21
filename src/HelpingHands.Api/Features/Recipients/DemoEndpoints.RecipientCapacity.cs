@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using HelpingHands.Api.Data;
+using HelpingHands.Api.Features.Referrals;
 using Microsoft.EntityFrameworkCore;
 
 namespace HelpingHands.Api.Features;
@@ -117,11 +118,13 @@ public static partial class DemoEndpoints
 
         await using var transaction = await database.Database.BeginTransactionAsync(cancellationToken);
 
-        var charity = await database.Charities
-            .FromSqlInterpolated($"SELECT * FROM \"Charity\" WHERE \"RecipientId\" = {id} FOR UPDATE")
-            .SingleOrDefaultAsync(cancellationToken);
-        if (charity is null)
+        var charity = await PostgresAllocationLockProtocol.LockCharitiesOrderedAsync(
+            database, [id], cancellationToken);
+        if (charity.Count == 0)
             return Results.NotFound();
+
+        await PostgresAllocationLockProtocol.LockCharityServicesOrderedAsync(
+            database, distinctIds, cancellationToken);
 
         var enabledServices = await database.CharityServices.AsNoTracking()
             .Where(cs => cs.CharityId == id && cs.Enabled && distinctIds.Contains(cs.CharityServiceId))
@@ -133,6 +136,14 @@ public static partial class DemoEndpoints
 
         var now = timeProvider.GetUtcNow();
         var cairoDate = GetCurrentCairoDate(now);
+
+        var existingCapacityIds = await database.DailyCapacities
+            .Where(dc => distinctIds.Contains(dc.CharityServiceId) && dc.CairoDate == cairoDate)
+            .Select(dc => dc.CapacityId)
+            .ToListAsync(cancellationToken);
+
+        await PostgresAllocationLockProtocol.LockDailyCapacitiesOrderedAsync(
+            database, existingCapacityIds, cancellationToken);
 
         var existingCapacities = await database.DailyCapacities
             .Where(dc => distinctIds.Contains(dc.CharityServiceId) && dc.CairoDate == cairoDate)

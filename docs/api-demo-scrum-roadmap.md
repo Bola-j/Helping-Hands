@@ -4,7 +4,13 @@ Status: **current backlog and forecast; verify live issue/project status before 
 
 **Recorded implementation update (21 November 2026):** P1-09 signup, P1-10 access enforcement, and P1-16 charity decisions are closed on GitHub. Their current state is reflected in the Project; the historical verification records and pull-request links remain in their respective tickets and earlier dated notes.
 
-**Implementation update (21 November 2026):** the Project records the backend and local integration tickets through P1-54 as Done, including matching, need review, split referral allocation, capacity concurrency checks, reminders and SMTP integration. This status is ticket-level progress; it does not demonstrate the public browser-to-API path or the full evaluation demo. The remaining work is tracked on the Project.
+**Implementation update (21 November 2026):** the Project records backend and local integration tickets through P1-54 as Done, except P1-53 (#56), which was reopened after review found an acceptance gap and is awaiting follow-up PR #123 checks and approval. Other ticket statuses are ticket-level progress; they do not demonstrate the public browser-to-API path or the full evaluation demo. The remaining work is tracked on the Project.
+
+**P1-53 reassessment (21 November 2026):** after the audit found that merged PR #107 did not lock `CharityService` rows or prove real PostgreSQL writer contention, issue #56 was reopened and its Project card returned to In progress. The earlier implementation summary above is retained as history; it is not the current ticket status.
+
+**P1-53 progress (21 November 2026):** the follow-up implementation and isolated PostgreSQL evidence are complete on a fresh branch based on current `main`; follow-up PR #123 is open. Issue #56 and its Project card remain open/In review pending the required API and Web checks and one approval; do not treat the checklist mark as final closure.
+
+**P1-53 CI update (21 November 2026):** required API full verification and Web typecheck/export/session checks passed on PR #123 commit `2220c9e`. One required approval remains; issue #56 stays open and the Project card stays In review until review and merge.
 
 **P1-39 review candidate (21 November 2026):** the existing API requires active charity representative membership for outcome reports and evidence uploads, validates evidence type, size and file signature, and mediates downloads. PR #118 adds integration coverage for an unassigned representative, unsupported media, a mismatched file signature and an oversized upload. API CI passed with its isolated PostgreSQL/S3 dependencies; P1-39 remains open pending PR review.
 
@@ -120,7 +126,7 @@ The existing API source already configures secure cookies, antiforgery and ident
 | [x] **[P1-32](https://github.com/Bola-j/Helping-Hands/issues/32)** — Implement eligible-charity matching | Bola | P1-13, P1-19, P1-20, P1-21, P1-27, P1-30, P1-51 | Return only approved and active charities with matching selected service-category and compatible recorded standard-unit versions; show current capacity and daily freshness without leaking unrelated records. |
 | [x] **[P1-33](https://github.com/Bola-j/Helping-Hands/issues/33)** — Resolve existing requests when standards change | Bola | P1-13, P1-20, P1-27, P1-32 | Implement and test the interim exact-version policy for outstanding needs; reject incompatible substitutions, leave unmatched needs open, and preserve their history. |
 | [x] **[P1-52](https://github.com/Bola-j/Helping-Hands/issues/55)** — Implement the configurable SMTP sending adapter | Bola | P1-25 | Implement an environment-configured SMTP adapter for the API, targeting the local email catcher; handle failures and avoid claiming mailbox delivery. |
-| [x] **[P1-53](https://github.com/Bola-j/Helping-Hands/issues/56)** — Define and implement PostgreSQL allocation locking | Ziad | P1-18, P1-27 | Implement and document the shared ordered PostgreSQL row-lock and transaction protocol for capacity updates and referral allocations, preserving history and consistent balances. |
+| [ ] **[P1-53](https://github.com/Bola-j/Helping-Hands/issues/56)** — Define and implement PostgreSQL allocation locking | Ziad | P1-18, P1-27 | Implement and document the shared ordered PostgreSQL row-lock and transaction protocol for capacity updates and referral allocations, preserving history and consistent balances. |
 
 ### Sprint 3 tickets
 

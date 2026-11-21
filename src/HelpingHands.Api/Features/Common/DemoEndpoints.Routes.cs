@@ -24,6 +24,7 @@ public static partial class DemoEndpoints
         api.MapGet("/requests/{id:guid}", GetRequest).RequireAuthorization();
         api.MapPut("/requests/{id:guid}", UpdateRequest).RequireAuthorization();
         api.MapPost("/requests/{id:guid}/decisions", DecideRequest).RequireAuthorization();
+        api.MapPost("/requests/{id:guid}/closure", CloseRequest).RequireAuthorization();
         api.MapPost("/requests/{id:guid}/legacy-standard", MapLegacyStandard).RequireAuthorization();
         api.MapGet("/requests/{id:guid}/history", RequestHistory).RequireAuthorization();
         api.MapGet("/requests/{id:guid}/progress", GetRequestProgress).RequireAuthorization();

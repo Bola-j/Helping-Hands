@@ -27,6 +27,7 @@ public sealed partial class EvidenceFlowTests
 
     private static async Task AcceptAndCheckHistoryAsync(HttpClient coordinator, Guid outcome, Guid version, JsonElement referral)
     {
+        await AssertLegacyClosureBlockedAsync(coordinator, referral);
         var accepted = await EvidenceFlowFixture.PostJsonAsync(coordinator, $"/api/v1/outcomes/{outcome}/reviews",
             new { Decision = "Accepted", Reason = (string?)null, Version = version }, HttpStatusCode.OK);
         Assert.Equal("Accepted", accepted.GetProperty("status").GetString());

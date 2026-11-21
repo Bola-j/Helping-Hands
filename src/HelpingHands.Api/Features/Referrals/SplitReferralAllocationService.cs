@@ -85,6 +85,13 @@ public sealed partial class SplitReferralAllocationService(
             return Failure("RequestNotFound", "Assistance request was not found.", command.RequestId, command.NeedId, "Open", null, 0m, 0m, leaveOpen: true);
         }
 
+        if (request.Status == "Completed")
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            return new(false, "Closed", "RequestClosed", "A closed request cannot receive new allocations.", request.Id,
+                command.NeedId, request.Status, null, 0m, 0m, false, false, []);
+        }
+
         RequestNeed? need = null;
         if (command.NeedId.HasValue)
         {

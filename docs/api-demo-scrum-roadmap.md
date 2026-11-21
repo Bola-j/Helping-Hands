@@ -6,6 +6,8 @@ Status: **current backlog and forecast; verify live issue/project status before 
 
 **Implementation update (21 November 2026):** the Project records backend and local integration tickets through P1-54 as Done, except P1-53 (#56), which was reopened after review found an acceptance gap and is awaiting follow-up PR #123 checks and approval. Other ticket statuses are ticket-level progress; they do not demonstrate the public browser-to-API path or the full evaluation demo. The remaining work is tracked on the Project.
 
+**P1-55/P1-56 implementation evidence (21 November 2026):** local worktrees now contain explicit per-need coordinator closure and a dated isolated service restart/outage record. Focused PostgreSQL closure/review tests, the API build, SMTP/reminder tests and the fictional evidence-flow integration test passed. P1-56's service evidence covers restart persistence, not backup restore; see the [recovery record](local-service-recovery-verification.md). Both issues remain open pending their ticket-level review and CI/PR evidence.
+
 **P1-53 reassessment (21 November 2026):** after the audit found that merged PR #107 did not lock `CharityService` rows or prove real PostgreSQL writer contention, issue #56 was reopened and its Project card returned to In progress. The earlier implementation summary above is retained as history; it is not the current ticket status.
 
 **P1-53 progress (21 November 2026):** the follow-up implementation and isolated PostgreSQL evidence are complete on a fresh branch based on current `main`; follow-up PR #123 is open. Issue #56 and its Project card remain open/In review pending the required API and Web checks and one approval; do not treat the checklist mark as final closure.

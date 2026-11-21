@@ -1,10 +1,10 @@
 namespace HelpingHands.Api.Features.Progress;
 
-public sealed record RequestProgressView(Guid Id, string Reference, string Status, string? Description,
+public sealed record RequestProgressView(Guid Id, string Reference, string? Status, string? Description,
     IReadOnlyList<NeedProgressView> Needs, IReadOnlyList<ProgressHistoryEvent> History);
 
-public sealed record NeedProgressView(Guid? NeedId, string? Service, string? Standard, decimal RequiredQuantity,
-    string Status, decimal AssignedQuantity, decimal AcceptedQuantity, decimal RemainingQuantity,
+public sealed record NeedProgressView(Guid? NeedId, string? Service, string? Standard, decimal? RequiredQuantity,
+    string? Status, decimal AssignedQuantity, decimal AcceptedQuantity, decimal? RemainingQuantity,
     IReadOnlyList<AssignmentProgressView> Assignments);
 
 public sealed record AssignmentProgressView(Guid Id, string Reference, string ScopeDescription,

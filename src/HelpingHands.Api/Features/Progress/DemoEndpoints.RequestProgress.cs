@@ -17,9 +17,11 @@ public static partial class DemoEndpoints
         var history = await ProgressHistoryAsync(database, request, referrals, user, cancellationToken);
         var needs = await NeedProgressAsync(database, request, referrals, versions, cancellationToken);
         if (user.IsInRole("RecipientRepresentative"))
-            needs = needs.Where(item => item.Assignments.Count > 0).ToArray();
-        return Results.Ok(new RequestProgressView(request.Id, request.Reference, request.Status,
-            user.IsInRole("RecipientRepresentative") ? null : request.Description, needs, history));
+            needs = needs.Where(item => item.Assignments.Count > 0).Select(item => item with
+            { RequiredQuantity = null, Status = null, RemainingQuantity = null }).ToArray();
+        var representative = user.IsInRole("RecipientRepresentative");
+        return Results.Ok(new RequestProgressView(request.Id, request.Reference, representative ? null : request.Status,
+            representative ? null : request.Description, needs, history));
     }
 
     private static IQueryable<AssistanceRequest> VisibleProgressRequests(HelpingHandsDbContext database, ClaimsPrincipal user) =>

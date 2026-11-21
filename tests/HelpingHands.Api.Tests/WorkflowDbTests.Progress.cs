@@ -37,8 +37,12 @@ public sealed partial class WorkflowDbTests
         Assert.Equal(2, own.GetProperty("needs").GetArrayLength());
         var rep = await RequestProgressAsync(representative, seed.RequestId, HttpStatusCode.OK);
         Assert.Equal(1, rep.GetProperty("needs").GetArrayLength());
+        Assert.Equal(JsonValueKind.Null, rep.GetProperty("status").ValueKind);
         Assert.Equal(JsonValueKind.Null, rep.GetProperty("description").ValueKind);
         var repNeed = rep.GetProperty("needs")[0];
+        Assert.Equal(JsonValueKind.Null, repNeed.GetProperty("requiredQuantity").ValueKind);
+        Assert.Equal(JsonValueKind.Null, repNeed.GetProperty("status").ValueKind);
+        Assert.Equal(JsonValueKind.Null, repNeed.GetProperty("remainingQuantity").ValueKind);
         Assert.Equal(2m, repNeed.GetProperty("assignedQuantity").GetDecimal());
         Assert.Equal(1m, repNeed.GetProperty("acceptedQuantity").GetDecimal());
         Assert.Equal(1, repNeed.GetProperty("assignments").GetArrayLength());

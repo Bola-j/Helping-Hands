@@ -389,7 +389,7 @@ Assessment date: 9 November 2026. This is a historical assessment of the local s
 
 ## P1-53 reassessment — 22 November 2026
 
-The 9 November capability inventory above is a historical baseline. Since that assessment, PR [#123](https://github.com/Bola-j/Helping-Hands/pull/123) merged the shared PostgreSQL lock protocol to `main`; its isolated contention and workflow results are recorded in [the locking guide](postgres-allocation-locking.md). Failure-path rollback had not been verified at the time of the initial reassessment. The follow-up in PR #130 adds real PostgreSQL failure-injection coverage for capacity updates and split allocations; four focused P1-53 tests passed 4/4 locally on disposable PostgreSQL 17. Dedicated P108/P1 end-to-end fixtures and the broader browser-to-API demo remain separate work; PR #130 checks and review are pending.
+The 9 November capability inventory above is a historical baseline. Since that assessment, PR [#123](https://github.com/Bola-j/Helping-Hands/pull/123) merged the shared PostgreSQL lock protocol to `main`; its isolated contention and workflow results are recorded in [the locking guide](postgres-allocation-locking.md). Failure-path rollback had not been verified at the time of the initial reassessment. The follow-up in PR #130 adds real PostgreSQL failure-injection coverage for capacity updates and split allocations; four focused P1-53 tests passed 4/4 locally on disposable PostgreSQL 17. Dedicated P108/P1 end-to-end fixtures and the broader browser-to-API demo remain separate work; PR #130 merged after its required API and Web checks and GitGuardian passed; see the [locking record](postgres-allocation-locking.md).
 
 ## Open verification and handoff
 

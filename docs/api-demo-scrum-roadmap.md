@@ -4,7 +4,7 @@ Status: **current backlog and forecast; verify live issue/project status before 
 
 **Recorded implementation update (21 November 2026):** P1-09 signup, P1-10 access enforcement, and P1-16 charity decisions are closed on GitHub. Their current state is reflected in the Project; the historical verification records and pull-request links remain in their respective tickets and earlier dated notes.
 
-**Implementation update (21 November 2026):** the Project records the backend and local integration tickets through P1-54 as Done, including matching, need review, split referral allocation, capacity concurrency checks, reminders and SMTP integration. This status is ticket-level progress; it does not demonstrate the public browser-to-API path or the full evaluation demo. The remaining work is tracked on the Project.
+**Implementation update (21 November 2026):** the Project records backend and local integration tickets through P1-54 as Done, except P1-53 (#56), which was reopened after review found an acceptance gap and is awaiting follow-up PR #123 checks and approval. Other ticket statuses are ticket-level progress; they do not demonstrate the public browser-to-API path or the full evaluation demo. The remaining work is tracked on the Project.
 
 **P1-53 reassessment (21 November 2026):** after the audit found that merged PR #107 did not lock `CharityService` rows or prove real PostgreSQL writer contention, issue #56 was reopened and its Project card returned to In progress. The earlier implementation summary above is retained as history; it is not the current ticket status.
 

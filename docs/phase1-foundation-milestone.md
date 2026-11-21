@@ -4,7 +4,7 @@
 
 **Goal:** establish a repeatable, isolated development foundation for the Phase 1 API: .NET build and tests, reviewed PostgreSQL migration, API/PostgreSQL/private S3-compatible storage through Docker Compose, and API CI. The target is the team's 12 November 2026 backend forecast, not a delivery commitment. This milestone prepares subsequent identity and workflow work; it does not claim a complete charity-to-closure demo or live deployment.
 
-**Status (21 November 2026):** the baseline, API CI, design and local-services PRs are merged. [P1-02](https://github.com/Bola-j/Helping-Hands/issues/2), [P1-05](https://github.com/Bola-j/Helping-Hands/issues/5), [P1-06](https://github.com/Bola-j/Helping-Hands/issues/6) and [API CI #50](https://github.com/Bola-j/Helping-Hands/issues/50) are closed. [P1-46](https://github.com/Bola-j/Helping-Hands/issues/46) remains open pending review and acceptance of migration and recovery evidence. Dated execution sections below preserve their original observations. See the [backend delivery breakdown](phase1-backend-delivery-breakdown.md).
+**Status (21 November 2026):** the baseline, API CI, design and local-services PRs are merged. [P1-02](https://github.com/Bola-j/Helping-Hands/issues/2), [P1-05](https://github.com/Bola-j/Helping-Hands/issues/5), [P1-06](https://github.com/Bola-j/Helping-Hands/issues/6) and [API CI #50](https://github.com/Bola-j/Helping-Hands/issues/50) are closed. P1-46 migration and recovery evidence is recorded below; see [PR #125](https://github.com/Bola-j/Helping-Hands/pull/125) for its review and CI history. Dated execution sections below preserve their original observations. See the [backend delivery breakdown](phase1-backend-delivery-breakdown.md).
 
 ## P1-46 verification — 21 November 2026
 
@@ -17,7 +17,7 @@ The verification used a clean worktree at `7825444` and two uniquely named Docke
 - With API writes quiescent after that test, a custom-format `pg_dump` and an S3 object backup were made from the source pair. Both were restored to a second Compose project with different, fresh volumes and a separately initialized private bucket. The restored database retained nine migration records and the evidence attachment row. The attachment's 33-byte object matched its source SHA-256 (`F309ED73692404FAD110332AF75FA5250C4E92E1C0094208927621C1970E9CD7`).
 - The restored PostgreSQL and SeaweedFS services were stopped and restarted. The evidence row and object remained, with the same content hash. The restored API then returned the same evidence to an authenticated Coordinator (HTTP 200); an unrelated Beneficiary received HTTP 404.
 
-This records local fictional-data migration, paired restore and restart checks, not production recovery readiness, backup automation, recovery-time objectives or real-data recovery. The full test suite and a CI run for this candidate were not performed here. P1-46 remains open until the branch is reviewed and its completion evidence is accepted.
+This records local fictional-data migration, paired restore and restart checks, not production recovery readiness, backup automation, recovery-time objectives or real-data recovery. The full suite and CI were not run during this local verification; see PR #125 for subsequent checks and review status.
 
 ### Sanitized invocation forms
 

@@ -17,13 +17,10 @@ public sealed partial class WorkflowDbTests
         db.Referrals.AddRange(referrals);
         db.DecisionHistory.AddRange(referrals.Select(item => new DecisionHistory { ReferralId = item.Id,
             ActorUserId = fixture.UserIds["Coordinator"], Action = "SplitAllocated", Reason = "Fictional allocation" }));
-        var outcome = new Outcome { ReferralId = referrals[0].Id, ReportedByUserId = fixture.UserIds["RecipientRepresentative"],
-            ReportedQuantity = 1m, Description = "Fictional accepted report", Status = "Accepted", Reference = await db.NextReferenceAsync("OUT") };
-        db.Outcomes.Add(outcome);
-        db.OutcomeReviews.Add(new OutcomeReview { OutcomeId = outcome.Id, ActorUserId = fixture.UserIds["Coordinator"],
-            Decision = "Accepted", Reason = "Fictional review" });
+        var outcomeIds = await CreateProgressOutcomesAsync(db, referrals[0].Id);
         await db.SaveChangesAsync();
-        return new ProgressSeed(request.Id, needs[0].Id, needs[1].Id, referrals[0].Id, referrals[1].Id);
+        return new ProgressSeed(request.Id, needs[0].Id, needs[1].Id, referrals[0].Id, referrals[1].Id,
+            outcomeIds.Accepted, outcomeIds.Clarification, outcomeIds.Unresolved);
     }
 
     private async Task<Recipient[]> CreateProgressCharitiesAsync(HelpingHandsDbContext db)
@@ -38,5 +35,24 @@ public sealed partial class WorkflowDbTests
         db.Recipients.AddRange(recipients);
         await db.SaveChangesAsync();
         return recipients;
+    }
+
+    private async Task<(Guid Accepted, Guid Clarification, Guid Unresolved)> CreateProgressOutcomesAsync(
+        HelpingHandsDbContext db, Guid referralId)
+    {
+        var reviews = new[] { ("Accepted", "Internal acceptance note"),
+            ("Clarification", "Please clarify the receipt"), ("Unresolved", "Internal unresolved note") };
+        var outcomes = new List<Outcome>();
+        foreach (var (decision, reason) in reviews)
+        {
+            var outcome = new Outcome { ReferralId = referralId, ReportedByUserId = fixture.UserIds["RecipientRepresentative"],
+                ReportedQuantity = 1m, Description = $"Fictional {decision.ToLowerInvariant()} report",
+                Status = decision, Reference = await db.NextReferenceAsync("OUT") };
+            outcomes.Add(outcome);
+            db.OutcomeReviews.Add(new OutcomeReview { OutcomeId = outcome.Id, ActorUserId = fixture.UserIds["Coordinator"],
+                Decision = decision, Reason = reason });
+        }
+        db.Outcomes.AddRange(outcomes);
+        return (outcomes[0].Id, outcomes[1].Id, outcomes[2].Id);
     }
 }

@@ -16,6 +16,7 @@ public static partial class DemoEndpoints
         var rows = await database.OutcomeReviews.AsNoTracking().Where(item => outcomeIds.Contains(item.OutcomeId))
             .OrderBy(item => item.ReviewedAt).ToListAsync(cancellationToken);
         return rows.Select(item => new ProgressHistoryEvent("Outcome", item.OutcomeId, item.Decision, item.ReviewedAt,
-            Staff(user) ? item.ActorUserId : null, item.Reason)).ToList();
+            Staff(user) ? item.ActorUserId : null,
+            Staff(user) || item.Decision == "Clarification" ? item.Reason : null)).ToList();
     }
 }

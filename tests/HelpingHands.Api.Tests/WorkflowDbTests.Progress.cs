@@ -36,26 +36,14 @@ public sealed partial class WorkflowDbTests
         var own = await RequestProgressAsync(beneficiary, seed.RequestId, HttpStatusCode.OK);
         Assert.Equal(2, own.GetProperty("needs").GetArrayLength());
         var rep = await RequestProgressAsync(representative, seed.RequestId, HttpStatusCode.OK);
-        Assert.Equal(1, rep.GetProperty("needs").GetArrayLength());
-        Assert.Equal(JsonValueKind.Null, rep.GetProperty("status").ValueKind);
-        Assert.Equal(JsonValueKind.Null, rep.GetProperty("description").ValueKind);
-        var repNeed = rep.GetProperty("needs")[0];
-        Assert.Equal(JsonValueKind.Null, repNeed.GetProperty("requiredQuantity").ValueKind);
-        Assert.Equal(JsonValueKind.Null, repNeed.GetProperty("status").ValueKind);
-        Assert.Equal(JsonValueKind.Null, repNeed.GetProperty("remainingQuantity").ValueKind);
-        Assert.Equal(1m, repNeed.GetProperty("assignedQuantity").GetDecimal());
-        Assert.Equal(1m, repNeed.GetProperty("acceptedQuantity").GetDecimal());
-        Assert.Equal(1, repNeed.GetProperty("assignments").GetArrayLength());
-        Assert.Equal("Accepted", repNeed.GetProperty("assignments")[0].GetProperty("outcomes")[0].GetProperty("status").GetString());
-        Assert.DoesNotContain(rep.GetProperty("history").EnumerateArray(),
-            item => item.GetProperty("entityId").GetGuid() == seed.SecondReferralId);
+        AssertRepresentativeProgress(rep, seed);
         var otherCharity = await RequestProgressAsync(unrelated, seed.RequestId, HttpStatusCode.OK);
         Assert.Equal(seed.SecondNeedId, otherCharity.GetProperty("needs")[0].GetProperty("needId").GetGuid());
+        Assert.DoesNotContain(otherCharity.GetProperty("history").EnumerateArray(),
+            item => item.GetProperty("entityId").GetGuid() == seed.AcceptedOutcomeId);
         await RequestProgressAsync(unrelated, await SeedUnassignedProgressRequestAsync(), HttpStatusCode.NotFound);
         var staff = await RequestProgressAsync(coordinator, seed.RequestId, HttpStatusCode.OK);
-        Assert.Equal(2, staff.GetProperty("needs").GetArrayLength());
-        Assert.Contains(staff.GetProperty("history").EnumerateArray(),
-            item => item.GetProperty("actorUserId").ValueKind != JsonValueKind.Null);
+        AssertCoordinatorProgress(staff, seed);
     }
 
     private static async Task<JsonElement> RequestProgressAsync(HttpClient client, Guid id, HttpStatusCode status)

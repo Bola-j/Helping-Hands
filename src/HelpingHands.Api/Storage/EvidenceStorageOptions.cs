@@ -10,4 +10,6 @@ public sealed class EvidenceStorageOptions
     public string Bucket { get; set; } = "";
     public string AccessKey { get; set; } = "";
     public string SecretKey { get; set; } = "";
+    public int CleanupIntervalMinutes { get; set; } = 60;
+    public int OrphanRetentionHours { get; set; } = 24;
 }

@@ -8,4 +8,6 @@ public partial interface IEvidenceStorage
     Task DeleteAsync(string key, CancellationToken cancellationToken);
 
     Task<int> CleanupStagedBeforeAsync(DateTimeOffset cutoff, CancellationToken cancellationToken);
+
+    Task<int> CleanupOrphanedFinalBeforeAsync(IReadOnlySet<string> retainedKeys, DateTimeOffset cutoff, CancellationToken cancellationToken);
 }

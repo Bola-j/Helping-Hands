@@ -19,17 +19,11 @@ public static partial class DemoEndpoints
         }
         catch
         {
-            await CleanupFailedUploadAsync(storage, stagedKey, finalKey);
+            if (stagedKey is not null)
+                await TryDeleteAttachmentAsync(storage, stagedKey);
+            // Keep promoted objects until reconciliation resolves an ambiguous database commit.
             throw;
         }
-    }
-
-    private static async Task CleanupFailedUploadAsync(IEvidenceStorage storage, string? stagedKey, string? finalKey)
-    {
-        if (stagedKey is not null)
-            await TryDeleteAttachmentAsync(storage, stagedKey);
-        if (finalKey is not null)
-            await TryDeleteAttachmentAsync(storage, finalKey);
     }
 
     private static async Task TryDeleteAttachmentAsync(IEvidenceStorage storage, string key)

@@ -10,7 +10,7 @@ public static class EvidenceStorageRegistration
     {
         services.AddOptions<EvidenceStorageOptions>()
             .Bind(configuration.GetSection(EvidenceStorageOptions.SectionName))
-            .Validate(HasRequiredSettings, "Evidence storage settings are incomplete.")
+            .Validate(HasRequiredSettings, "Evidence storage settings are incomplete or cleanup intervals are invalid.")
             .ValidateOnStart();
         services.AddSingleton<IAmazonS3>(CreateClient);
         services.AddSingleton<IEvidenceStorage, S3EvidenceStorage>();
@@ -21,7 +21,8 @@ public static class EvidenceStorageRegistration
         Uri.TryCreate(options.ServiceUrl, UriKind.Absolute, out _) &&
         !string.IsNullOrWhiteSpace(options.Bucket) &&
         !string.IsNullOrWhiteSpace(options.AccessKey) &&
-        !string.IsNullOrWhiteSpace(options.SecretKey);
+        !string.IsNullOrWhiteSpace(options.SecretKey) &&
+        options.CleanupIntervalMinutes > 0 && options.OrphanRetentionHours > 0;
 
     private static IAmazonS3 CreateClient(IServiceProvider services)
     {

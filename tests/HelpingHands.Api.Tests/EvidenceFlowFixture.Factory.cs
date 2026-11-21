@@ -1,6 +1,11 @@
+using System.Reflection;
+using HelpingHands.Api.Storage;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace HelpingHands.Api.Tests;
 
@@ -14,6 +19,17 @@ public sealed partial class EvidenceFlowFixture
         new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
         {
             builder.UseEnvironment("Development");
+            builder.ConfigureTestServices(services =>
+            {
+                services.RemoveAll<IEvidenceStorage>();
+                services.AddSingleton<S3EvidenceStorage>();
+                services.AddSingleton<IEvidenceStorage>(provider =>
+                {
+                    var proxy = DispatchProxy.Create<IEvidenceStorage, EvidenceStorageRecordingProxy>();
+                    ((EvidenceStorageRecordingProxy)(object)proxy).Inner = provider.GetRequiredService<S3EvidenceStorage>();
+                    return proxy;
+                });
+            });
             builder.ConfigureAppConfiguration((_, config) => config.AddInMemoryCollection(new Dictionary<string, string?>
             {
                 ["ConnectionStrings:HelpingHands"] = connection,

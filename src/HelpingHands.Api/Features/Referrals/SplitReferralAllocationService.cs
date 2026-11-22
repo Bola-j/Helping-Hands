@@ -15,9 +15,12 @@ public sealed record SplitReferralAllocationRequest(
     Guid RequestId,
     Guid? NeedId,
     Guid ActorUserId,
-    IReadOnlyList<SplitAllocationLegInput> Allocations);
+    IReadOnlyList<SplitAllocationLegInput> Allocations,
+    Guid? ExpectedRequestVersion = null);
 
 public sealed record SplitAllocationLegOutcome(
+    Guid ReferralId,
+    Guid? NeedId,
     Guid RecipientId,
     Guid CharityServiceId,
     Guid ServiceVersionId,
@@ -85,6 +88,18 @@ public sealed partial class SplitReferralAllocationService(
             return Failure("RequestNotFound", "Assistance request was not found.", command.RequestId, command.NeedId, "Open", null, 0m, 0m, leaveOpen: true);
         }
 
+        if (command.ExpectedRequestVersion.HasValue && request.Version != command.ExpectedRequestVersion)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            return Failure("StaleVersion", "Request changed; reload before allocating.", request.Id, command.NeedId, request.Status, null, 0m, 0m, leaveOpen: true);
+        }
+
+        if (command.NeedId.HasValue && !request.IsMultiNeed)
+        {
+            await transaction.RollbackAsync(cancellationToken);
+            return Failure("MultiNeedRequired", "Per-need allocation requires a multi-need request.", request.Id, command.NeedId, request.Status, null, 0m, 0m, leaveOpen: true);
+        }
+
         if (request.Status == "Completed")
         {
             await transaction.RollbackAsync(cancellationToken);
@@ -102,6 +117,12 @@ public sealed partial class SplitReferralAllocationService(
             {
                 await transaction.RollbackAsync(cancellationToken);
                 return Failure("NeedNotFound", "Specified need does not belong to the assistance request.", request.Id, command.NeedId, request.Status, null, 0m, 0m, leaveOpen: true);
+            }
+
+            if (need.Status != "Accepted")
+            {
+                await transaction.RollbackAsync(cancellationToken);
+                return Failure("NeedNotAccepted", "Only an accepted need can be allocated.", request.Id, need.Id, request.Status, need.Status, 0m, 0m, leaveOpen: true);
             }
         }
 
@@ -331,6 +352,8 @@ public sealed partial class SplitReferralAllocationService(
                 });
 
             legOutcomes.Add(new SplitAllocationLegOutcome(
+                ReferralId: referral.Id,
+                NeedId: need?.Id,
                 RecipientId: leg.RecipientId,
                 CharityServiceId: service.CharityServiceId,
                 ServiceVersionId: leg.ServiceVersionId,

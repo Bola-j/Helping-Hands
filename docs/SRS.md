@@ -393,6 +393,10 @@ Assessment date: 9 November 2026. This is a historical assessment of the local s
 
 The 9 November capability inventory above is a historical baseline. Since that assessment, PR [#123](https://github.com/Bola-j/Helping-Hands/pull/123) merged the shared PostgreSQL lock protocol to `main`; its isolated contention and workflow results are recorded in [the locking guide](postgres-allocation-locking.md). Failure-path rollback had not been verified at the time of the initial reassessment. The follow-up in PR #130 adds real PostgreSQL failure-injection coverage for capacity updates and split allocations; four focused P1-53 tests passed 4/4 locally on disposable PostgreSQL 17. Dedicated P108/P1 end-to-end fixtures and the broader browser-to-API demo remain separate work; PR #130 merged after its required API and Web checks and GitGuardian passed; see the [locking record](postgres-allocation-locking.md).
 
+## P1-44 regression update — 22 November 2026
+
+PR [#134](https://github.com/Bola-j/Helping-Hands/pull/134) adds an isolated PostgreSQL API match with eligible, mismatched-version and inactive-charity outcomes, plus an existing-session representative role-revocation test against referral, outcome, progress and private evidence reads. The read queries now check the current database role as well as active membership. The local quick suite passed 68/68; corrected-head API full verification, web checks and GitGuardian passed on push and PR events. This evidence covers the API regression ticket, not the P1-58 API-client rehearsal or P1-47 browser rehearsal. Broader coordinator and beneficiary role revocation was not added to this focused change.
+
 ## Open verification and handoff
 
 - Do not mark a capability done based on this inventory. Recheck S3 availability and run isolated upgrade, recovery, representative API and storage verification; record actual results.

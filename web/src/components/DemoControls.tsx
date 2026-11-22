@@ -18,6 +18,23 @@ export function ConsentRow(props: { label: string; value: boolean; onToggle: () 
   return <Pressable accessibilityRole="checkbox" accessibilityState={{ checked: props.value }} onPress={props.onToggle} style={styles.consentRow}><Text style={styles.checkbox}>{props.value ? '✓' : ' '}</Text><Text style={styles.body}>{props.label}</Text></Pressable>;
 }
 
+function getRequestStatusLabel(status: string) {
+  switch (status) {
+    case 'Submitted':
+      return 'Awaiting review';
+    case 'Clarification':
+      return 'Action needed';
+    case 'Accepted':
+      return 'Accepted';
+    case 'Rejected':
+      return 'Rejected';
+    case 'Completed':
+      return 'Completed';
+    default:
+      return status;
+  }
+}
+
 export function RequestList({ requests }: { requests: DemoRequest[] }) {
-  return <View style={styles.requestList}><Text style={styles.sectionTitle}>Your requests</Text>{requests.length ? requests.map(item => <View key={item.id} style={styles.requestItem}><Text style={styles.requestReference}>{item.reference} · {item.status}</Text><Text style={styles.body}>{item.description}</Text></View>) : <Text style={styles.body}>No requests yet. Submit a single-need request to see it here.</Text>}</View>;
+  return <View style={styles.requestList}><Text style={styles.sectionTitle}>Your requests</Text>{requests.length ? requests.map(item => <View key={item.id} style={styles.requestItem}><Text style={styles.requestReference}>{item.reference} · {getRequestStatusLabel(item.status)}</Text><Text style={styles.body}>{item.description}</Text></View>) : <Text style={styles.body}>No requests yet. Submit a single-need request to see it here.</Text>}</View>;
 }

@@ -22,6 +22,12 @@ internal static class SplitReferralApiHelpers
 
 internal static class SplitReferralApiAssertions
 {
+    public static async Task NotFoundAsync(HttpClient coordinator, string path, Guid version, SplitAllocationLegInput[] legs)
+    {
+        using var response = await WorkflowDbFixture.PostAsync(coordinator, path, new { Version = version, Allocations = legs });
+        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
     public static async Task RejectAsync(HttpClient coordinator, string path, Guid version, SplitAllocationLegInput[] legs)
     {
         using var response = await WorkflowDbFixture.PostAsync(coordinator, path, new { Version = version, Allocations = legs });

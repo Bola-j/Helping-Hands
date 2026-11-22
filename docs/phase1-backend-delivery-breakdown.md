@@ -2,6 +2,8 @@
 
 Planning date: 11 November 2026 (Africa/Cairo). Target: **12 November 2026**, subject to team capacity and dependency availability. This is a high-risk forecast, not a commitment or evidence of completion. It covers the complete Phase 1 backend scope, local infrastructure and API CI in the [demo roadmap](api-demo-scrum-roadmap.md); production deployment and the separate web implementation remain later work. API CI is pulled forward from [P2-DEP-02](https://github.com/Bola-j/Helping-Hands/issues/50). Existing tickets remain the tracking items; no duplicate tickets are implied.
 
+**Reconciliation — 22 November 2026:** the backend API-client rehearsal (P1-58) is complete and documented in [the dated evidence record](p1-58-backend-rehearsal.md). This closes the backend rehearsal deliverable only; P1-47 browser rehearsal and P1-48 evaluation evidence remain separate.
+
 ## Current starting point
 
 The working tree contains uncommitted API, EF migration, Docker and test work. The historical assessment in the [SRS](SRS.md#appendix-phase-1-implementation-baseline-and-verification) recorded a successful build, nine tests and an isolated empty-PostgreSQL migration on 9 November; those results are not a current end-to-end demonstration. Code inspection shows existing auth, application, request, referral, outcome and attachment routes, but several Phase 1 rules and models are missing. GitHub Actions workflows are absent. Docker was unavailable during this planning pass; the configured S3 image previously failed to pull. Recheck all dependencies before committing to the target.

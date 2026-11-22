@@ -23,6 +23,8 @@ API CI is pulled forward into Phase 1; live deployment and frontend CI remain in
 
 The current Phase 1 backlog separates [backend readiness rehearsal and evidence (P1-58)](https://github.com/Bola-j/Helping-Hands/issues/132) from the [complete browser-to-API rehearsal (P1-47)](https://github.com/Bola-j/Helping-Hands/issues/47) and [final evaluation evidence (P1-48)](https://github.com/Bola-j/Helping-Hands/issues/48). API-client results can demonstrate the backend increment; the full-app gates require their own observed browser and evaluation evidence. This is a 22 November 2026 planning update; the sprint forecast table above remains historical context.
 
+**P1-58 completion — 22 November 2026:** the API-client backend rehearsal is complete with isolated PostgreSQL, private evidence storage and Mailpit. The result, observed failures and boundaries are in the [P1-58 evidence record](p1-58-backend-rehearsal.md). The remaining full-app rehearsal and evaluation stay under P1-47 and P1-48.
+
 ## Team and collaboration
 
 | Member | Primary contribution | Coordination |

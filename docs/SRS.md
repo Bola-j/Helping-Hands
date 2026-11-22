@@ -1,9 +1,10 @@
 # Software Requirements Specification — Helping Hands
 
-**Version:** 1.4 | **Status:** Working requirements baseline; Scrum Master review accepted; signup and identity role decisions reconciled; other diagram reconciliation remains open | **Authors:** Project team
+**Version:** 1.5 | **Status:** Working requirements baseline; Scrum Master review accepted; signup and identity role decisions reconciled; other diagram reconciliation remains open | **Authors:** Project team
 
 | Version | Change |
 | --- | --- |
+| 1.5 | Recorded observed P1-58 backend API rehearsal results and maintained separate browser/evaluation verification gates. |
 | 1.4 | Recorded individual need review and fully accepted, partially accepted and fully rejected request outcomes. |
 | 1.3 | Defined P1-10 identity access: Administrator inherits Coordinator permissions; Phase 1 self-service uses Beneficiary; third-party requester access is deferred. |
 | 1.2 | Specified distinct beneficiary and charity signup flows and linked-profile/application outcomes for P1-09; documented the planned-vs-current implementation boundary. |
@@ -13,7 +14,7 @@
 
 ## 1. Introduction
 
-This specification describes the intended first-version behavior and constraints for Helping Hands, for the project team, instructor, and prospective stakeholders. BRD 1.6 is the working business baseline; this document is the project team’s working specification, finalized under the project owner’s delegation of remaining decisions. It elaborates the BRD without claiming separate approval of every requirement or any instructor or external stakeholder approval. See [BRD](BRD.md), [PRD](PRD.md), [system models](models.md), and [database design](database-design.md). The attached course materials inform the requirements and modeling approach; applicable course requirements should be checked against the final submission.
+This specification describes the intended first-version behavior and constraints for Helping Hands, for the project team, instructor, and prospective stakeholders. BRD 1.8 is the working business baseline; this document is the project team’s working specification, finalized under the project owner’s delegation of remaining decisions. It elaborates the BRD without claiming separate approval of every requirement or any instructor or external stakeholder approval. See [BRD](BRD.md), [PRD](PRD.md), [system models](models.md), and [database design](database-design.md). The attached course materials inform the requirements and modeling approach; applicable course requirements should be checked against the final submission.
 
 Helping Hands coordinates assistance and records requests, referrals, outcomes and review. Participants arrange and provide aid outside the platform. The platform does not take custody of money or goods, process payments, operate inventory or delivery logistics, or perform charity accounting. Public request listings, real operational pilots, and actual donations are outside the first version. The full BRD scope remains in scope even where sequenced after the core demonstration. Demonstrations use fictional people, data and evidence.
 
@@ -395,7 +396,7 @@ The 9 November capability inventory above is a historical baseline. Since that a
 
 ## P1-44 regression update — 22 November 2026
 
-PR [#134](https://github.com/Bola-j/Helping-Hands/pull/134) adds an isolated PostgreSQL API match with eligible, mismatched-version and inactive-charity outcomes, plus an existing-session representative role-revocation test against referral, outcome, progress and private evidence reads. The read queries now check the current database role as well as active membership. The local quick suite passed 68/68; corrected-head API full verification, web checks and GitGuardian passed on push and PR events. This evidence covers the API regression ticket, not the P1-58 API-client rehearsal or P1-47 browser rehearsal. Broader coordinator and beneficiary role revocation was not added to this focused change.
+PR [#134](https://github.com/Bola-j/Helping-Hands/pull/134) adds an isolated PostgreSQL API match with eligible, mismatched-version and inactive-charity outcomes, plus an existing-session representative role-revocation test against referral, outcome, progress and private evidence reads. The read queries now check the current database role as well as active membership. The local quick suite passed 68/68; corrected-head API full verification, web checks and GitGuardian passed on push and PR events. This evidence covers the API regression ticket; the P1-58 API-client rehearsal is recorded separately below, and the P1-47 browser rehearsal remains open. Broader coordinator and beneficiary role revocation was not added to this focused change.
 
 ## Open verification and handoff
 
@@ -408,3 +409,7 @@ PR [#134](https://github.com/Bola-j/Helping-Hands/pull/134) adds an isolated Pos
 P1-55 now implements explicit coordinator closure, with isolated PostgreSQL checks for partial and full multi-need fulfillment, competing closure attempts, audit actor/time, stale versions, accepted-quantity replay and post-close allocation rejection. The API build and focused checks passed locally. See the [API demo walkthrough](api-demo-walkthrough.md) for the route and behavior. Branch publication, CI, required review and merge are not complete.
 
 P1-56's isolated Docker exercise verified API liveness/readiness and retained PostgreSQL plus private evidence after a full container restart, and recorded PostgreSQL and storage outage behavior. Mailpit accepted a retried reminder before restart; its inbox history did not persist. The storage outage download did not return an HTTP response within the 45-second client limit. This exercise is not a database backup/restore test or production recovery certification; details and boundaries are recorded in [local service recovery verification](local-service-recovery-verification.md). P1-56 remains open pending issue review and CI evidence.
+
+### P1-58 backend API rehearsal — 22 November 2026
+
+The clean-start API-client rehearsal exercised charity approval, two published standards and capacity, multi-need review, a split referral, private evidence, Coordinator review and per-need closure with isolated PostgreSQL, SeaweedFS S3 storage and Mailpit. Stale capacity and request versions, denied reviewer/evidence access, invalid closure, PostgreSQL outage and service restart persistence were observed. The detailed steps and results are in [P1-58 backend rehearsal evidence](p1-58-backend-rehearsal.md). This does not verify the web client, full browser flow, database backup restoration, an external mail provider or the P1-47/P1-48 gates.

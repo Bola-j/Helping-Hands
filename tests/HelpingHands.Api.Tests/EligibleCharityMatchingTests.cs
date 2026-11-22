@@ -12,7 +12,7 @@ using Npgsql;
 
 namespace HelpingHands.Api.Tests;
 
-public sealed class EligibleCharityMatchingTests
+public sealed partial class EligibleCharityMatchingTests
 {
     private const string TestRoleHeader = "X-Test-Role";
 

@@ -12,7 +12,7 @@ public static partial class DemoEndpoints
         if (Coordinator(user)) return query;
         var userId = Actor(user);
         if (!user.IsInRole("RecipientRepresentative")) return query.Where(_ => false);
-        return query.Where(outcome => database.Referrals.Any(referral => referral.Id == outcome.ReferralId && database.RecipientMembers.Any(membership => membership.RecipientId == referral.RecipientId && membership.UserId == userId && membership.IsActive)));
+        return query.Where(outcome => CurrentRepresentativeUserIds(database).Contains(userId) && database.Referrals.Any(referral => referral.Id == outcome.ReferralId && database.RecipientMembers.Any(membership => membership.RecipientId == referral.RecipientId && membership.UserId == userId && membership.IsActive)));
     }
 
     private static async Task<IResult> ListOutcomes(string? reference, ClaimsPrincipal user, HelpingHandsDbContext database, CancellationToken cancellationToken)

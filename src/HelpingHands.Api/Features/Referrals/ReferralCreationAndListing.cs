@@ -28,7 +28,7 @@ public static partial class DemoEndpoints
         if (Coordinator(user)) return query;
         var userId = Actor(user);
         if (!user.IsInRole("RecipientRepresentative")) return query.Where(_ => false);
-        return query.Where(referral => database.RecipientMembers.Any(membership => membership.RecipientId == referral.RecipientId && membership.UserId == userId && membership.IsActive));
+        return query.Where(referral => CurrentRepresentativeUserIds(database).Contains(userId) && database.RecipientMembers.Any(membership => membership.RecipientId == referral.RecipientId && membership.UserId == userId && membership.IsActive));
     }
 
     private static async Task<IResult> ListReferrals(string? reference, ClaimsPrincipal user, HelpingHandsDbContext database, CancellationToken cancellationToken)

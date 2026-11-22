@@ -33,6 +33,6 @@ public static partial class DemoEndpoints
         var query = database.Referrals.AsNoTracking().Where(item => item.RequestId == requestId);
         if (Staff(user) || Beneficiary(user)) return query;
         var userId = Actor(user);
-        return query.Where(item => database.RecipientMembers.Any(member => member.RecipientId == item.RecipientId && member.UserId == userId && member.IsActive));
+        return query.Where(item => CurrentRepresentativeUserIds(database).Contains(userId) && database.RecipientMembers.Any(member => member.RecipientId == item.RecipientId && member.UserId == userId && member.IsActive));
     }
 }

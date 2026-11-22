@@ -45,7 +45,7 @@ public sealed partial class WorkflowDbTests
         var version = await SplitReferralApiHelpers.RequestVersionAsync(fixture, scenario.RequestId);
         var path = SplitReferralApiHelpers.Path(scenario.RequestId, scenario.NeedId);
         await SplitReferralApiAssertions.RejectAsync(coordinator, path, Guid.NewGuid(), [SplitReferralApiHelpers.Leg(scenario, 1m)]);
-        await SplitReferralApiAssertions.RejectAsync(coordinator, SplitReferralApiHelpers.Path(scenario.RequestId, Guid.NewGuid()), version, [SplitReferralApiHelpers.Leg(scenario, 1m)]);
+        await SplitReferralApiAssertions.NotFoundAsync(coordinator, SplitReferralApiHelpers.Path(scenario.RequestId, Guid.NewGuid()), version, [SplitReferralApiHelpers.Leg(scenario, 1m)]);
         await SplitReferralApiAssertions.RejectAsync(coordinator, SplitReferralApiHelpers.Path(scenario.RequestId, scenario.RejectedNeedId), version, [SplitReferralApiHelpers.Leg(scenario, 1m)]);
         await SplitReferralApiAssertions.RejectAsync(coordinator, path, version, [SplitReferralApiHelpers.Leg(scenario, 1m) with { StandardVersionId = Guid.NewGuid() }]);
         await SplitReferralApiAssertions.RejectAsync(coordinator, path, version, [SplitReferralApiHelpers.Leg(scenario, 2m)]);

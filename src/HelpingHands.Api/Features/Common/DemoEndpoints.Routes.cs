@@ -29,6 +29,7 @@ public static partial class DemoEndpoints
         api.MapGet("/requests/{id:guid}/history", RequestHistory).RequireAuthorization();
         api.MapGet("/requests/{id:guid}/progress", GetRequestProgress).RequireAuthorization();
         api.MapPost("/requests/{id:guid}/referrals", CreateReferral).RequireAuthorization();
+        api.MapPost("/requests/{requestId:guid}/needs/{needId:guid}/referrals", AllocateNeedReferrals).RequireAuthorization();
         api.MapGet("/referrals", ListReferrals).RequireAuthorization();
         api.MapGet("/referrals/{id:guid}", GetReferral).RequireAuthorization();
         api.MapGet("/referrals/{id:guid}/history", ReferralHistory).RequireAuthorization();

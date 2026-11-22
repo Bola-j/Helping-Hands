@@ -4,10 +4,10 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 1.3 |
+| Version | 1.4 |
 | Status | Working product baseline; Phase 1 review accepted by the Scrum Master; diagram reconciliation and external validation remain open |
 | Authors | Bola Ghaly, Ziad Walid, hussien okely and ali fathy |
-| Business source | [Business Requirements Document v1.7](BRD.md), working baseline with owner delegation; Scrum Master review accepted |
+| Business source | [Business Requirements Document v1.8](BRD.md), working baseline with owner delegation; Scrum Master review accepted |
 | Related specification | [Software Requirements Specification](SRS.md); detailed system requirements and models are maintained there |
 
 | Version | Change |
@@ -17,8 +17,11 @@
 | 1.1 | Reconciled current Phase 1 scope and coordinator charity approval; Scrum Master review accepted on 11 November 2026. |
 | 1.2 | Recorded the project decision for individual need review and the three final request review outcomes. |
 | 1.3 | Added a distinct backend readiness rehearsal and evidence gate ahead of full-app rehearsal and evaluation. |
+| 1.4 | Recorded P1-58's completed API-client rehearsal and retained separate full-app and evaluation gates. |
 
 This working baseline applies the project owner’s request to finalize the requirements and delegation of remaining decisions. The owner validated an earlier BRD; this does not mean each product rule was individually approved. No instructor, charity, or other stakeholder approval, field validation, implementation, or test result is implied by this document.
+
+**P1-58 evidence update — 22 November 2026:** the fictional API-client backend rehearsal passed against isolated PostgreSQL, private S3-compatible storage and Mailpit. Its observed workflow, HTTP results, recovery checks and limitations are recorded in the [rehearsal evidence](p1-58-backend-rehearsal.md). This does not complete the browser-to-API rehearsal P1-47 or full-app evaluation evidence P1-48.
 
 Course reference locations below are PDF page numbers, not necessarily printed slide numbers: `D:/Downloads/swe/Lecture 1.pdf`, `Lecture 2.pdf`, `Lecture 3.pdf`, and `Lecture 5_new (Part1 and Part2).pdf` (also supplied as `(1)`); the latter copies have the same page count and extracted content. These are local source materials, not deliverables. Lecture 4 and a separate instructor submission rubric were not supplied; no missing content is inferred.
 

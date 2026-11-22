@@ -4,7 +4,7 @@
 
 | Field | Value |
 | --- | --- |
-| Version | 1.7 |
+| Version | 1.8 |
 | Updated | 2026-11-22 |
 | Status | Working business baseline; request review outcome decision recorded |
 | Prepared by | Helping Hands project team |
@@ -22,8 +22,9 @@
 | 1.5 | Recorded the project decision that Administrator inherits Coordinator permissions while remaining a distinct role. |
 | 1.6 | Recorded per-need review and fully accepted, partially accepted, or fully rejected request outcomes. |
 | 1.7 | Separated Phase 1 backend readiness evidence from the complete web application rehearsal and evaluation. |
+| 1.8 | Recorded the completed fictional-data backend API rehearsal and its limits; full browser rehearsal and final evaluation remain separate. |
 
-The [original idea and business model](references/helping-hands-full-idea.md) is background. This document supersedes its direct inventory, finance, and organizational-help management model. The project owner validated the earlier BRD, requested finalization, and delegated the remaining decisions to practical business judgment. Version 1.3 adopted those decisions as the earlier baseline; version 1.4 records the later Phase 1 project direction; version 1.5 records the explicit identity-access decision; version 1.6 records the project direction for mixed-need review outcomes; version 1.7 separates backend readiness evidence from full-app evaluation. No instructor, charity, or other stakeholder approval is implied.
+The [original idea and business model](references/helping-hands-full-idea.md) is background. This document supersedes its direct inventory, finance, and organizational-help management model. The project owner validated the earlier BRD, requested finalization, and delegated the remaining decisions to practical business judgment. Version 1.3 adopted those decisions as the earlier baseline; version 1.4 records the later Phase 1 project direction; version 1.5 records the explicit identity-access decision; version 1.6 records the project direction for mixed-need review outcomes; version 1.7 separates backend readiness evidence from full-app evaluation; version 1.8 records the observed API rehearsal without extending its claims to browser or evaluation evidence. No instructor, charity, or other stakeholder approval is implied.
 
 ## 2. Executive summary
 

@@ -19,10 +19,10 @@ The following are proposed starting points, not assignments or evidence of compl
 | --- | --- | --- |
 | Bola Ghaly | [P1-08: API session and antiforgery contracts](https://github.com/Bola-j/Helping-Hands/issues/8) | Depends on P1-05 and P1-06; assess the existing session and antiforgery contract and run focused HTTP checks. |
 | Ziad Walid | [P1-12: service catalog and versioned standards schema](https://github.com/Bola-j/Helping-Hands/issues/12) | Depends on P1-02 and P1-05; use a reviewed migration and isolated PostgreSQL checks. |
-| hussien okely | [P1-11: registration and login screens](https://github.com/Bola-j/Helping-Hands/issues/11) | Future UI work; depends on the web foundation, session client and API identity tickets. |
+| Hussien Okely — Cross-Platform Mobile App Dev | [P1-MOB-03: Flutter UI foundation](https://github.com/Bola-j/Helping-Hands/issues/151) | Planned mobile code work; depends on platform setup and native API integration. |
 | ali fathy | [P1-15: coordinator service and standards screens](https://github.com/Bola-j/Helping-Hands/issues/15) | Future UI work; depends on the web foundation, session client and service API. |
 
-As of this review, the repository collaborator list includes Bola and Ziad. The GitHub usernames and access for hussien and ali remain unconfirmed. The repository history reviewed so far does not establish individual code commits by those three teammates. These are gaps to resolve, not reasons to manufacture activity. Ziad's access is accepted as previously recorded.
+As of this review, the repository collaborator list includes Bola and Ziad. The GitHub usernames and access for Hussien Okely and Ali were unconfirmed at the time of that review. The repository history reviewed so far does not establish individual code commits by those three teammates. These are gaps to resolve, not reasons to manufacture activity. Ziad's access is accepted as previously recorded.
 
 ## P1-04 completion evidence
 

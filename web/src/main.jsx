@@ -1,13 +1,16 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './site.css';
+import { DemoPage } from './DemoPage.jsx';
 
 function HomePage() {
   return (
     <main className="page">
       <header className="topbar">
         <a className="brand" href="/" aria-label="Helping Hands home">Helping Hands</a>
-        <nav aria-label="Main navigation"><a href="/how-it-works">How it works</a></nav>
+        <nav aria-label="Main navigation">
+          <a href="/how-it-works">How it works</a> <a href="/demo">Demo</a>
+        </nav>
       </header>
       <section className="hero">
         <p className="eyebrow">Community care, coordinated</p>
@@ -24,7 +27,9 @@ function HowItWorksPage() {
     <main className="page">
       <header className="topbar">
         <a className="brand" href="/" aria-label="Helping Hands home">Helping Hands</a>
-        <nav aria-label="Main navigation"><a href="/">Home</a></nav>
+        <nav aria-label="Main navigation">
+          <a href="/">Home</a> <a href="/demo">Demo</a>
+        </nav>
       </header>
       <section className="content">
         <p className="eyebrow">A clear path to support</p>
@@ -36,7 +41,10 @@ function HowItWorksPage() {
 }
 
 function App() {
-  return window.location.pathname === '/how-it-works' ? <HowItWorksPage /> : <HomePage />;
+  const path = window.location.pathname;
+  if (path === '/how-it-works') return <HowItWorksPage />;
+  if (path === '/demo') return <DemoPage />;
+  return <HomePage />;
 }
 
 createRoot(document.getElementById('root')).render(<App />);

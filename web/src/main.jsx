@@ -1,3 +1,4 @@
+import { SessionProvider } from './session/SessionProvider';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import './site.css';
@@ -43,7 +44,7 @@ function HowItWorksPage() {
 function App() {
   const path = window.location.pathname;
   if (path === '/how-it-works') return <HowItWorksPage />;
-  if (path === '/demo') return <DemoPage />;
+  if (path === '/demo') return <SessionProvider><DemoPage /></SessionProvider>;
   return <HomePage />;
 }
 

@@ -16,7 +16,7 @@ Deploy one API container and a separate PostgreSQL instance or container only wh
 
 ## Browser and mobile clients
 
-The React JS website serves browser workflows. Its Phase 1 rebuild targets the agreed web journeys; Phase 2 adds and verifies layouts for representative phone, tablet, and desktop viewports. Browser/device coverage is a test plan, not a claim of compatibility before execution. The Flutter application is the native cross-platform mobile client for requester and charity workflows; its platform support must be demonstrated separately on Android and iOS. Keep session tokens and credentials out of logs and durable client storage, and enforce access on the API for both clients.
+The React JS website serves browser workflows. Its Phase 1 rebuild targets the agreed web journeys; Phase 2 adds and verifies layouts for representative phone, tablet, and desktop viewports. Browser/device coverage is a test plan, not a claim of compatibility before execution. The Flutter application serves beneficiaries on Android and iOS in the committed phases; its platform support must be demonstrated separately. Third-party and charity mobile roles remain unscheduled future candidates. Keep session tokens and credentials out of logs and durable client storage, and enforce access on the API for both clients.
 
 ## Open decisions
 

@@ -34,7 +34,7 @@ The current Phase 1 backlog separates [backend readiness rehearsal and evidence 
 | Bola Ghaly | Backend API, application logic, integration and backend tests. | Agree contracts with UI and database owners; review authorization and failure behavior with the team. |
 | Ziad Walid | Database design, migrations, constraints and system architecture. | Review model and transaction changes with backend; maintain structural and architectural documentation. |
 | ali fathy | React JavaScript browser website and web workflows. | Coordinate API states, testing and responsive behavior with the backend team. |
-| hussien okely | Flutter mobile application and mobile workflows. | Coordinate native session behavior and API integration with the backend team. |
+| Hussien Okely | Cross-Platform Mobile App Dev (Flutter). | Coordinate native session behavior, bilingual Android/iOS UI, and API integration with the backend team. |
 
 All four participate in backlog refinement, planning, daily coordination, integration, testing, review and retrospective. The specialties do not assign Scrum Master or Product Owner roles; the team must agree who facilitates and who represents product priorities. Stakeholder and instructor participation depend on availability and are not implied to have happened.
 

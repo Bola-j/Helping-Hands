@@ -6,7 +6,7 @@
 | --- | --- |
 | Version | 1.4 |
 | Status | Working product baseline; Phase 1 review accepted by the Scrum Master; diagram reconciliation and external validation remain open |
-| Authors | Bola Ghaly, Ziad Walid, hussien okely and ali fathy |
+| Authors | Bola Ghaly, Ziad Walid, Hussien Okely and ali fathy |
 | Business source | [Business Requirements Document v1.8](BRD.md), working baseline with owner delegation; Scrum Master review accepted |
 | Related specification | [Software Requirements Specification](SRS.md); detailed system requirements and models are maintained there |
 

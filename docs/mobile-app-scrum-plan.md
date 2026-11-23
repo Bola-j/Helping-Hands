@@ -1,6 +1,6 @@
 # React JS Web and Flutter Mobile Scrum Plan
 
-Status: **planned work**. The React JS foundation is merged; the Flutter app and device evidence remain to be implemented. The web app is a browser site without PWA features.
+Status: **approved beneficiary-only Flutter scope for Phases 1 and 2**. The React JS foundation is merged; the Flutter app and device evidence remain to be implemented. The web app is a browser site without PWA features.
 
 ## Team responsibility
 
@@ -34,7 +34,7 @@ Closed Expo issue #7 is historical web work. #138 and completed #148 remain GitH
 | [P2-MOB-08 #159](https://github.com/Bola-j/Helping-Hands/issues/159) | Mobile requirements trace and current use case, sequence, component and deployment models. | Implemented behavior |
 | [P2-MOB-04 #145](https://github.com/Bola-j/Helping-Hands/issues/145) | Regression, Android/iOS build and release evidence. | Phase 1 and Phase 2 flows |
 
-Existing [third-party requester #142](https://github.com/Bola-j/Helping-Hands/issues/142), [charity capacity #143](https://github.com/Bola-j/Helping-Hands/issues/143), and [charity referral/outcome #144](https://github.com/Bola-j/Helping-Hands/issues/144) tickets remain separate Phase 2 work from the earlier full-app plan. Any required API changes receive separate issues with authorization and tests. App-store publication is not assumed.
+The approved Flutter plan serves beneficiaries only in both phases. Earlier [third-party requester #142](https://github.com/Bola-j/Helping-Hands/issues/142), [charity capacity #143](https://github.com/Bola-j/Helping-Hands/issues/143), and [charity referral/outcome #144](https://github.com/Bola-j/Helping-Hands/issues/144) issues are unscheduled future product candidates. They remain open for later refinement, carry the `future-mobile-scope` label, and are outside Project #5. The wider web/API product still includes those roles. Any required mobile API changes receive separate issues with authorization and tests. App-store publication is not assumed.
 
 ## Planning and acceptance
 

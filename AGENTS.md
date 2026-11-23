@@ -4,7 +4,7 @@ These instructions apply throughout this repository. Follow the user's current r
 
 ## Project context
 
-Helping Hands is a coordination platform: assistance is delivered outside the system. The current stack direction is an ASP.NET Core .NET 10 API, PostgreSQL, EF Core code-first migrations and an eventual React Native Web client. The API demo uses fictional data. An outcome is a participant report and a coordinator's acceptance is a review, not independent proof.
+Helping Hands is a coordination platform: assistance is delivered outside the system. The current stack direction is an ASP.NET Core .NET 10 API, PostgreSQL, EF Core code-first migrations, a React JS browser website, and a separate Flutter mobile app for beneficiaries in the committed phases. The website has no PWA features; its responsive layouts are Phase 2 work. Third-party requester and charity Flutter workflows are deferred future candidates. The API demo uses fictional data. An outcome is a participant report and a coordinator's acceptance is a review, not independent proof.
 
 Consult the relevant source before changing behavior:
 

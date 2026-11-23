@@ -7,8 +7,12 @@ export function DemoPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [description, setDescription] = useState('');
+  const [authorityConfirmed, setAuthorityConfirmed] = useState(false);
+  const [sharingAgreed, setSharingAgreed] = useState(false);
   const status = demo.session.status;
   const isBeneficiary = status === 'authenticated' && demo.session.user.roles.includes('Beneficiary');
+  const canSubmitRequest = description.trim().length >= 10 && authorityConfirmed && sharingAgreed;
 
   function submitAuth(event) {
     event.preventDefault();
@@ -17,6 +21,18 @@ export function DemoPage() {
     } else {
       demo.login(email.trim(), password);
     }
+  }
+
+  function submitRequest(event) {
+    event.preventDefault();
+    if (!canSubmitRequest) return;
+    demo.submitRequest(description.trim()).then(saved => {
+      if (saved) {
+        setDescription('');
+        setAuthorityConfirmed(false);
+        setSharingAgreed(false);
+      }
+    });
   }
 
   return (
@@ -64,6 +80,32 @@ export function DemoPage() {
             <h2>Welcome, {demo.session.user.displayName}</h2>
             <p>Beneficiary reference: {demo.profile?.reference ?? 'Loading…'}</p>
             <button type="button" onClick={demo.logout} disabled={demo.busy}>Sign out</button>
+
+            <form onSubmit={submitRequest}>
+              <h3>Submit a single-need request</h3>
+              <label>Describe the one need
+                <textarea value={description} onChange={e => setDescription(e.target.value)} rows={4} placeholder="Describe the support needed (at least 10 characters)" />
+              </label>
+              <label className="demo-check">
+                <input type="checkbox" checked={authorityConfirmed} onChange={e => setAuthorityConfirmed(e.target.checked)} />
+                I am authorized to make this request.
+              </label>
+              <label className="demo-check">
+                <input type="checkbox" checked={sharingAgreed} onChange={e => setSharingAgreed(e.target.checked)} />
+                I agree that these details can be shared with relevant support organizations.
+              </label>
+              <button type="submit" disabled={!canSubmitRequest || demo.busy}>Submit request</button>
+            </form>
+
+            <h3>Your requests</h3>
+            {demo.requests.length === 0 ? <p>No requests yet.</p> : (
+              <ul className="demo-list">
+                {demo.requests.map(r => (
+                  <li key={r.id}><strong>{r.reference}</strong> — {r.status}<br />{r.description}</li>
+                ))}
+              </ul>
+            )}
+            <small>One need per request. Multi-need requests and charity or coordinator workflows are outside this demo.</small>
           </div>
         )}
       </section>

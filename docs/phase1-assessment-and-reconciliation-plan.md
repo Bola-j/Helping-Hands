@@ -4,7 +4,7 @@ Status: **assessment reviewed and completed; role policy reconciled; diagram/car
 
 ## P1-01 — assess the current implementation
 
-**Responsible:** Bola; request database/architecture input from Ziad and web input from hussien and ali. Preserve all existing changes, including untracked files. Do not stage, reset, remove, or apply migrations to shared data as part of the assessment.
+**Responsible:** Bola; request database/architecture input from Ziad and client input from Hussien Okely (Cross-Platform Mobile App Dev) and Ali (web). Preserve all existing changes, including untracked files. Do not stage, reset, remove, or apply migrations to shared data as part of the assessment.
 
 ### Work plan
 
@@ -19,7 +19,7 @@ Status: **assessment reviewed and completed; role policy reconciled; diagram/car
 
 ## P1-02 — reconcile Phase 1 requirements and design
 
-**Responsible:** Bola; Ziad reviews database and architecture consequences, and hussien and ali review client implications. Discovery can run in parallel with P1-01; use its verified matrix before finalizing changes.
+**Responsible:** Bola; Ziad reviews database and architecture consequences, and Hussien Okely and Ali review mobile and web client implications. Discovery can run in parallel with P1-01; use its verified matrix before finalizing changes.
 
 ### Work plan
 

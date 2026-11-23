@@ -24,7 +24,7 @@ The potential service model may be supported by subscriptions, grants, or sponso
 - **Bola Ghaly** — backend development.
 - **Ziad Walid** — database and architecture design.
 - **ali fathy** — React JavaScript web application UI and browser workflows.
-- **hussien okely** — Flutter mobile application and mobile workflows.
+- **Hussien Okely** — Cross-Platform Mobile App Dev (Flutter).
 
 These are areas of responsibility; the team collaborates on planning, integration, reviews, and testing. Bola Ghaly serves as Scrum Master.
 

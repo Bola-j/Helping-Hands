@@ -1,7 +1,8 @@
-# Hussien — Flutter mobile app walkthrough and deliverables
+# Hussien Okely — Flutter mobile app walkthrough and deliverables
 
 **Prepared:** 23 November 2026  
 **Audience:** Hussien Okely (`HussienOkely`)  
+**Responsibility:** Cross-Platform Mobile App Dev
 **Purpose:** Walk the team through the current app and backend-supported workflows, define the Flutter mobile slice, and make its tickets and evidence expectations clear.
 
 ## Current state to explain
@@ -16,7 +17,7 @@ Phase 1 mobile scope is deliberately small: beneficiary registration/sign-in, on
 
 1. **Orient the audience:** show the repository's current client split and explain that Flutter is planned but not present. Identify the browser prototype as a separate client and do not imply its screens are native mobile screens.
 2. **Walk the API contract:** in [the API demo walkthrough](api-demo-walkthrough.md), show the beneficiary registration and separate login contract, antiforgery-protected single-need submission, generated reference/status, and own-request read. Explain the relevant session, ownership, validation and failure states the mobile client must preserve.
-3. **Explain the first Flutter increment:** present [P1-MOB-01 #139](https://github.com/Bola-j/Helping-Hands/issues/139) as the native-session foundation, then [P1-MOB-02 #140](https://github.com/Bola-j/Helping-Hands/issues/140) as the beneficiary demo. The app must not report success until the API confirms the write, and must not expose other beneficiaries' requests or unrelated private evidence.
+3. **Explain the first Flutter increment:** start with [shared UI #151](https://github.com/Bola-j/Helping-Hands/issues/151) and [native sessions #139](https://github.com/Bola-j/Helping-Hands/issues/139), then follow the beneficiary screen, test and demo tickets [#152–#157](mobile-app-scrum-plan.md#phase-1--working-beneficiary-demo-project-4). [#140](https://github.com/Bola-j/Helping-Hands/issues/140) is the umbrella acceptance. The app must not report success until the API confirms the write or expose other beneficiaries' requests.
 4. **Preview the later mobile workflows:** use Phase 2 tickets #142–#147 below to show how the app expands after requirements/API dependencies are ready. Charity reports remain participant-submitted reports; coordinator acceptance is a separate review, not proof of delivery.
 5. **Close with platform evidence:** record the actual Android and iOS device/simulator, session and workflow outcomes, automated checks, build artifacts, and anything unavailable or unverified. A Flutter build or API test alone is not a device workflow.
 
@@ -41,6 +42,8 @@ Phase 1 mobile scope is deliberately small: beneficiary registration/sign-in, on
 | [P2-MOB-06 #147](https://github.com/Bola-j/Helping-Hands/issues/147) | Beneficiary-safe request list/detail, separate needs, assigned portions, remaining work and allowed history; loading/empty/concealed/expired/denied/unavailable states; own-record success and unrelated-record denial tests. |
 
 ## Definition of a reviewable handoff
+
+The expanded [mobile Scrum plan](mobile-app-scrum-plan.md) now includes Phase 1 bootstrap, account, sign-in, list, single-need, CI and demo tickets #151–#157, and Phase 2 accessibility and requirements/model tickets #158–#159. The earlier charity and third-party tickets remain separate planned work.
 
 - Link actual contributor branches, commits and PRs to the relevant issue. An assignee is not proof of authorship.
 - Demonstrate the observable success path plus meaningful invalid-input, expired-session, authorization/ownership and dependency-failure paths.

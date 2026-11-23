@@ -1,45 +1,43 @@
 # React JS Web and Flutter Mobile Scrum Plan
 
-Status: **approved direction and current ticket map**. The JavaScript Vite build/container foundation is implemented locally under #148; complete screens and requester flows remain tracked in their issues. This plan adapts the mobile draft in `D:/Downloads/mobile-app-scrum-plan.md` to the project's current requirements and user's decisions. It covers a React browser website built with JavaScript and a distinct Flutter native mobile application. The website is not a PWA.
+Status: **planned work**. The React JS foundation is merged; the Flutter app and device evidence remain to be implemented. The web app is a browser site without PWA features.
 
-## Product split
+## Team responsibility
 
-- The React JavaScript application serves browser workflows. Its Phase 1 replacement rebuilds the current Expo browser prototype and preserves the planned browser journeys. Phase 2 adds responsive layouts for phone and tablet browsers.
-- Flutter is the native requester and charity mobile app. Phase 1 covers beneficiary registration/sign-in, a single-need request, and the beneficiary's own request list. Phase 2 adds multi-need intake and progress/history, third-party requester submissions and tracking, and charity capacity and referral/outcome flows.
-- Both clients use the same ASP.NET Core API. Role and record-involvement checks remain enforced by the API. Any API change discovered by native session or third-party flows gets a separate issue with its own contract, authorization criteria and tests.
-- Use fictional people, records and evidence. Neither app verifies assistance independently or performs aid transfers.
+**Hussien Okely** (`HussienOkely`) — **Cross-Platform Mobile App Dev**. He owns Flutter tickets. Ali owns the React JS web UI; Bola owns completed JavaScript tooling issue #148. Assignment is not code contribution evidence.
 
-## Phase 1 tickets — Project #4
+## Phase 1 — working beneficiary demo (Project #4)
 
-| Issue | Work | Dependency |
+The first demo follows one path: create an account, sign in, submit one single-need request, see its confirmation, and view the beneficiary's own requests. English, Arabic, and RTL are part of the planned UI.
+
+| Ticket | Work | Dependency |
 | --- | --- | --- |
-| [P1-WEB-01 #138](https://github.com/Bola-j/Helping-Hands/issues/138) | Rebuild browser routes and beneficiary workflows in React JavaScript, preserving API session/proxy behavior. | #1, #53, #148 |
-| [P1-WEB-02 #148](https://github.com/Bola-j/Helping-Hands/issues/148) | Establish the Vite JavaScript build, browser/session checks and container foundation. | #53 |
-| [P1-MOB-01 #139](https://github.com/Bola-j/Helping-Hands/issues/139) | Establish Flutter and verify native session, antiforgery and failure behavior on Android and iOS. | #8–#10 |
-| [P1-MOB-02 #140](https://github.com/Bola-j/Helping-Hands/issues/140) | Deliver Flutter beneficiary self-service: signup/sign-in, single-need submission and own-request listing. | P1-MOB-01 |
+| [P1-MOB-03 #151](https://github.com/Bola-j/Helping-Hands/issues/151) | Bootstrap Flutter for Android/iOS, shared theme, navigation, UI states, and English/Arabic RTL. | API/platform setup |
+| [P1-MOB-01 #139](https://github.com/Bola-j/Helping-Hands/issues/139) | Verify native cookie session, antiforgery, expiry, denied and unavailable states. | #151; API session contract |
+| [P1-MOB-04 #152](https://github.com/Bola-j/Helping-Hands/issues/152) | Account creation with name, Egyptian mobile, governorate, password and bilingual validation. | #139, #151 |
+| [P1-MOB-05 #153](https://github.com/Bola-j/Helping-Hands/issues/153) | Sign-in, sign-out and session-expired flows. | #139, #151 |
+| [P1-MOB-06 #154](https://github.com/Bola-j/Helping-Hands/issues/154) | Beneficiary home and own-request list, including loading, empty and error states. | #153; own-request API |
+| [P1-MOB-07 #155](https://github.com/Bola-j/Helping-Hands/issues/155) | Single-need submission, both confirmations, progress/recovery and server-confirmed result. | #139, #153; request API |
+| [P1-MOB-08 #156](https://github.com/Bola-j/Helping-Hands/issues/156) | Flutter formatting, analysis, unit/widget checks and Android CI build; record iOS coverage. | Initial beneficiary flow |
+| [P1-MOB-09 #157](https://github.com/Bola-j/Helping-Hands/issues/157) | Reproducible fictional-data demo and actual platform/contribution evidence. | #151–#156 |
+| [P1-MOB-02 #140](https://github.com/Bola-j/Helping-Hands/issues/140) | Umbrella acceptance for the full beneficiary journey. | #139, #151–#157 |
 
-Closed issue #7 records the original Expo scaffold and stays closed as historical work. Issues #138 and #148 are GitHub blockers for all downstream web and Flutter UI feature tickets. #148 is assigned to Bola for the TypeScript/Expo checks and container conversion; other web UI work remains assigned to Ali and mobile UI work to Hussein. Existing web workflow issues remain responsible for their individual pages.
+Closed Expo issue #7 is historical web work. #138 and completed #148 remain GitHub prerequisites for downstream UI tickets. Android/iOS execution, app CI, and live API behavior are unverified until recorded on their tickets.
 
-## Phase 2 tickets — Project #5
+## Phase 2 — additional features and engineering evidence (Project #5)
 
-| Issue | Work | Dependency |
+| Ticket | Work | Dependency |
 | --- | --- | --- |
-| [P2-WEB-01 #141](https://github.com/Bola-j/Helping-Hands/issues/141) | Make the React JavaScript website work across agreed phone, tablet and desktop viewports. | #138, #148 and relevant web pages |
-| [P2-MOB-01 #142](https://github.com/Bola-j/Helping-Hands/issues/142) | Add third-party requester submission and own-submission tracking with authority/sharing consent and ownership checks. | Phase 2 requester/API requirements |
-| [P2-MOB-02 #143](https://github.com/Bola-j/Helping-Hands/issues/143) | Show charity services and update available-from-now capacity with Cairo-day freshness and authorization states. | Verified capacity API |
-| [P2-MOB-03 #144](https://github.com/Bola-j/Helping-Hands/issues/144) | Show assigned referrals and submit progress/outcome reports with protected evidence and clear review states. | Verified charity/referral API projections |
-| [P2-MOB-04 #145](https://github.com/Bola-j/Helping-Hands/issues/145) | Add Flutter CI regression and reviewable Android/iOS demo builds. | P1-MOB-01 and mobile features |
-| [P2-MOB-05 #146](https://github.com/Bola-j/Helping-Hands/issues/146) | Add catalog-based multi-need request composition with selected standard versions. | #140, #27, #28 |
-| [P2-MOB-06 #147](https://github.com/Bola-j/Helping-Hands/issues/147) | Show beneficiary-safe request details, per-need progress and history. | #140, #37 |
+| [P2-MOB-05 #146](https://github.com/Bola-j/Helping-Hands/issues/146) | Catalog-based multi-need wizard with current standards, review, confirmations and failure recovery. | Phase 1 flow; catalog/API |
+| [P2-MOB-06 #147](https://github.com/Bola-j/Helping-Hands/issues/147) | Beneficiary request details, progress and history with own-record access. | Phase 1 flow; progress API |
+| [P2-MOB-07 #158](https://github.com/Bola-j/Helping-Hands/issues/158) | Accessibility, text scaling, English/Arabic layout and RTL review. | Completed screens |
+| [P2-MOB-08 #159](https://github.com/Bola-j/Helping-Hands/issues/159) | Mobile requirements trace and current use case, sequence, component and deployment models. | Implemented behavior |
+| [P2-MOB-04 #145](https://github.com/Bola-j/Helping-Hands/issues/145) | Regression, Android/iOS build and release evidence. | Phase 1 and Phase 2 flows |
 
-The existing [P2-DEP-06 release verification issue #63](https://github.com/Bola-j/Helping-Hands/issues/63) remains the live web/API release check. Flutter build and demo verification is tracked separately in #145; app-store publication is not required by this plan.
+Existing [third-party requester #142](https://github.com/Bola-j/Helping-Hands/issues/142), [charity capacity #143](https://github.com/Bola-j/Helping-Hands/issues/143), and [charity referral/outcome #144](https://github.com/Bola-j/Helping-Hands/issues/144) tickets remain separate Phase 2 work from the earlier full-app plan. Any required API changes receive separate issues with authorization and tests. App-store publication is not assumed.
 
-## Acceptance and delivery
+## Planning and acceptance
 
-- New client issues remain in Backlog until selected during planning. Estimates and sprint dates are left for refinement. Web issues are assigned to Ali (`alifathyy`) and Flutter issues to Hussein (`HussienOkely`).
-- Feature acceptance includes observable success, validation, session expiry, permission/ownership denial and unavailable-service behavior where relevant. No false success is shown after an unconfirmed write.
-- Web verification records actual browser versions and viewports. Flutter verification records Android/iOS device or simulator and build coverage. A CI build does not substitute for an observed device workflow.
-- Feature tests use fictional, isolated data; app credentials, signing secrets and sensitive participant data never enter source control, logs or public storage.
-- A ticket closes only after its acceptance evidence, relevant automated checks, documentation and linked implementation review are recorded. Skipped platforms or external release steps remain explicit limitations.
-
-No manifest, install prompt, service worker, PWA installation, offline business workflow or background synchronization is planned for the React JS website.
+- Tickets start in Backlog. The team sets priority, estimates, sprint dates and device targets during refinement.
+- Each ticket needs actual work, relevant fictional-data success and failure checks, and reviewable evidence before Done. A build alone does not prove a device workflow.
+- Request history records participant and coordinator reports; it does not independently prove aid delivery. The shared API enforces role and record access.

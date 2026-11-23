@@ -1,14 +1,12 @@
 const fs = require('fs');
 const path = require('path');
-const ts = require('typescript');
+const esbuild = require('esbuild');
 
 const sourceDir = path.resolve(__dirname, '../../src/session');
 const names = ['ApiError', 'boundedSignal', 'sessionEpoch', 'fetchRequest', 'dispatchUnsafe', 'unsafeRequest', 'api', 'expectedUser'];
 const modules = names.map((name) => {
   const source = fs.readFileSync(path.join(sourceDir, `${name}.ts`), 'utf8');
-  const code = ts.transpileModule(source, {
-    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
-  }).outputText;
+  const code = esbuild.transformSync(source, { loader: 'ts', format: 'cjs', target: 'es2020' }).code;
   return `${JSON.stringify('./' + name)}: function(module, exports, require) {\n${code}\n}`;
 });
 

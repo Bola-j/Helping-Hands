@@ -181,7 +181,8 @@ Released and declined referrals remain historical records; release does not mean
 
 ```mermaid
 flowchart LR
- Web[React Native Web + PWA client - future] -->|HTTPS JSON| API
+ Web[React JS browser website] -->|HTTPS JSON| API
+ Mobile[Flutter mobile app] -->|HTTPS JSON| API
  subgraph API[One ASP.NET Core API application]
  Auth[Authentication and authorization]
  Cases[Requests and referrals]
@@ -193,4 +194,4 @@ flowchart LR
  API --> Files[Protected file storage - future]
 ```
 
-API source includes business workflow and dependency integrations; the client and complete Phase 1 workflow remain planned. See [architecture and compatibility](architecture.md) and the [capability assessment](SRS.md#appendix-phase-1-implementation-baseline-and-verification) for verification limits.
+API source includes business workflow and dependency integrations. The current browser client is Expo-based and provides a limited beneficiary demo; the React JavaScript website replacement and Flutter mobile app remain planned. The complete Phase 1 workflow also remains in progress. See [architecture and compatibility](architecture.md) and the [capability assessment](SRS.md#appendix-phase-1-implementation-baseline-and-verification) for verification limits.

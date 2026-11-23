@@ -9,9 +9,9 @@ permissions:
 
 jobs:
   web:
-    name: Web typecheck, export and session tests
+    name: Web build, session tests and navigation
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25
     defaults:
       run:
         working-directory: web
@@ -26,9 +26,21 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - name: Install locked dependencies
         run: npm ci
-      - name: Typecheck
-        run: npm run typecheck
-      - name: Export for web
-        run: npm run build:web
+      - name: Build React website
+        run: npm run build
       - name: Run session client tests
         run: npm run test:session
+      - name: Set up browser navigation checks
+        run: |
+          python -m pip install -r tests/requirements.txt
+          python -m playwright install --with-deps chromium
+      - name: Check built site navigation and mobile layout
+        run: |
+          npm run preview -- --host 127.0.0.1 > /tmp/helping-hands-web.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:8081/ > /dev/null; then break; fi
+            sleep 1
+          done
+          WEB_TEST_URL=http://127.0.0.1:8081 python -m unittest discover -s tests -p test_navigation.py
+      - name: Check container build and same-origin proxy
+        run: python -m unittest discover -s tests -p test_proxy_integration.py

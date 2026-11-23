@@ -14,7 +14,7 @@ class ProxyIntegrationTests(ProxyCase):
         self.assertEqual((root_status, route_status), (200, 200))
         self.assertIn(b"<html", root.lower())
         self.assertEqual(root, route)
-        self.assertEqual(self.request("/_expo/missing-test-asset.js")[0], 404)
+        self.assertEqual(self.request("/assets/missing-test-asset.js")[0], 404)
         status, headers, body = self.request("/api/v1/echo?value=hello%20world", b"{}", {
             "Cookie": "client=test", "X-CSRF-TOKEN": "fictional-token", "Content-Type": "application/json"})
         result = json.loads(body)

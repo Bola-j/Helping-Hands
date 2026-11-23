@@ -1,10 +1,10 @@
 # Proposed monolithic architecture and technology compatibility
 
-Status: supporting design for the Phase 1 [SRS](SRS.md). The repository contains API workflow code, PostgreSQL/EF migrations and local container configuration; see the [capability assessment](SRS.md#appendix-phase-1-implementation-baseline-and-verification) for evidence and gaps. The Expo web client and complete end-to-end workflow remain planned.
+Status: supporting design for the Phase 1 [SRS](SRS.md). The repository contains API workflow code, PostgreSQL/EF migrations, local container configuration, and an Expo-based browser client; see the [capability assessment](SRS.md#appendix-phase-1-implementation-baseline-and-verification) for evidence and gaps. The roadmap replaces that browser client with React JS and adds a separate Flutter mobile app.
 
 ## System design
 
-One ASP.NET Core Web API serves an eventual React Native Web client over HTTPS/JSON. A small monolith can organize code by features as needed: participant approvals; requests and referrals; evidence and review; authentication/authorization and audit. Introduce folders and services only with actual behavior. PostgreSQL is the future persistent system of record; protected file storage holds evidence bytes and PostgreSQL holds metadata. See [models](models.md) and [database design](database-design.md).
+One ASP.NET Core Web API serves two clients over HTTPS/JSON: a React browser website built with JavaScript and a separately built Flutter mobile application. The website remains a browser application; installable PWA features are not planned. Phase 2 adds mobile-responsive layouts to the website. A small monolith can organize code by features as needed: participant approvals; requests and referrals; evidence and review; authentication/authorization and audit. Introduce folders and services only with actual behavior. PostgreSQL is the future persistent system of record; protected file storage holds evidence bytes and PostgreSQL holds metadata. See [models](models.md) and [database design](database-design.md).
 
 The API v1 plan selects ASP.NET Core Identity and secure same-origin cookies. Server-side authorization checks role and involvement on requests, referrals and evidence. Phase 1 beneficiaries submit their own requests; representatives need active charity membership; Coordinator actions are also available to Administrator. The P1-10 candidate passes its full local software suite; PR and post-merge verification remain pending. Use DTO validation and consistent problem responses; do not expose sensitive details in errors or operational logs. The API uses cookie and antiforgery mechanisms in source; browser integration and deployment behavior require verification. Decisions and their actors belong in business history; request diagnostics belong in operational logs without beneficiary data.
 
@@ -14,21 +14,10 @@ Provide connection configuration and secrets through environment-specific secure
 
 Deploy one API container and a separate PostgreSQL instance or container only when required. Use a secured reverse proxy with HTTPS, environment-based configuration, basic structured logs and health monitoring, and tested backups. Database locks, evidence upload size, storage, and manual reviews may limit throughput; measure before scaling. No message broker, distributed cache, microservices, or cloud service is required for this proposal. An outage should yield a clear error and preserve existing committed state; do not claim offline completion or success after a failed write.
 
-## React Native Web and PWA feasibility
+## Browser and mobile clients
 
-[Expo's web documentation](https://docs.expo.dev/workflow/web/) describes React Native for Web and web-specific dependencies and export; Expo is the selected Phase 1 direction; the web application is not yet implemented. [Expo's PWA guide](https://docs.expo.dev/guides/progressive-web-apps/) documents separate web manifest and service-worker considerations. Neither React Native nor the scaffold automatically provides installability, offline business operations, or push notifications. The eventual web app needs a manifest, appropriate icons, HTTPS or a development secure context, and platform-specific installation testing. A service worker, if chosen, may cache non-sensitive static assets only; do not cache beneficiary data or evidence. Offline access to business records and offline writes are out of scope; show a connection error and do not claim an unconfirmed action succeeded. Push is not required.
-
-### Proposed browser/device test matrix — not a support promise
-
-| Environment | Responsive interaction | Install behavior to test |
-| --- | --- | --- |
-| Current stable Chrome, Android phone and tablet | Touch, forms, upload, accessibility | Browser installation UI depends on manifest, platform and browser criteria; test a real device. |
-| Current stable Safari, iPhone and iPad | Touch, forms, upload, accessibility | Add to Home Screen uses platform UI; behavior varies with iOS/iPadOS version. |
-| Current stable Chrome and Edge, Windows desktop | Keyboard, forms, zoom, upload | Browser-provided app installation where supported. |
-| Current stable Firefox, desktop | Keyboard, forms, zoom, upload | Usable website; do not promise native PWA install. |
-
-Exact OS/browser versions, minimums, and supported-device coverage are decisions for the team after device testing. [Chrome's installability guidance](https://developer.chrome.com/docs/lighthouse/pwa/installable-manifest) explains Chrome-specific criteria and differing browser behavior. [WebKit's iOS Home Screen article](https://webkit.org/blog/13878/) and [Safari 26 notes](https://webkit.org/blog/17333/webkit-features-in-safari-26-0/) show that add-to-home-screen behavior changes across versions. Installation and prompt availability must be checked rather than assumed; compatibility in this document is not a test result.
+The React JS website serves browser workflows. Its Phase 1 rebuild targets the agreed web journeys; Phase 2 adds and verifies layouts for representative phone, tablet, and desktop viewports. Browser/device coverage is a test plan, not a claim of compatibility before execution. The Flutter application is the native cross-platform mobile client for requester and charity workflows; its platform support must be demonstrated separately on Android and iOS. Keep session tokens and credentials out of logs and durable client storage, and enforce access on the API for both clients.
 
 ## Open decisions
 
-Participant identity and review procedures; exact target browser/OS versions; evidence formats, limits, private storage, retention and correction; hosting and restore procedures; PWA service-worker strategy; notification needs; and PostgreSQL version are not fixed. Proposed schema lengths and status codes require review against user workflows. Stakeholder and applicable local operational review remain prerequisites to a real launch.
+Participant identity and review procedures; exact target browser/OS versions; evidence formats, limits, private storage, retention and correction; hosting and restore procedures; notification needs; and PostgreSQL version are not fixed. Proposed schema lengths and status codes require review against user workflows. Stakeholder and applicable local operational review remain prerequisites to a real launch.

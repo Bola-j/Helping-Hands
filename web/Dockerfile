@@ -2,9 +2,9 @@ FROM node:24-alpine AS build
 WORKDIR /app
 COPY web/package.json web/package-lock.json ./
 RUN npm ci
-COPY web/app.json web/tsconfig.json ./
+COPY web/index.html web/vite.config.js ./
 COPY web/src ./src
-RUN npm run build:web
+RUN npm run build
 
 FROM nginx:1.27-alpine
 COPY web/nginx.conf /etc/nginx/conf.d/default.conf

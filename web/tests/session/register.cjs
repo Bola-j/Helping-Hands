@@ -1,10 +1,11 @@
 const fs = require('node:fs');
-const ts = require('typescript');
+const esbuild = require('esbuild');
 
 function compile(module, filename) {
   const source = fs.readFileSync(filename, 'utf8');
-  const result = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, jsx: ts.JsxEmit.ReactJSX } });
-  module._compile(result.outputText, filename);
+  const loader = filename.endsWith('.tsx') ? 'tsx' : 'ts';
+  const result = esbuild.transformSync(source, { loader, format: 'cjs', target: 'es2022', jsx: 'automatic' });
+  module._compile(result.code, filename);
 }
 require.extensions['.ts'] = compile;
 require.extensions['.tsx'] = compile;

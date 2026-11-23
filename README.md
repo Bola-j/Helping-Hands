@@ -23,7 +23,8 @@ The potential service model may be supported by subscriptions, grants, or sponso
 
 - **Bola Ghaly** — backend development.
 - **Ziad Walid** — database and architecture design.
-- **hussien okely** and **ali fathy** — web application UI.
+- **ali fathy** — React JavaScript web application UI and browser workflows.
+- **hussien okely** — Flutter mobile application and mobile workflows.
 
 These are areas of responsibility; the team collaborates on planning, integration, reviews, and testing. Bola Ghaly serves as Scrum Master.
 
@@ -40,7 +41,7 @@ These are areas of responsibility; the team collaborates on planning, integratio
 
 ## API demo (work in progress)
 
-The .NET 10 API implements separate beneficiary and charity signup, request review, referral, outcome and private evidence routes using PostgreSQL and S3-compatible storage. The Expo web app now has a beneficiary demo path for signup, login/logout, single-need request submission and viewing the beneficiary's requests. The public API evidence-flow test covers the request through coordinator review; an isolated P1-56 exercise verified service restart persistence and recorded dependency outage behavior. A full browser/API journey, backup/restore recovery and clean-start rehearsal remain unverified. Multi-need intake and charity/coordinator screens are outside this web slice. Use fictional records only; do not use this build for real operations. See the [API demo roadmap](docs/api-demo-scrum-roadmap.md) and [walkthrough](docs/api-demo-walkthrough.md).
+The .NET 10 API implements separate beneficiary and charity signup, request review, referral, outcome and private evidence routes using PostgreSQL and S3-compatible storage. The current Expo browser prototype has a beneficiary demo path for signup, login/logout, single-need request submission and viewing the beneficiary's requests; it is planned for replacement by a React JS browser website. A separate Flutter mobile app is planned, beginning with the beneficiary demo and expanding to third-party requesters and charity workflows in Phase 2. The public API evidence-flow test covers the request through coordinator review; an isolated P1-56 exercise verified service restart persistence and recorded dependency outage behavior. A full browser/API journey, backup/restore recovery and clean-start rehearsal remain unverified. Multi-need intake and charity/coordinator screens are outside the current browser demo slice. Use fictional records only; do not use this build for real operations. See the [API demo roadmap](docs/api-demo-scrum-roadmap.md), [mobile app plan](docs/mobile-app-scrum-plan.md) and [walkthrough](docs/api-demo-walkthrough.md).
 
 For local development, install the .NET 10 SDK, a compatible `dotnet-ef` tool and Docker with its engine running. Copy `.env.example` to `.env` and choose local credentials. PostgreSQL and the S3-compatible SeaweedFS service bind to loopback ports 55432 and 9000; make sure they are available. Set matching S3 access and secret keys using ASCII letters and digits only. Add distinct development-only `DemoSeed__...` values and `DEV_CERT_PASSWORD` in `.env`. Passwords must satisfy ASP.NET Identity password policy.
 
@@ -85,23 +86,23 @@ Build with `dotnet build HelpingHands.slnx`. For a containerized API, use `docke
 
 ## Web application
 
-Install Node.js and run the Expo web development server:
+The browser client is a React JavaScript website (not a PWA). P1-WEB-02 establishes its build, session checks and container foundation; P1-WEB-01 owns the complete route and beneficiary workflow rebuild. Both block downstream UI feature work. Install Node.js and run the website:
 
 ```powershell
 cd web
 npm ci
-npm run web
+npm run dev
 ```
 
-Open the URL printed by Expo. Run `npm run typecheck`, `npm run build:web` and `npm run test:session` from `web` to check the frontend. The beneficiary demo is available at `/demo`; its session client uses the same-origin API proxy described above, so use the HTTPS container setup to exercise live sessions. It supports fictional beneficiary registration, separate sign-in/logout, one single-need request and the beneficiary's request list. Multi-need, charity and coordinator workflows are not provided by this screen.
+Open `http://localhost:8081`. Run `npm run build` and `npm run test:session` from `web` to check the frontend and session client. The React foundation is in place; the beneficiary demo route is part of P1-WEB-01 and is not yet delivered by this shell. The same-origin API proxy is retained in the container, so use the HTTPS container setup for live sessions.
 
-The session provider checks the current user when the app opens. It obtains an antiforgery token for each state-changing request, sends it with the browser's same-origin cookies, and obtains a new token for the next request after login or logout. Writes are queued; a queued action is cancelled if this app instance observes a session change before dispatch. An expired session is treated as signed out; a denied action or an unavailable API is reported separately. Tokens and passwords are not stored by the client. Consumers should use the session provider's `request` method for authenticated API calls and handle its typed errors without automatically retrying a failed write. For protected requests, the provider sends the account ID held when the action began. The API rejects the request if the authenticated account differs; the provider clears stale session state and does not retry the action. The in-memory queue does not coordinate tabs, and simultaneous first token requests in different tabs may require the user to retry after an antiforgery error.
+The existing Expo prototype's session provider checks the current user on startup, obtains antiforgery tokens for writes, and sends same-origin cookies. Its queued writes cancel when the observed session changes; expired, denied and unavailable responses remain distinct. The current React shell does not yet mount that provider or expose live requester workflows; P1-WEB-01 owns that port. Existing session tests still exercise the prototype's contract during the rebuild.
 
-Run `npm run test:session` from `web` for the session client and provider checks. The optional live browser test creates a fictional beneficiary: only use a disposable isolated stack, then set `SESSION_TEST_URL` to its HTTPS web origin and `SESSION_TEST_ALLOW_WRITE=isolated` before running `python -m unittest discover -s web/tests/browser -p "test_live*.py"` from the repository root. The environment flag does not itself establish isolation.
+Run `npm run test:session` from `web` for the existing session client and provider checks. The live browser tests expect the beneficiary route from P1-WEB-01 and cannot be run against the current shell. When that route is available, run them only against a disposable isolated stack with `SESSION_TEST_URL` and `SESSION_TEST_ALLOW_WRITE=isolated`; the environment flag does not itself establish isolation.
 
-GitHub Actions runs `.github/workflows/web-ci.yml` on pushes and pull requests. It performs the web typecheck, static export and session-client tests. The web workflow and required status check were merged in PR #114; its push and pull-request runs passed alongside API verification. This demonstrates CI coverage, not a completed browser-to-API rehearsal; use the linked Actions result for evidence about any later change.
+GitHub Actions runs `.github/workflows/web-ci.yml` on pushes and pull requests. It builds the React JavaScript website, runs session-client tests, and checks browser navigation and narrow-screen layout. The web workflow and required status check were merged in PR #114; its earlier runs covered the prior Expo prototype and do not verify this replacement. This does not demonstrate a completed browser-to-API rehearsal.
 
-For browser navigation tests, install the Python dependencies with `python -m pip install -r tests/requirements.txt` and run `python -m playwright install chromium`. With the web server running at `http://localhost:8081`, run `python -m unittest discover -s tests -p test_navigation.py` from `web`. Set `WEB_TEST_URL` if Expo uses another port.
+For browser navigation tests, install the Python dependencies with `python -m pip install -r tests/requirements.txt` and run `python -m playwright install chromium`. With the web server running at `http://localhost:8081`, run `python -m unittest discover -s tests -p test_navigation.py` from `web`. Set `WEB_TEST_URL` if Vite uses another port.
 
 To test the containerized proxy, install Docker and OpenSSL and start the Docker engine. From the repository root, run `python -m unittest discover -s web/tests -p test_proxy_integration.py`. The tests build the web image and use an isolated HTTPS fixture, temporary certificates and uniquely named Docker resources; they do not test the real API or database.
 
@@ -113,7 +114,7 @@ Login and signup use a fixed-window auth limit of 20 requests per minute by defa
 
 The full suite requires three separate, disposable PostgreSQL databases and a private disposable S3-compatible bucket. Supply connection strings through locally configured process environment variables `P108_TEST_POSTGRES`, `P1_WORKFLOW_POSTGRES`, and `P1_E2E_POSTGRES`, with database names beginning `helping_hands_p108`, `helping_hands_workflow`, and `helping_hands_p108_e2e` respectively. Configure `P1_TEST_S3_URL` as a loopback HTTP(S) endpoint, `P1_TEST_S3_BUCKET` as an exclusive bucket beginning `helping-hands-test-`, and `P1_TEST_S3_ACCESS_KEY` and `P1_TEST_S3_SECRET_KEY` using fictional local credentials. Store credentials only in ignored local configuration; never use a shared database or bucket. The fixtures apply existing migrations and leave fictional data in these dedicated services. The workflow database user also needs permission to create and drop a uniquely named disposable database for the catalog migration upgrade and rollback test. Naming checks are safeguards, not proof that a service is isolated.
 
-Run `dotnet test HelpingHands.slnx` with all test settings present. The API workflow creates disposable PostgreSQL databases and starts private storage only as a dependency for evidence behavior tests. It runs unit/HTTP, PostgreSQL-backed API integration, and API evidence workflow tests separately. Service startup is not reported as a software test. The pull request change gate requires API production changes to include C# application tests; reviewers must still assess behavioral coverage. API and web workflows run on push and pull request; required branch checks must be configured separately to gate merges.
+Run `dotnet test HelpingHands.slnx` with all test settings present. The API workflow creates disposable PostgreSQL databases and starts private storage only as a dependency for evidence behavior tests. It runs unit/HTTP, PostgreSQL-backed API integration, and API evidence workflow tests separately. Service startup is not reported as a software test. The pull request change gate requires API production changes to include C# application tests; reviewers must still assess behavioral coverage. API and web workflows run on push and pull request. The protected `main` branch requires pull requests and passing, up-to-date API and web checks; it does not require approvals. These protections apply to administrators.
 
 ## Repository status
 

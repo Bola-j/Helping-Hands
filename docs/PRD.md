@@ -31,7 +31,7 @@ Course reference locations below are PDF page numbers, not necessarily printed s
 
 **Problem:** Requests, offers and updates may be spread across calls, visits and messages, making responsibility and unresolved needs difficult to track. The particular current process and scale at a real charity have not been verified.
 
-**Product:** A responsive web application backed by a single API records participant approvals, requests, referral portions, decisions, reported outcomes, supporting evidence and follow-up. The beneficiary receives the assistance; a referral recipient is the approved charity or individual contributor assigned to provide it. The platform neither handles nor takes a share of aid. The course demonstration uses fictional people and evidence.
+**Product:** A React browser website built with JavaScript and a separate Flutter mobile application use one API to record participant approvals, requests, referral portions, decisions, reported outcomes, supporting evidence and follow-up. Phase 1 Flutter supports beneficiaries; Phase 2 extends it to third-party requesters and charity capacity/referral workflows and adds mobile-responsive layouts to the website. The beneficiary receives the assistance; a referral recipient is the approved charity or individual contributor assigned to provide it. The platform neither handles nor takes a share of aid. The course demonstration uses fictional people and evidence.
 
 **Value and objectives:** Authorized participants can see relevant progress (BO-01); coordinators connect needs to approved recipients (BO-02); decisions and reported evidence support accountability without claiming independent proof (BO-03); access is limited by role and involvement (BO-04); and the team can seek feedback on usefulness and sustainability (BO-05). Proposed future funding through grants, sponsorship or subscriptions is unvalidated and billing is not a course feature.
 
@@ -128,7 +128,7 @@ Potential measures include requests awaiting review, review time, referrals awai
 
 **Assumptions:** Participants can arrange assistance externally and recipients can provide meaningful evidence (BRD A-01–A-02). These require practical validation. Service scopes can be defined independently when numerical quantities are inappropriate (BRule-14).
 
-**Constraints:** The course project uses fictional data, aligns with applicable university requirements, uses .NET 10, PostgreSQL, code-first development with EF Core migrations, Docker and one monolithic API, and intends a React Native-based web client with separately configured PWA capabilities. No real operational pilot is included. Client platform compatibility is a proposed support decision, not a universal promise; see SRS for technical evidence, support matrix and limitations.
+**Constraints:** The course project uses fictional data, aligns with applicable university requirements, uses .NET 10, PostgreSQL, code-first development with EF Core migrations, Docker and one monolithic API. The browser website uses React with JavaScript and is not a PWA; the separate native mobile application uses Flutter. The current Expo browser client is planned for replacement. No real operational pilot is included. Client platform compatibility is a proposed support decision, not a universal promise; see SRS for technical evidence, support matrix and limitations.
 
 **Dependencies:** Team and instructor clarification of course deliverables; identity and access design; a usable evidence storage approach; eventual review by prospective participants and local legal/operational experts before real operation (BRD D-01–D-03). No legal compliance or partner commitment is asserted.
 
@@ -138,9 +138,9 @@ Potential measures include requests awaiting review, review time, referrals awai
 | Sensitive beneficiary data or attachments may be exposed. | Minimize data and restrict access; agree consent, retention, incident and privacy practices before real use. |
 | A recipient may not respond or fulfill its portion. | Keep unresolved work visible, follow up, release and reassign when appropriate. |
 | Full scope may exceed available course capacity. | Sequence a thin end-to-end core first; review scope and demonstration with team and instructor without deleting first-version requirements. |
-| Frontend PWA and device behavior may differ. | Prototype and verify supported browser/device combinations; decide capabilities and fallbacks before implementation. |
+| Browser and native mobile behavior vary by viewport, browser, operating system and device. | Verify the React JS website in agreed browser/viewports and the Flutter app on agreed Android/iOS targets; record actual coverage. |
 
-**Open decisions:** exact identity and access onboarding; evidence formats, limits, storage, retention, review criteria and consent language; service-scope representation; supported browsers and PWA installation behavior; notification and accessibility acceptance details; recovery and measurable performance targets; operational partner, funding and local legal arrangements. These must be confirmed without weakening BRD rules. No dates or individual approvals are inferred.
+**Open decisions:** exact identity and access onboarding; evidence formats, limits, storage, retention, review criteria and consent language; service-scope representation; supported browser/device versions; notification and accessibility acceptance details; recovery and measurable performance targets; operational partner, funding and local legal arrangements. These must be confirmed without weakening BRD rules. No dates or individual approvals are inferred.
 
 ## 10. Product backlog and Scrum-inspired approach
 

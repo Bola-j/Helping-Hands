@@ -37,6 +37,12 @@ class NavigationTests(unittest.TestCase):
         expect(page.get_by_role('heading', name='How it works')).to_be_visible()
         page.close()
 
+    def test_demo_page_renders_on_mobile(self):
+        page = self.browser.new_page(viewport={'width': 375, 'height': 812})
+        page.goto(self.base + '/demo', wait_until='networkidle')
+        expect(page.get_by_role('heading', name='Beneficiary request demo')).to_be_visible()
+        self.assertLessEqual(page.evaluate('document.documentElement.scrollWidth'), 375)
+        page.close()
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,0 +1,16 @@
+{
+  "@@locale": "en",
+  "switchLanguage": "English",
+  "phaseBadge": "Phase 1 & 2 · Beneficiary",
+  "welcomeTitle": "Welcome to Helping Hands",
+  "welcomeSubtitle": "A calm, private place to submit and follow your assistance requests,\nso approved charities can coordinate support for you.",
+  "chooseLanguage": "Choose app language",
+  "english": "English",
+  "arabic": "العربية",
+  "scopeNotice": "The app records your request and its updates only. It does not collect money or\nguarantee approval. Support is coordinated outside the app by approved charities.",
+  "createBeneficiaryAccount": "Create beneficiary account",
+  "signInExistingAccount": "Sign in to an existing account",
+  "createAccount": "Create account",
+  "signIn": "Sign in",
+  "comingSoon": "This screen will be implemented in a later issue."
+}

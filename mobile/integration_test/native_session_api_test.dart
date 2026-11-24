@@ -73,6 +73,12 @@ void main() {
       () => repository.signIn({'email': email, 'password': 'WrongPass#12345'}),
       SessionFailureType.invalidCredentials,
     );
+    await repository.signIn({'email': email, 'password': password});
+    await cookieJar.delete(apiUri);
+    await _expectFailure(
+      repository.currentUser,
+      SessionFailureType.sessionExpired,
+    );
     await _expectUnavailable(baseUrl);
   });
 }

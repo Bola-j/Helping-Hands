@@ -18,12 +18,18 @@ public sealed partial class WorkflowDbTests
         return (db, request);
     }
 
-    private static async Task<(ServiceCategory Category, ServiceVersion Service, UnitStandard Standard, StandardVersion Version)> PublishedCatalogAsync(HelpingHandsDbContext db)
+    private static async Task<(ServiceCategory Category, ServiceVersion Service, UnitStandard Standard, StandardVersion Version)> PublishedCatalogAsync(
+        HelpingHandsDbContext db, DateTimeOffset? effectiveAt = null)
     {
         var category = new ServiceCategory { Code = Guid.NewGuid().ToString("N") };
         var service = new ServiceVersion { CategoryId = category.Id, VersionNumber = 1, Name = "Food" };
         var standard = new UnitStandard { ServiceVersionId = service.Id, Name = "Parcel" };
-        var version = new StandardVersion { UnitStandardId = standard.Id, VersionNumber = 1, EffectiveAt = DateTimeOffset.UtcNow.AddDays(-3) };
+        var version = new StandardVersion
+        {
+            UnitStandardId = standard.Id,
+            VersionNumber = 1,
+            EffectiveAt = (effectiveAt ?? DateTimeOffset.UtcNow).AddDays(-3)
+        };
         db.AddRange(category, service, standard, version, new StandardComponent { StandardVersionId = version.Id, Name = "Rice", Quantity = 1, Unit = "kg" });
         await db.SaveChangesAsync();
         service.IsPublished = true;

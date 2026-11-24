@@ -44,8 +44,9 @@ public sealed partial class WorkflowDbTests
 
         using var scope = customFactory.Services.CreateScope();
         var db = scope.ServiceProvider.GetRequiredService<HelpingHandsDbContext>();
-        var (_, service1, _, version1) = await PublishedCatalogAsync(db);
-        var (_, service2, _, version2) = await PublishedCatalogAsync(db);
+        var catalogEffectiveAt = timeProvider.GetUtcNow();
+        var (_, service1, _, version1) = await PublishedCatalogAsync(db, catalogEffectiveAt);
+        var (_, service2, _, version2) = await PublishedCatalogAsync(db, catalogEffectiveAt);
 
         // Register charity representative on customFactory
         var repClient = CreateHttpsClient(customFactory);

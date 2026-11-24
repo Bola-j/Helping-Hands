@@ -1,5 +1,9 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:mobile/core/network/dio_factory.dart';
@@ -15,6 +19,7 @@ void main() {
     expect(baseUrl, isNotEmpty);
     final cookieJar = CookieJar();
     final dio = DioFactory.create(cookieJar: cookieJar);
+    _trustLocalApiCertificate(dio);
     final responseStatuses = <int>[];
     dio.interceptors.add(
       InterceptorsWrapper(
@@ -81,6 +86,16 @@ void main() {
     );
     await _expectUnavailable(baseUrl);
   });
+}
+
+void _trustLocalApiCertificate(Dio dio) {
+  const encodedCertificate = String.fromEnvironment('API_CERTIFICATE_BASE64');
+  if (encodedCertificate.isEmpty) return;
+  final context = SecurityContext(withTrustedRoots: true)
+    ..setTrustedCertificatesBytes(base64Decode(encodedCertificate));
+  dio.httpClientAdapter = IOHttpClientAdapter(
+    createHttpClient: () => HttpClient(context: context),
+  );
 }
 
 Future<void> _expectDenied(Dio dio) async {

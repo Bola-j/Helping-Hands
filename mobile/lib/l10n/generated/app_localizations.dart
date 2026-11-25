@@ -343,6 +343,180 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This screen will be implemented in a later issue.'**
   String get comingSoon;
+
+  /// No description provided for @invalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address.'**
+  String get invalidEmail;
+
+  /// No description provided for @signInInvalidCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Email or password is incorrect. Check your details and try again.'**
+  String get signInInvalidCredentials;
+
+  /// No description provided for @signInExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has expired. Sign in again to continue.'**
+  String get signInExpired;
+
+  /// No description provided for @signInDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'This account cannot access the beneficiary app.'**
+  String get signInDenied;
+
+  /// No description provided for @signInUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not reach Helping Hands. Check your connection and try again.'**
+  String get signInUnavailable;
+
+  /// No description provided for @signInInvalidRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not process this sign-in. Please try again.'**
+  String get signInInvalidRequest;
+
+  /// No description provided for @signInUnexpected.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not sign you in. Please try again.'**
+  String get signInUnexpected;
+
+  /// No description provided for @signOut.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign out'**
+  String get signOut;
+
+  /// No description provided for @signOutFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not confirm sign out with the service. Please try again.'**
+  String get signOutFailed;
+
+  /// No description provided for @signedOut.
+  ///
+  /// In en, this message translates to:
+  /// **'You are signed out.'**
+  String get signedOut;
+
+  /// No description provided for @backToSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to sign in'**
+  String get backToSignIn;
+
+  /// No description provided for @passwordRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your password.'**
+  String get passwordRequired;
+
+  /// No description provided for @signInTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in'**
+  String get signInTitle;
+
+  /// No description provided for @signInSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the email and password you used to create your account.'**
+  String get signInSubtitle;
+
+  /// No description provided for @phaseSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Phase 1 · Sign in'**
+  String get phaseSignIn;
+
+  /// No description provided for @phaseSessionExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Session expired · Phases 1 & 2'**
+  String get phaseSessionExpired;
+
+  /// No description provided for @noBeneficiaryAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Don\'t have a beneficiary account?'**
+  String get noBeneficiaryAccount;
+
+  /// No description provided for @sessionExpiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You’ve been signed out to protect your account'**
+  String get sessionExpiredTitle;
+
+  /// No description provided for @sessionExpiredBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session ended due to inactivity or you signed out. Your submitted requests remain saved. Sign in again to continue.'**
+  String get sessionExpiredBody;
+
+  /// No description provided for @sessionExpiredPrivacy.
+  ///
+  /// In en, this message translates to:
+  /// **'Your personal information and request details stay hidden until you sign in again.'**
+  String get sessionExpiredPrivacy;
+
+  /// No description provided for @signInAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in again'**
+  String get signInAgain;
+
+  /// No description provided for @returnWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to welcome and language'**
+  String get returnWelcome;
+
+  /// No description provided for @profileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account & settings'**
+  String get profileTitle;
+
+  /// No description provided for @profileSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Phase 1 & 2 · Language and sign out'**
+  String get profileSubtitle;
+
+  /// No description provided for @englishLtr.
+  ///
+  /// In en, this message translates to:
+  /// **'English (LTR)'**
+  String get englishLtr;
+
+  /// No description provided for @arabicRtl.
+  ///
+  /// In en, this message translates to:
+  /// **'العربية (RTL)'**
+  String get arabicRtl;
+
+  /// No description provided for @homeNavigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get homeNavigation;
+
+  /// No description provided for @requestsNavigation.
+  ///
+  /// In en, this message translates to:
+  /// **'My requests'**
+  String get requestsNavigation;
+
+  /// No description provided for @accountNavigation.
+  ///
+  /// In en, this message translates to:
+  /// **'Account'**
+  String get accountNavigation;
 }
 
 class _AppLocalizationsDelegate

@@ -27,7 +27,7 @@ void main() {
           )
           ..httpClientAdapter = adapter
           ..interceptors.add(CookieManager(jar));
-    repository = SessionRepositoryImpl(SessionRemoteDataSource(dio));
+    repository = SessionRepositoryImpl(SessionRemoteDataSource(dio, jar));
   });
 
   tearDown(() => dio.close(force: true));
@@ -185,8 +185,85 @@ void main() {
         repository.currentUser(),
         SessionFailureType.sessionExpired,
       );
+      expect(
+        await jar.loadForRequest(
+          Uri.parse('https://api.example.test/api/v1/auth/me'),
+        ),
+        isNot(
+          contains(
+            predicate<Cookie>(
+              (cookie) => cookie.name == '.AspNetCore.Identity.Application',
+            ),
+          ),
+        ),
+      );
     },
   );
+
+  test('rejects a signed-in non-beneficiary and clears that session', () async {
+    adapter.respond = (request) {
+      if (request.path.endsWith('/me')) {
+        return jsonResponse(200, {
+          'id': 'staff-user',
+          'displayName': 'Fictional Staff',
+          'email': 'staff@example.test',
+          'roles': ['Coordinator'],
+        });
+      }
+      return nullResponse(request);
+    };
+
+    await expectFailure(
+      repository.signIn({
+        'email': 'staff@example.test',
+        'password': 'fictional-password',
+      }),
+      SessionFailureType.denied,
+    );
+    expect(
+      adapter.requests.map((request) => request.path),
+      contains('/api/v1/auth/logout'),
+    );
+    expect(
+      await jar.loadForRequest(
+        Uri.parse('https://api.example.test/api/v1/auth/me'),
+      ),
+      isNot(
+        contains(
+          predicate<Cookie>(
+            (cookie) => cookie.name == '.AspNetCore.Identity.Application',
+          ),
+        ),
+      ),
+    );
+  });
+
+  test('clears local cookies when remote sign-out is unavailable', () async {
+    await repository.signIn({
+      'email': 'beneficiary@example.test',
+      'password': 'fictional-password',
+    });
+    adapter.respond = (request) {
+      if (request.path.endsWith('/logout')) return jsonResponse(503, {});
+      if (request.path.endsWith('/me')) return jsonResponse(401, {});
+      return nullResponse(request);
+    };
+
+    await expectFailure(
+      repository.signOut(),
+      SessionFailureType.apiUnavailable,
+    );
+    expect(
+      await jar.loadForRequest(
+        Uri.parse('https://api.example.test/api/v1/auth/me'),
+      ),
+      isEmpty,
+    );
+    await expectFailure(
+      repository.currentUser(),
+      SessionFailureType.unauthenticated,
+    );
+  });
 }
 
 Future<void> expectFailure(
@@ -282,4 +359,22 @@ class RecordingAdapter implements HttpClientAdapter {
 
   @override
   void close({bool force = false}) {}
+}
+
+ResponseBody nullResponse(RequestOptions request) {
+  if (request.path.endsWith('/antiforgery')) {
+    return jsonResponse(200, {'requestToken': 'token'});
+  }
+  if (request.path.endsWith('/login') || request.path.endsWith('/logout')) {
+    return ResponseBody.fromString('', 204);
+  }
+  if (request.path.endsWith('/me')) {
+    return jsonResponse(200, {
+      'id': 'user-1',
+      'displayName': 'Demo Beneficiary',
+      'email': 'beneficiary@example.test',
+      'roles': ['Beneficiary'],
+    });
+  }
+  return jsonResponse(404, {});
 }

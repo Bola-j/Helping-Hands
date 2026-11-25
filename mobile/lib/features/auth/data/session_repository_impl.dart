@@ -21,21 +21,51 @@ class SessionRepositoryImpl implements SessionRepository {
         await _remote.signIn(credentials);
         _hasAuthenticatedSession = true;
         try {
-          return SessionUser.fromJson(await _remote.currentUser());
+          return await _loadCurrentUser();
         } on SessionFailure {
-          _hasAuthenticatedSession = false;
+          await _clearRejectedSession();
           rethrow;
         }
       }, unauthorized: SessionFailureType.invalidCredentials);
 
   @override
-  Future<SessionUser> currentUser() =>
-      _guard(() async => SessionUser.fromJson(await _remote.currentUser()));
+  Future<SessionUser> currentUser() async {
+    try {
+      return await _loadCurrentUser();
+    } on SessionFailure catch (failure) {
+      if (failure.type == SessionFailureType.sessionExpired ||
+          failure.type == SessionFailureType.denied) {
+        await _clearRejectedSession();
+      }
+      rethrow;
+    }
+  }
+
+  Future<SessionUser> _loadCurrentUser() => _guard(() async {
+    final user = SessionUser.fromJson(await _remote.currentUser());
+    if (!user.isBeneficiary) {
+      throw const SessionFailure(SessionFailureType.denied);
+    }
+    return user;
+  });
 
   @override
   Future<void> signOut() async {
-    await _guard(_remote.signOut);
-    _hasAuthenticatedSession = false;
+    try {
+      await _guard(_remote.signOut);
+    } finally {
+      _hasAuthenticatedSession = false;
+    }
+  }
+
+  Future<void> _clearRejectedSession() async {
+    try {
+      await _remote.signOut();
+    } catch (_) {
+      // A role mismatch must never be exposed as an authenticated app state.
+    } finally {
+      _hasAuthenticatedSession = false;
+    }
   }
 
   Future<T> _guard<T>(
@@ -44,6 +74,8 @@ class SessionRepositoryImpl implements SessionRepository {
   }) async {
     try {
       return await action();
+    } on SessionFailure {
+      rethrow;
     } on DioException catch (error) {
       final failure = _failureType(error, unauthorized);
       if (error.response?.statusCode == 401) _hasAuthenticatedSession = false;

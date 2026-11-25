@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:cookie_jar/cookie_jar.dart';
 
 class SessionRemoteDataSource {
-  SessionRemoteDataSource(this._dio);
+  SessionRemoteDataSource(this._dio, this._cookieJar);
 
   final Dio _dio;
+  final CookieJar _cookieJar;
   String? _requestToken;
 
   Future<void> registerBeneficiary(Map<String, Object?> input) async {
@@ -22,8 +24,12 @@ class SessionRemoteDataSource {
   }
 
   Future<void> signOut() async {
-    await _post('/api/v1/auth/logout', const {});
-    _requestToken = null;
+    try {
+      await _post('/api/v1/auth/logout', const {});
+    } finally {
+      _requestToken = null;
+      await _cookieJar.deleteAll();
+    }
     await _refreshRequestToken();
   }
 

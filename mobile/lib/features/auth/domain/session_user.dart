@@ -17,4 +17,6 @@ class SessionUser {
     email: json['email'] as String,
     roles: (json['roles'] as List<dynamic>).cast<String>(),
   );
+
+  bool get isBeneficiary => roles.contains('Beneficiary');
 }

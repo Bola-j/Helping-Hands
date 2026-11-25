@@ -31,7 +31,9 @@ void main() {
         },
       ),
     );
-    final repository = SessionRepositoryImpl(SessionRemoteDataSource(dio));
+    final repository = SessionRepositoryImpl(
+      SessionRemoteDataSource(dio, cookieJar),
+    );
     final email =
         'native-${DateTime.now().microsecondsSinceEpoch}@example.test';
     const password = 'GoodPass#12345';
@@ -123,7 +125,7 @@ Future<void> _expectUnavailable(String baseUrl) async {
   final unavailableDio = DioFactory.create(cookieJar: CookieJar())
     ..options.baseUrl = Uri.parse(baseUrl).replace(port: 59999).toString();
   final repository = SessionRepositoryImpl(
-    SessionRemoteDataSource(unavailableDio),
+    SessionRemoteDataSource(unavailableDio, CookieJar()),
   );
   await _expectFailure(
     repository.currentUser,

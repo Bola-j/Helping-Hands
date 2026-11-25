@@ -140,4 +140,97 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get comingSoon => 'ستتم إضافة هذه الشاشة في مهمة لاحقة.';
+
+  @override
+  String get invalidEmail => 'أدخل بريداً إلكترونياً صحيحاً.';
+
+  @override
+  String get signInInvalidCredentials =>
+      'البريد الإلكتروني أو كلمة المرور غير صحيحة. تحقق من بياناتك وحاول مجدداً.';
+
+  @override
+  String get signInExpired =>
+      'انتهت صلاحية جلستك. سجّل الدخول مجدداً للمتابعة.';
+
+  @override
+  String get signInDenied => 'لا يمكن لهذا الحساب استخدام تطبيق المستفيد.';
+
+  @override
+  String get signInUnavailable =>
+      'تعذر الاتصال بخدمة أيادي الخير. تحقق من اتصالك وحاول مجدداً.';
+
+  @override
+  String get signInInvalidRequest => 'تعذر إتمام تسجيل الدخول. حاول مجدداً.';
+
+  @override
+  String get signInUnexpected => 'تعذر تسجيل الدخول. حاول مجدداً.';
+
+  @override
+  String get signOut => 'تسجيل الخروج';
+
+  @override
+  String get signOutFailed => 'تعذر تأكيد تسجيل الخروج من الخدمة. حاول مجدداً.';
+
+  @override
+  String get signedOut => 'تم تسجيل الخروج.';
+
+  @override
+  String get backToSignIn => 'الانتقال إلى تسجيل الدخول';
+
+  @override
+  String get passwordRequired => 'أدخل كلمة المرور.';
+
+  @override
+  String get signInTitle => 'تسجيل الدخول';
+
+  @override
+  String get signInSubtitle =>
+      'أدخل البريد الإلكتروني وكلمة المرور اللذين استخدمتهما لإنشاء حسابك.';
+
+  @override
+  String get phaseSignIn => 'المرحلة ١ · تسجيل الدخول';
+
+  @override
+  String get phaseSessionExpired => 'انتهت الجلسة · المرحلة ١ و٢';
+
+  @override
+  String get noBeneficiaryAccount => 'ليس لديك حساب مستفيد؟';
+
+  @override
+  String get sessionExpiredTitle => 'تم تسجيل خروجك لحماية حسابك';
+
+  @override
+  String get sessionExpiredBody =>
+      'انتهت الجلسة بسبب عدم النشاط أو تم تسجيل خروجك. تظل طلباتك المسجلة محفوظة. سجّل الدخول مجدداً للمتابعة.';
+
+  @override
+  String get sessionExpiredPrivacy =>
+      'لن تظهر بياناتك الشخصية أو تفاصيل طلباتك حتى تسجل الدخول مجدداً.';
+
+  @override
+  String get signInAgain => 'إعادة تسجيل الدخول';
+
+  @override
+  String get returnWelcome => 'العودة لشاشة اللغة والترحيب';
+
+  @override
+  String get profileTitle => 'الحساب والإعدادات';
+
+  @override
+  String get profileSubtitle => 'المرحلة ١ و٢ · اللغة وتسجيل الخروج';
+
+  @override
+  String get englishLtr => 'English (LTR)';
+
+  @override
+  String get arabicRtl => 'العربية (RTL)';
+
+  @override
+  String get homeNavigation => 'الرئيسية';
+
+  @override
+  String get requestsNavigation => 'طلباتي';
+
+  @override
+  String get accountNavigation => 'الحساب';
 }

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createRequire } from 'node:module';
-const { apiFetch } = createRequire(import.meta.url)('../../src/session/api.ts');
+const { apiFetch } = createRequire(import.meta.url)('../../src/session/api.js');
 
 test('401, 403 and unavailable API responses remain distinguishable', async () => {
   for (const [status, kind] of [[401, 'unauthorized'], [403, 'forbidden'], [503, 'unavailable']]) {

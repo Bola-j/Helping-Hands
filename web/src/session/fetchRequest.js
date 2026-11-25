@@ -1,8 +1,8 @@
 import { ApiError, responseError } from './ApiError';
 import { boundedSignal } from './boundedSignal';
 
-export async function fetchRequest(path: string, init: RequestInit = {}): Promise<Response> {
-  let response: Response;
+export async function fetchRequest(path, init = {}) {
+  let response;
   const bounded = boundedSignal(init.signal);
   try {
     response = await fetch(path, { ...init, signal: bounded.signal, credentials: 'same-origin', cache: 'no-store' });

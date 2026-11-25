@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { test } from 'node:test';
-const { apiFetch } = createRequire(import.meta.url)('../../src/session/api.ts');
+const { apiFetch } = createRequire(import.meta.url)('../../src/session/api.js');
 
 test('concurrent first writes serialize token and write pairs', async () => {
   const calls = [];

@@ -1,6 +1,6 @@
 import { ApiError } from './ApiError';
 
-export function demoErrorMessage(error: unknown): string {
+export function demoErrorMessage(error) {
   if (!(error instanceof ApiError)) return 'The request could not be completed. Try again.';
   if (error.kind === 'network' || error.kind === 'unavailable') return 'The demo API is unavailable. Check that the local services are running, then try again.';
   if (error.kind === 'invalid') return 'Check the required fields and both confirmations, then try again.';

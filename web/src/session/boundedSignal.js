@@ -1,6 +1,6 @@
 export const REQUEST_TIMEOUT_MS = 45_000;
 
-export function boundedSignal(caller?: AbortSignal | null) {
+export function boundedSignal(caller) {
   const controller = new AbortController();
   const abort = () => controller.abort();
   const timer = setTimeout(abort, REQUEST_TIMEOUT_MS);

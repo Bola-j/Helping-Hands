@@ -107,10 +107,12 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
-    expect(find.text('Account & settings'), findsOneWidget);
+    expect(find.text('Beneficiary home'), findsOneWidget);
   });
 
-  testWidgets('successful sign-in opens profile and signs out', (tester) async {
+  testWidgets('successful sign-in opens Home and can reach account settings', (
+    tester,
+  ) async {
     final repository = WidgetSessionRepository();
     await _pumpAtDesignSize(tester, repository);
     await tester.enterText(
@@ -124,6 +126,9 @@ void main() {
     await tester.tap(find.byKey(const ValueKey('sign-in-submit')));
     await tester.pumpAndSettle();
 
+    expect(find.text('Beneficiary home'), findsOneWidget);
+    await tester.tap(find.text('Account settings'));
+    await tester.pumpAndSettle();
     expect(find.text('Account & settings'), findsOneWidget);
     await tester.tap(find.text('العربية (RTL)'));
     await tester.pumpAndSettle();
@@ -186,6 +191,29 @@ Widget _app(WidgetSessionRepository repository) => MultiRepositoryProvider(
           child: const SignInPage(),
         ),
         onGenerateRoute: (settings) {
+          if (settings.name == AppRoutes.home) {
+            return MaterialPageRoute<void>(
+              settings: settings,
+              builder: (context) => Scaffold(
+                body: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Text('Beneficiary home'),
+                      TextButton(
+                        onPressed: () => Navigator.pushNamed(
+                          context,
+                          AppRoutes.profile,
+                          arguments: settings.arguments as SessionUser,
+                        ),
+                        child: const Text('Account settings'),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          }
           if (settings.name == AppRoutes.profile) {
             return MaterialPageRoute<void>(
               settings: settings,

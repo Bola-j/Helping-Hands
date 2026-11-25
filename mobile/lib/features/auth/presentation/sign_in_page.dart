@@ -51,7 +51,7 @@ class _SignInPageState extends State<SignInPage> {
                   if (state case SessionSignedIn(:final user)) {
                     Navigator.pushReplacementNamed(
                       context,
-                      AppRoutes.profile,
+                      AppRoutes.home,
                       arguments: user,
                     );
                   } else if (state is SessionSignedOut &&

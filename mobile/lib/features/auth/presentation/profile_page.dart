@@ -18,8 +18,20 @@ class ProfilePage extends StatelessWidget {
     final strings = AppLocalizations.of(context);
     return Scaffold(
       backgroundColor: AppColors.canvas,
-      bottomNavigationBar: const BeneficiaryBottomNavigation(
-        selected: BeneficiaryNavigationItem.account,
+      bottomNavigationBar: BlocBuilder<SessionBloc, SessionState>(
+        builder: (context, state) => BeneficiaryBottomNavigation(
+          selected: BeneficiaryNavigationItem.account,
+          onSelected: (item) {
+            final user = _activeUser(state);
+            if (user == null) return;
+            final route = switch (item) {
+              BeneficiaryNavigationItem.home => AppRoutes.home,
+              BeneficiaryNavigationItem.requests => AppRoutes.requests,
+              BeneficiaryNavigationItem.account => AppRoutes.profile,
+            };
+            Navigator.pushReplacementNamed(context, route, arguments: user);
+          },
+        ),
       ),
       body: SafeArea(
         child: Padding(

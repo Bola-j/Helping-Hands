@@ -55,7 +55,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('welcome actions navigate to their foundation placeholders', (
+  testWidgets('welcome actions navigate to account creation and sign-in', (
     tester,
   ) async {
     tester.view.devicePixelRatio = 1;
@@ -66,7 +66,8 @@ void main() {
     await tester.pumpWidget(const HelpingHandsApp());
     await tester.tap(find.text('إنشاء حساب مستفيد'));
     await tester.pumpAndSettle();
-    expect(find.text('إنشاء حساب'), findsOneWidget);
+    expect(find.text('الاسم الكامل'), findsOneWidget);
+    expect(find.text('البريد الإلكتروني'), findsOneWidget);
 
     tester.state<NavigatorState>(find.byType(Navigator).first).pop();
     await tester.pumpAndSettle();

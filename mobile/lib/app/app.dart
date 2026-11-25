@@ -9,6 +9,11 @@ import '../features/welcome/application/locale_cubit.dart';
 import '../features/auth/data/session_remote_data_source.dart';
 import '../features/auth/data/session_repository_impl.dart';
 import '../features/auth/domain/session_repository.dart';
+import '../features/auth/data/beneficiary_registration_remote_data_source.dart';
+import '../features/auth/data/beneficiary_registration_repository_impl.dart';
+import '../features/auth/domain/beneficiary_registration_repository.dart';
+import '../features/auth/application/create_account_bloc.dart';
+import '../features/auth/presentation/create_account_page.dart';
 import '../features/welcome/presentation/welcome_page.dart';
 import '../l10n/generated/app_localizations.dart';
 import 'app_routes.dart';
@@ -32,6 +37,11 @@ class HelpingHandsApp extends StatelessWidget {
             SessionRemoteDataSource(context.read<Dio>()),
           ),
         ),
+        RepositoryProvider<BeneficiaryRegistrationRepository>(
+          create: (context) => BeneficiaryRegistrationRepositoryImpl(
+            BeneficiaryRegistrationRemoteDataSource(context.read<Dio>()),
+          ),
+        ),
       ],
       child: BlocProvider(
         create: (_) => LocaleCubit(),
@@ -46,8 +56,11 @@ class HelpingHandsApp extends StatelessWidget {
             initialRoute: AppRoutes.welcome,
             routes: {
               AppRoutes.welcome: (_) => const WelcomePage(),
-              AppRoutes.createAccount: (_) => const PlaceholderPage(
-                titleKey: PlaceholderTitle.createAccount,
+              AppRoutes.createAccount: (context) => BlocProvider(
+                create: (context) => CreateAccountBloc(
+                  context.read<BeneficiaryRegistrationRepository>(),
+                ),
+                child: const CreateAccountPage(),
               ),
               AppRoutes.signIn: (_) =>
                   const PlaceholderPage(titleKey: PlaceholderTitle.signIn),

@@ -23,6 +23,21 @@ The session repository exposes beneficiary registration, sign-in, current-user l
 
 See [`docs/native-session-spike.md`](docs/native-session-spike.md) for implemented coverage and live API limitations before starting dependent auth or request screens.
 
+## Beneficiary account creation
+
+The Create Account screen submits the backend contract fields to
+`POST /api/v1/auth/register/beneficiary`: `displayName`, `email`, `password`,
+optional `contactDetails`, and `isFamily`. It retrieves and sends the API's
+antiforgery token and cookie through Dio. Registration is separate from sign-in
+and displays the account's beneficiary reference after a successful response.
+The app never connects directly to PostgreSQL.
+
+The native registration integration test is
+`integration_test/beneficiary_registration_api_test.dart`. It writes a fictional
+beneficiary to the configured API, so run it only against an isolated disposable
+database and API with a test certificate trusted explicitly by the test client.
+TLS verification remains enabled.
+
 ## Verify
 
 ```sh
@@ -35,8 +50,8 @@ flutter test
 - `lib/app/`: app setup, route table, and app-wide dependency providers.
 - `lib/core/`: shared theme, Dio configuration, and button, text-field, and card components. Buttons expose loading/disabled states, fields expose error/disabled states, and cards expose selection.
 - `lib/features/welcome/`: welcome feature; `application/` contains its locale Cubit and `presentation/` its UI.
-- `lib/features/auth/`: session domain contract, API data source and repository implementation; no auth screens are wired yet.
+- `lib/features/auth/`: beneficiary registration DTOs, API data source, repository, BLoC and Create Account screen, alongside the session contract and API repository.
 - `lib/l10n/`: English and Arabic strings; Arabic uses RTL through Flutter localization.
 - `assets/icons/` and `assets/fonts/`: Figma-exported SVG assets and the Figma typography families, with their licenses.
 
-The Welcome & Language screen is the first Phase 1 screen. Account and sign-in routes currently show foundation placeholders; no auth behavior is implemented here.
+The Welcome & Language and beneficiary Create Account screens are implemented. Sign-in remains a separate follow-on screen. The API must be reachable over HTTPS from the selected Android/iOS device, and its certificate must be trusted by that device. Never disable TLS verification or put credentials in source.

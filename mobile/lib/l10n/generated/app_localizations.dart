@@ -170,6 +170,174 @@ abstract class AppLocalizations {
   /// **'Sign in'**
   String get signIn;
 
+  /// No description provided for @back.
+  ///
+  /// In en, this message translates to:
+  /// **'Back'**
+  String get back;
+
+  /// No description provided for @registrationIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your beneficiary profile. You will sign in separately after registration.'**
+  String get registrationIntro;
+
+  /// No description provided for @fullName.
+  ///
+  /// In en, this message translates to:
+  /// **'Full name'**
+  String get fullName;
+
+  /// No description provided for @email.
+  ///
+  /// In en, this message translates to:
+  /// **'Email'**
+  String get email;
+
+  /// No description provided for @password.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get password;
+
+  /// No description provided for @contactDetailsOptional.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact details (optional)'**
+  String get contactDetailsOptional;
+
+  /// No description provided for @contactDetailsHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Optional contact information for your profile'**
+  String get contactDetailsHint;
+
+  /// No description provided for @profileFor.
+  ///
+  /// In en, this message translates to:
+  /// **'Who will this beneficiary profile represent?'**
+  String get profileFor;
+
+  /// No description provided for @forMe.
+  ///
+  /// In en, this message translates to:
+  /// **'Me'**
+  String get forMe;
+
+  /// No description provided for @forFamily.
+  ///
+  /// In en, this message translates to:
+  /// **'My family'**
+  String get forFamily;
+
+  /// No description provided for @profileForRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose who the profile represents.'**
+  String get profileForRequired;
+
+  /// No description provided for @nameRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your name.'**
+  String get nameRequired;
+
+  /// No description provided for @nameTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Name must be 200 characters or fewer.'**
+  String get nameTooLong;
+
+  /// No description provided for @emailRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address.'**
+  String get emailRequired;
+
+  /// No description provided for @emailInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid email address.'**
+  String get emailInvalid;
+
+  /// No description provided for @passwordRequirements.
+  ///
+  /// In en, this message translates to:
+  /// **'Use at least 12 characters with uppercase, lowercase, a number, and a symbol.'**
+  String get passwordRequirements;
+
+  /// No description provided for @contactDetailsTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact details must be 500 characters or fewer.'**
+  String get contactDetailsTooLong;
+
+  /// No description provided for @showPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Show password'**
+  String get showPassword;
+
+  /// No description provided for @hidePassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide password'**
+  String get hidePassword;
+
+  /// No description provided for @alreadyHaveAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Already have an account? Sign in'**
+  String get alreadyHaveAccount;
+
+  /// No description provided for @continueToSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to sign in'**
+  String get continueToSignIn;
+
+  /// No description provided for @registrationSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account has been created'**
+  String get registrationSuccess;
+
+  /// No description provided for @registrationNextStep.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account is ready. Continue to sign in with your email and password.'**
+  String get registrationNextStep;
+
+  /// No description provided for @beneficiaryReference.
+  ///
+  /// In en, this message translates to:
+  /// **'Beneficiary reference: {reference}'**
+  String beneficiaryReference(Object reference);
+
+  /// No description provided for @registrationDuplicateEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'This email is already registered. Try signing in instead.'**
+  String get registrationDuplicateEmail;
+
+  /// No description provided for @registrationInvalidRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not accept these details. Check the form and try again.'**
+  String get registrationInvalidRequest;
+
+  /// No description provided for @registrationApiUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Registration is temporarily unavailable. Check your connection and try again.'**
+  String get registrationApiUnavailable;
+
+  /// No description provided for @registrationUnexpected.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not complete registration. Please try again.'**
+  String get registrationUnexpected;
+
   /// No description provided for @comingSoon.
   ///
   /// In en, this message translates to:

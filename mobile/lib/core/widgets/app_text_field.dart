@@ -12,6 +12,12 @@ class AppTextField extends StatelessWidget {
     this.keyboardType,
     this.onChanged,
     this.obscureText = false,
+    this.validator,
+    this.suffixIcon,
+    this.textInputAction,
+    this.autofillHints,
+    this.autocorrect = true,
+    this.enableSuggestions = true,
     super.key,
   });
 
@@ -23,6 +29,12 @@ class AppTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final ValueChanged<String>? onChanged;
   final bool obscureText;
+  final FormFieldValidator<String>? validator;
+  final Widget? suffixIcon;
+  final TextInputAction? textInputAction;
+  final Iterable<String>? autofillHints;
+  final bool autocorrect;
+  final bool enableSuggestions;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +44,11 @@ class AppTextField extends StatelessWidget {
       keyboardType: keyboardType,
       onChanged: onChanged,
       obscureText: obscureText,
+      validator: validator,
+      textInputAction: textInputAction,
+      autofillHints: autofillHints,
+      autocorrect: autocorrect,
+      enableSuggestions: enableSuggestions,
       style: const TextStyle(
         color: AppColors.navy,
         fontFamily: 'Cabin',
@@ -42,6 +59,7 @@ class AppTextField extends StatelessWidget {
         labelText: label,
         hintText: hintText,
         errorText: errorText,
+        suffixIcon: suffixIcon,
         filled: true,
         fillColor: enabled ? AppColors.white : AppColors.canvas,
         contentPadding: const EdgeInsets.symmetric(

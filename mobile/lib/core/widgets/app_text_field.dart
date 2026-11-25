@@ -18,6 +18,7 @@ class AppTextField extends StatelessWidget {
     this.autofillHints,
     this.autocorrect = true,
     this.enableSuggestions = true,
+    this.labelAbove = false,
     super.key,
   });
 
@@ -35,52 +36,56 @@ class AppTextField extends StatelessWidget {
   final Iterable<String>? autofillHints;
   final bool autocorrect;
   final bool enableSuggestions;
+  final bool labelAbove;
 
   @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      controller: controller,
-      enabled: enabled,
-      keyboardType: keyboardType,
-      onChanged: onChanged,
-      obscureText: obscureText,
-      validator: validator,
-      textInputAction: textInputAction,
-      autofillHints: autofillHints,
-      autocorrect: autocorrect,
-      enableSuggestions: enableSuggestions,
-      style: const TextStyle(
-        color: AppColors.navy,
-        fontFamily: 'Cabin',
-        fontFamilyFallback: ['NotoSansArabic'],
-        fontSize: 16,
-      ),
-      decoration: InputDecoration(
-        labelText: label,
-        hintText: hintText,
-        errorText: errorText,
-        suffixIcon: suffixIcon,
-        filled: true,
-        fillColor: enabled ? AppColors.white : AppColors.canvas,
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 14,
+    return Semantics(
+      label: labelAbove ? label : null,
+      child: TextFormField(
+        controller: controller,
+        enabled: enabled,
+        keyboardType: keyboardType,
+        onChanged: onChanged,
+        obscureText: obscureText,
+        validator: validator,
+        textInputAction: textInputAction,
+        autofillHints: autofillHints,
+        autocorrect: autocorrect,
+        enableSuggestions: enableSuggestions,
+        style: const TextStyle(
+          color: AppColors.navy,
+          fontFamily: 'Cabin',
+          fontFamilyFallback: ['NotoSansArabic'],
+          fontSize: 16,
         ),
-        border: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(color: AppColors.border),
-        ),
-        enabledBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(color: AppColors.border),
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(color: AppColors.teal, width: 2),
-        ),
-        errorBorder: const OutlineInputBorder(
-          borderRadius: BorderRadius.all(Radius.circular(12)),
-          borderSide: BorderSide(color: AppColors.error),
+        decoration: InputDecoration(
+          labelText: labelAbove ? null : label,
+          hintText: hintText,
+          errorText: errorText,
+          suffixIcon: suffixIcon,
+          filled: true,
+          fillColor: enabled ? AppColors.white : AppColors.canvas,
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 14,
+          ),
+          border: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+            borderSide: BorderSide(color: AppColors.border),
+          ),
+          enabledBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+            borderSide: BorderSide(color: AppColors.border),
+          ),
+          focusedBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+            borderSide: BorderSide(color: AppColors.teal, width: 2),
+          ),
+          errorBorder: const OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(12)),
+            borderSide: BorderSide(color: AppColors.error),
+          ),
         ),
       ),
     );

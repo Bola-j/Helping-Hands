@@ -13,4 +13,8 @@ abstract final class AppColors {
   static const selectedText = Color(0xFF003732);
   static const scopeSurface = Color(0xFFE7F2FF);
   static const error = Color(0xFFB3261E);
+  static const warningBackground = Color(0xFFFFEFE7);
+  static const warningText = Color(0xFF984900);
+  static const signOutBackground = Color(0xFFFFEEEB);
+  static const signOutBorder = Color(0xFFFF9E93);
 }

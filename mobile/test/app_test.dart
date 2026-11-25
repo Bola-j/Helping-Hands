@@ -73,7 +73,8 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('تسجيل الدخول إلى حساب حالي'));
     await tester.pumpAndSettle();
-    expect(find.text('تسجيل الدخول'), findsOneWidget);
+    expect(find.byKey(const ValueKey('sign-in-email')), findsOneWidget);
+    expect(find.byKey(const ValueKey('sign-in-password')), findsOneWidget);
   });
 
   testWidgets('welcome layout remains usable at a narrow viewport', (

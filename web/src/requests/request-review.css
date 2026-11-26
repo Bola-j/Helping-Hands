@@ -1,0 +1,44 @@
+.request-review-page { min-height:100vh; color:#18363b; background:#f3f6f5; font-family:"Segoe UI",system-ui,sans-serif; line-height:1.5; }
+.request-review-page * { box-sizing:border-box; }
+.request-review-page :focus-visible { outline:3px solid #1d6a66; outline-offset:2px; }
+.request-review-topbar,.request-review-content { max-width:1440px; margin:auto; padding:1rem clamp(1rem,4vw,3rem); }
+.request-review-topbar { display:flex; justify-content:space-between; gap:1rem; }
+.request-review-brand { color:inherit; font:700 1.35rem Georgia,serif; text-decoration:none; }
+.request-review-content h1 { margin:.2rem 0; font-size:clamp(2rem,4vw,3rem); }
+.request-review-eyebrow { margin:0; color:#1d6a66; font-size:.82rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.request-review-lead,.request-review-signed { color:#52666a; }
+.request-review-layout { display:grid; grid-template-columns:minmax(240px,340px) minmax(0,1fr); gap:1rem; align-items:start; }
+.request-review-card { min-width:0; margin:1rem 0; padding:1.1rem; border:1px solid #c8d5d3; border-radius:9px; background:white; box-shadow:0 3px 14px #16343a0b; }
+.request-review-card h2 { margin:.1rem 0 .6rem; }
+.request-review-heading { display:flex; justify-content:space-between; align-items:center; gap:1rem; }
+.request-review-heading h2,.request-review-heading h3 { margin:.15rem 0; overflow-wrap:anywhere; }
+.request-review-pill { flex:none; padding:.2rem .65rem; border-radius:999px; background:#e9efed; font-size:.86rem; font-weight:700; }
+.request-review-list { display:grid; gap:.55rem; margin:.75rem 0 0; padding:0; list-style:none; }
+.request-review-list button { display:grid; width:100%; gap:.2rem; padding:.7rem; border:1px solid #c8d5d3; border-radius:6px; color:inherit; background:white; text-align:left; font:inherit; cursor:pointer; }
+.request-review-list button[aria-current="true"] { border-color:#1d6a66; background:#eff8f6; }
+.request-review-list small { color:#52666a; }
+.request-review-heading button,.request-review-actions button { padding:.55rem .75rem; border:1px solid #1d6a66; border-radius:5px; color:white; background:#1d6a66; font:inherit; font-weight:700; cursor:pointer; }
+.request-review-heading button:disabled,.request-review-actions button:disabled { opacity:.55; cursor:wait; }
+.request-review-detail { min-width:0; }
+.request-review-description { white-space:pre-wrap; overflow-wrap:anywhere; }
+.request-review-need { margin:1rem 0; padding:1rem; border:1px solid #d5dfdd; border-radius:7px; background:#fbfdfc; }
+.request-review-need h3 { font-size:1.12rem; }
+.request-review-need details { margin:.8rem 0; padding:.65rem; background:#f1f6f4; border-radius:5px; }
+.request-review-need summary { cursor:pointer; font-weight:700; }
+.request-review-form { display:grid; gap:.65rem; margin-top:1rem; }
+.request-review-form label { display:grid; gap:.3rem; font-weight:650; }
+.request-review-form input,.request-review-form select,.request-review-form textarea { width:100%; padding:.6rem; border:1px solid #9fb2af; border-radius:5px; font:inherit; }
+.request-review-form textarea { resize:vertical; }
+.request-review-actions { display:flex; flex-wrap:wrap; gap:.5rem; }
+.request-review-actions button.request-review-secondary { color:#1d514d; background:white; }
+.request-review-actions button.request-review-danger { color:#84221b; border-color:#a63830; background:white; }
+.request-review-error,.request-review-notice,.request-review-help { padding:.7rem .85rem; border-radius:5px; }
+.request-review-error { color:#7a1a14; background:#fbe9e7; }
+.request-review-notice { color:#174e43; background:#e8f5ef; }
+.request-review-help { color:#536268; background:#f1f4f3; }
+.request-review-history { display:grid; gap:.55rem; padding-left:1.4rem; }
+.request-review-history li { padding:.65rem; border-left:3px solid #1d6a66; background:#f6faf8; overflow-wrap:anywhere; }
+.request-review-history p { margin:.3rem 0; }
+.request-review-history time { color:#52666a; font-size:.88rem; }
+@media(max-width:800px) { .request-review-layout { grid-template-columns:1fr; }.request-review-heading { align-items:flex-start; flex-direction:column; } }
+@media(max-width:480px) { .request-review-actions { display:grid; }.request-review-actions button { width:100%; } }

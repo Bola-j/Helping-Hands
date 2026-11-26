@@ -3,6 +3,7 @@ import { loadCapacity, loadCharities, loadServiceChoices } from './charityServic
 import { saveDailyCapacity, saveServiceChoices } from './charityServicesWriteApi.js';
 import { charityServicesError } from './charityServicesMessages.js';
 import { CapacityList, ServiceSelection } from './CharityServicesSections.jsx';
+import { DailyCapacityTasks } from './DailyCapacityTasks.jsx';
 
 export function CharityServicesWorkspace({ request, user }) {
   const [charities, setCharities] = useState([]);
@@ -17,6 +18,7 @@ export function CharityServicesWorkspace({ request, user }) {
   const [loadingWorkspace, setLoadingWorkspace] = useState(false);
   const [savingServices, setSavingServices] = useState(false);
   const [savingCapacity, setSavingCapacity] = useState(false);
+  const [refreshingTasks, setRefreshingTasks] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -83,14 +85,29 @@ export function CharityServicesWorkspace({ request, user }) {
       setError('Enter an available quantity of zero or more.'); return;
     }
     setSavingCapacity(true); setError(''); setNotice('');
+    let saved = false;
     try {
-      const result = await saveDailyCapacity(request, recipientId, capacity.charityServiceId, amount);
+      await saveDailyCapacity(request, recipientId, capacity.charityServiceId, amount);
+      saved = true;
+      const result = await loadCapacity(request, recipientId);
       setCapacities(result.capacities ?? []);
       const updated = result.capacities?.find(item => item.charityServiceId === capacity.charityServiceId);
       setCapacityValues(current => ({ ...current, [capacity.charityServiceId]: updated?.available ?? '' }));
       setNotice(`${capacity.serviceName} capacity updated for ${result.cairoDate}.`);
-    } catch (failure) { setError(charityServicesError(failure, 'save capacity')); }
+    } catch (failure) {
+      setError(saved ? 'Capacity was saved, but the task list could not refresh. Use Refresh tasks and check the latest status.' : charityServicesError(failure, 'save capacity'));
+    }
     finally { setSavingCapacity(false); }
+  }
+
+  async function refreshTasks() {
+    setRefreshingTasks(true); setError('');
+    try {
+      const latest = await loadCapacity(request, recipientId);
+      setCapacities(latest.capacities ?? []);
+      setCapacityValues(Object.fromEntries((latest.capacities ?? []).map(item => [item.charityServiceId, item.available ?? ''])));
+    } catch (failure) { setError(charityServicesError(failure, 'refresh today’s capacity tasks')); }
+    finally { setRefreshingTasks(false); }
   }
 
   return <>
@@ -105,6 +122,7 @@ export function CharityServicesWorkspace({ request, user }) {
     {notice && <p role="status" className="charity-services-notice">{notice}</p>}
     {loadingWorkspace && <p role="status">Loading service standards and today’s capacity…</p>}
     {services && !loadingWorkspace && <>
+      <DailyCapacityTasks capacities={capacities} hasSelectedServices={(services.selectedServices ?? []).length > 0} refreshing={refreshingTasks} onRefresh={refreshTasks} />
       <ServiceSelection options={services.applicableOptions ?? []} selectedPairs={selectedPairs} busy={savingServices} onToggle={toggleService} onSubmit={submitServices} />
       <CapacityList capacities={capacities} values={capacityValues} disabled={savingServices || savingCapacity} onChange={(id, value) => setCapacityValues(current => ({ ...current, [id]: value }))} onSubmit={submitCapacity} />
     </>}

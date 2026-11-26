@@ -63,6 +63,8 @@ export function LoginPage() {
         <div className="auth-actions">
           <a className="auth-button" href="/demo">Open the demo</a>
           {state.user.roles.some(role => ['Coordinator', 'Administrator'].includes(role)) && <a className="auth-button auth-button-quiet" href="/coordinator/standards">Manage services and standards</a>}
+          {state.user.roles.includes('RecipientRepresentative') && <a className="auth-button auth-button-quiet" href="/charity/application">View charity application</a>}
+          {state.user.roles.some(role => ['Coordinator', 'Administrator'].includes(role)) && <a className="auth-button auth-button-quiet" href="/coordinator/applications">Review charity applications</a>}
           <button type="button" className="auth-button auth-button-quiet" onClick={onSignOut} disabled={busy}>
             {busy ? 'Signing out…' : 'Sign out'}
           </button>

@@ -7,6 +7,9 @@ import { BeneficiarySignupPage } from './auth/BeneficiarySignupPage.jsx';
 import { CharitySignupPage } from './auth/CharitySignupPage.jsx';
 import { LoginPage } from './auth/LoginPage.jsx';
 import { CoordinatorStandardsPage } from './coordinator/CoordinatorStandardsPage.jsx';
+import { CharityApplicationPage } from './applications/CharityApplicationPage.jsx';
+import { CoordinatorApplicationsPage } from './applications/CoordinatorApplicationsPage.jsx';
+import './applications/applications.css';
 
 function HomePage() {
   return (
@@ -53,6 +56,8 @@ function App() {
   if (path === '/register/charity') return <CharitySignupPage />;
   if (path === '/login') return <SessionProvider><LoginPage /></SessionProvider>;
   if (path === '/coordinator/standards') return <SessionProvider><CoordinatorStandardsPage /></SessionProvider>;
+  if (path === '/charity/application') return <SessionProvider><CharityApplicationPage /></SessionProvider>;
+  if (path === '/coordinator/applications') return <SessionProvider><CoordinatorApplicationsPage /></SessionProvider>;
   return <HomePage />;
 }
 

@@ -34,7 +34,10 @@ public static partial class DemoEndpoints
         string UnitStandardName,
         Guid StandardVersionId,
         int StandardVersionNumber,
-        DateTimeOffset EffectiveAt);
+        DateTimeOffset EffectiveAt,
+        IReadOnlyList<CharityServiceComponentView> Components);
+
+    public sealed record CharityServiceComponentView(string Name, decimal Quantity, string Unit);
 
     private static void MapRecipientServiceRoutes(this RouteGroupBuilder api)
     {
@@ -206,24 +209,36 @@ public static partial class DemoEndpoints
         HelpingHandsDbContext database,
         CancellationToken cancellationToken)
     {
-        return await (
+        var options = await (
             from cat in database.ServiceCategories.AsNoTracking()
             join sv in database.ServiceVersions.AsNoTracking() on cat.Id equals sv.CategoryId
             join us in database.UnitStandards.AsNoTracking() on sv.Id equals us.ServiceVersionId
             join stv in database.StandardVersions.AsNoTracking() on us.Id equals stv.UnitStandardId
             where sv.IsPublished && stv.IsPublished
             orderby cat.Code, sv.Name, sv.VersionNumber, us.Name, stv.VersionNumber
-            select new ApplicablePlatformUnitOptionView(
-                cat.Id,
-                cat.Code,
-                sv.Id,
-                sv.Name,
-                sv.VersionNumber,
-                us.Id,
-                us.Name,
-                stv.Id,
-                stv.VersionNumber,
-                stv.EffectiveAt)
-        ).ToListAsync(cancellationToken);
+            select new
+            {
+                CategoryId = cat.Id,
+                CategoryCode = cat.Code,
+                ServiceVersionId = sv.Id,
+                ServiceName = sv.Name,
+                ServiceVersionNumber = sv.VersionNumber,
+                UnitStandardId = us.Id,
+                UnitStandardName = us.Name,
+                StandardVersionId = stv.Id,
+                StandardVersionNumber = stv.VersionNumber,
+                stv.EffectiveAt
+            }).ToListAsync(cancellationToken);
+        var versionIds = options.Select(option => option.StandardVersionId).ToArray();
+        var components = await database.StandardComponents.AsNoTracking()
+            .Where(component => versionIds.Contains(component.StandardVersionId))
+            .OrderBy(component => component.Name).ThenBy(component => component.Id)
+            .ToListAsync(cancellationToken);
+        return options.Select(option => new ApplicablePlatformUnitOptionView(
+            option.CategoryId, option.CategoryCode, option.ServiceVersionId, option.ServiceName, option.ServiceVersionNumber,
+            option.UnitStandardId, option.UnitStandardName, option.StandardVersionId, option.StandardVersionNumber, option.EffectiveAt,
+            components.Where(component => component.StandardVersionId == option.StandardVersionId)
+                .Select(component => new CharityServiceComponentView(component.Name, component.Quantity, component.Unit)).ToArray()))
+            .ToArray();
     }
 }

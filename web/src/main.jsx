@@ -14,6 +14,8 @@ import { CoordinatorRequestReviewPage } from './requests/CoordinatorRequestRevie
 import './requests/request-review.css';
 import { BeneficiaryRequestPage } from './requests/BeneficiaryRequestPage.jsx';
 import './requests/beneficiary-request.css';
+import { CharityServicesPage } from './recipients/CharityServicesPage.jsx';
+import './recipients/charity-services.css';
 
 function HomePage() {
   return (
@@ -64,6 +66,7 @@ function App() {
   if (path === '/coordinator/applications') return <SessionProvider><CoordinatorApplicationsPage /></SessionProvider>;
   if (path === '/coordinator/requests') return <SessionProvider><CoordinatorRequestReviewPage /></SessionProvider>;
   if (path === '/requests/new') return <SessionProvider><BeneficiaryRequestPage /></SessionProvider>;
+  if (path === '/charity/services') return <SessionProvider><CharityServicesPage /></SessionProvider>;
   return <HomePage />;
 }
 

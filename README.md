@@ -100,6 +100,8 @@ The `/demo` page lets a beneficiary register, sign in, submit a single-need requ
 
 The `/requests/new` page is for signed-in beneficiaries. It loads the beneficiary's visible profile and current published catalog, allows up to 50 distinct standards with quantities in one request, and displays the generated request reference and status after the API accepts it.
 
+The `/charity/services` page is for signed-in charity representatives. It lets them select published services and unit standards, view each standard's component contents, and enter direct available-now capacity. The page distinguishes a current zero balance from a stale service that needs today's update and displays the last update date.
+
 The session provider in `web/src/session` checks the current user on startup, obtains antiforgery tokens for writes, and sends same-origin cookies. Its queued writes cancel when the observed session changes; expired, denied and unavailable responses remain distinct. The `/demo` route mounts that provider. The web source is JavaScript; the earlier Expo/TypeScript prototype source has been removed. `npm run test:session` exercises this contract.
 
 The live browser tests in `web/tests/browser` run only against a disposable isolated stack with `SESSION_TEST_URL` and `SESSION_TEST_ALLOW_WRITE=isolated`; the environment flag does not itself establish isolation. `test_live_demo_flow.py` registers one fictional beneficiary, signs in, submits a single-need request and signs out through `/demo`.

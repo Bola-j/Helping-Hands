@@ -65,6 +65,7 @@ export function LoginPage() {
           {state.user.roles.includes('Beneficiary') && <a className="auth-button auth-button-quiet" href="/requests/new">Make a support request</a>}
           {state.user.roles.some(role => ['Coordinator', 'Administrator'].includes(role)) && <a className="auth-button auth-button-quiet" href="/coordinator/standards">Manage services and standards</a>}
           {state.user.roles.includes('RecipientRepresentative') && <a className="auth-button auth-button-quiet" href="/charity/application">View charity application</a>}
+          {state.user.roles.includes('RecipientRepresentative') && <a className="auth-button auth-button-quiet" href="/charity/services">Manage services and capacity</a>}
           {state.user.roles.some(role => ['Coordinator', 'Administrator'].includes(role)) && <a className="auth-button auth-button-quiet" href="/coordinator/applications">Review charity applications</a>}
           {state.user.roles.some(role => ['Coordinator', 'Administrator'].includes(role)) && <a className="auth-button auth-button-quiet" href="/coordinator/requests">Review assistance requests</a>}
           <button type="button" className="auth-button auth-button-quiet" onClick={onSignOut} disabled={busy}>

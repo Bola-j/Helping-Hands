@@ -9,6 +9,7 @@ import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/beneficiary_bottom_navigation.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../../auth/domain/session_user.dart';
+import '../../auth/domain/beneficiary_profile_hint.dart';
 import '../../welcome/application/locale_cubit.dart';
 import '../application/requests_bloc.dart';
 import '../domain/beneficiary_request.dart';
@@ -16,9 +17,10 @@ import '../domain/requests_failure.dart';
 import 'request_widgets.dart';
 
 class BeneficiaryHomePage extends StatelessWidget {
-  const BeneficiaryHomePage({required this.user, super.key});
+  const BeneficiaryHomePage({required this.user, this.profileHint, super.key});
 
   final SessionUser user;
+  final BeneficiaryProfileHint? profileHint;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -49,13 +51,16 @@ class BeneficiaryHomePage extends StatelessWidget {
               const RequestsRefreshRequested(),
             ),
             child: switch (state) {
-              RequestsInitial() ||
-              RequestsLoading() => const _HomeLoadingBody(),
+              RequestsInitial() || RequestsLoading() => _HomeLoadingBody(
+                user: user,
+                profileHint: profileHint,
+              ),
               RequestsFailed(:final failure) => _HomeFailureBody(
                 failure: failure,
               ),
               RequestsLoaded(:final items) => _HomeBody(
                 user: user,
+                profileHint: profileHint,
                 request: items.isEmpty ? null : items.first,
               ),
             },
@@ -154,9 +159,14 @@ class _HomeHeader extends StatelessWidget implements PreferredSizeWidget {
 }
 
 class _HomeBody extends StatelessWidget {
-  const _HomeBody({required this.user, required this.request});
+  const _HomeBody({
+    required this.user,
+    required this.request,
+    this.profileHint,
+  });
   final SessionUser user;
   final BeneficiaryRequest? request;
+  final BeneficiaryProfileHint? profileHint;
 
   @override
   Widget build(BuildContext context) {
@@ -165,7 +175,7 @@ class _HomeBody extends StatelessWidget {
       physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.fromLTRB(16, 20, 16, 24),
       children: [
-        const _NewRequestCard(),
+        _NewRequestCard(user: user, profileHint: profileHint),
         const SizedBox(height: 22),
         Row(
           children: [
@@ -205,7 +215,10 @@ class _HomeBody extends StatelessWidget {
 }
 
 class _NewRequestCard extends StatelessWidget {
-  const _NewRequestCard();
+  const _NewRequestCard({required this.user, this.profileHint});
+
+  final SessionUser user;
+  final BeneficiaryProfileHint? profileHint;
 
   @override
   Widget build(BuildContext context) {
@@ -257,8 +270,13 @@ class _NewRequestCard extends StatelessWidget {
           const SizedBox(height: 14),
           AppButton(
             label: strings.singleNeedRequest,
-            onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(strings.supportSingleNeedUnavailable)),
+            onPressed: () => Navigator.pushNamed(
+              context,
+              AppRoutes.singleNeed,
+              arguments: BeneficiaryHomeRouteArguments(
+                user,
+                profileHint: profileHint,
+              ),
             ),
           ),
           const SizedBox(height: 9),
@@ -307,7 +325,9 @@ class _HomeEmptyRequestCard extends StatelessWidget {
 }
 
 class _HomeLoadingBody extends StatelessWidget {
-  const _HomeLoadingBody();
+  const _HomeLoadingBody({required this.user, this.profileHint});
+  final SessionUser user;
+  final BeneficiaryProfileHint? profileHint;
   @override
   Widget build(BuildContext context) => ListView(
     physics: const AlwaysScrollableScrollPhysics(),
@@ -315,7 +335,7 @@ class _HomeLoadingBody extends StatelessWidget {
     children: [
       const LinearProgressIndicator(color: AppColors.teal),
       const SizedBox(height: 20),
-      const _NewRequestCard(),
+      _NewRequestCard(user: user, profileHint: profileHint),
       const SizedBox(height: 24),
       Center(child: Text(AppLocalizations.of(context).requestLoading)),
     ],

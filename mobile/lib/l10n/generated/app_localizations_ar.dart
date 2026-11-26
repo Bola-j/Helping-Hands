@@ -353,4 +353,158 @@ class AppLocalizationsAr extends AppLocalizations {
   @override
   String get supportSingleNeedUnavailable =>
       'تسجيل الطلب غير متاح في هذا الإصدار بعد.';
+
+  @override
+  String get phaseSingleNeed => 'المرحلة ١ · احتياج واحد';
+
+  @override
+  String get phaseConfirmRequest => 'المرحلة ١ · التأكيدات';
+
+  @override
+  String get phaseSubmittingRequest => 'المرحلة ١ · إرسال الطلب';
+
+  @override
+  String get phaseReceipt => 'المرحلة ١ · تم الاستلام';
+
+  @override
+  String get singleNeedTitle => 'تسجيل طلب احتياج واحد';
+
+  @override
+  String get singleNeedSubtitle =>
+      'اذكر المعلومات اللازمة لفهم طلبك فقط. لا يضمن النظام قبول الطلب أو وصول الدعم.';
+
+  @override
+  String get singleNeedDescriptionLabel => 'وصف الطلب';
+
+  @override
+  String get singleNeedDescriptionHint => 'صِف المساعدة التي تحتاج إليها';
+
+  @override
+  String get singleNeedDescriptionRequired =>
+      'صِف المساعدة التي تحتاج إليها للمتابعة.';
+
+  @override
+  String get singleNeedDescriptionTooLong => 'يجب ألا يتجاوز الوصف ٤٠٠٠ حرف.';
+
+  @override
+  String get singleNeedPrivacyNote => 'تجنب إضافة معلومات حساسة غير ضرورية.';
+
+  @override
+  String get continueToConfirm => 'المتابعة للمراجعة';
+
+  @override
+  String get cancelRequest => 'إلغاء';
+
+  @override
+  String get confirmRequestTitle => 'تأكيد الصلاحية ومشاركة البيانات';
+
+  @override
+  String get confirmRequestSubtitle =>
+      'قبل الإرسال، راجع التأكيدين لحماية خصوصيتك.';
+
+  @override
+  String get authorityConfirmationTitle => 'أؤكد أن لدي صلاحية تقديم هذا الطلب';
+
+  @override
+  String get authorityConfirmationBody =>
+      'أقدم هذا الطلب لنفسي أو لأسرتي بمعلومات صحيحة حسب معرفتي.';
+
+  @override
+  String get sharingConfirmationTitle =>
+      'أوافق على مشاركة المعلومات اللازمة مع الجمعيات المشاركة';
+
+  @override
+  String get sharingConfirmationBody =>
+      'قد تُشارك المعلومات اللازمة للتنسيق فقط مع المشاركين المصرح لهم.';
+
+  @override
+  String get confirmationRequired => 'وافق على كلا التأكيدين لإرسال الطلب.';
+
+  @override
+  String get submitRequestNow => 'إرسال الطلب الآن';
+
+  @override
+  String get submissionInProgress => 'جارٍ تسجيل طلبك…';
+
+  @override
+  String get submissionWaitNote => 'يرجى الانتظار حتى تسجل الخدمة طلبك.';
+
+  @override
+  String get submissionCheckSuccess => 'التحقق من الاتصال';
+
+  @override
+  String get submissionUnknownTitle => 'تعذر تأكيد إرسال الطلب';
+
+  @override
+  String get submissionUnknownBody =>
+      'قد تكون الخدمة قد استلمت طلبك. تحقق من طلباتي قبل المحاولة مجدداً لتجنب التكرار.';
+
+  @override
+  String get submissionFailedTitle => 'لم يتم تأكيد الطلب';
+
+  @override
+  String get submissionInvalidBody =>
+      'تعذر قبول تفاصيل الطلب. راجعها وحاول مجدداً.';
+
+  @override
+  String get submissionDeniedBody => 'هذا الحساب غير مصرح له بإرسال هذا الطلب.';
+
+  @override
+  String get submissionProfileBody =>
+      'تعذر تحديد ملف مستفيد واحد لهذا الحساب. لم يتم تأكيد أي طلب.';
+
+  @override
+  String get submissionConflictBody =>
+      'أبلغت الخدمة عن تعارض. تحقق من طلباتي قبل إعادة الإرسال.';
+
+  @override
+  String get submissionUnavailableBody =>
+      'الخدمة غير متاحة. لا يمكننا تأكيد ما إذا تم تسجيل الطلب.';
+
+  @override
+  String get submissionUnexpectedBody =>
+      'تعذر تأكيد الطلب. تحقق من طلباتي قبل المحاولة مجدداً.';
+
+  @override
+  String get submissionSuccessTitle => 'تم تسجيل طلبك';
+
+  @override
+  String get submissionSuccessSubtitle =>
+      'احتفظ بهذا الرقم لمتابعة حالة الطلب.';
+
+  @override
+  String get requestReferenceLabel => 'رقم المرجع';
+
+  @override
+  String get requestCurrentStatusLabel => 'الحالة الحالية';
+
+  @override
+  String get submissionReviewNote =>
+      'تراجع الجمعيات المشاركة الطلبات وفق الأولوية والقدرة. المراجعة لا تثبت وصول المساعدة.';
+
+  @override
+  String get viewMyRequests => 'الانتقال إلى طلباتي';
+
+  @override
+  String get backToHome => 'العودة للرئيسية';
+
+  @override
+  String get submissionTryAgain => 'مراجعة الطلب وإعادة الإرسال';
+
+  @override
+  String get statusSubmitted => 'تم الإرسال';
+
+  @override
+  String get statusOpen => 'مفتوح';
+
+  @override
+  String get statusInReview => 'قيد المراجعة';
+
+  @override
+  String statusUnknown(Object status) {
+    return 'الحالة: $status';
+  }
+
+  @override
+  String get noProfileForAccount => 'لم يتم العثور على ملف مستفيد واحد مطابق.';
 }

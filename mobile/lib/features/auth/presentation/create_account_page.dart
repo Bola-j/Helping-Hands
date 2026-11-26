@@ -9,6 +9,7 @@ import '../../../core/widgets/app_text_field.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../application/create_account_bloc.dart';
 import '../domain/beneficiary_registration.dart';
+import '../domain/beneficiary_profile_hint.dart';
 import '../domain/beneficiary_registration_failure.dart';
 
 class CreateAccountPage extends StatefulWidget {
@@ -305,7 +306,12 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
               onPressed: () => Navigator.pushNamed(
                 context,
                 AppRoutes.signIn,
-                arguments: state.registration.email,
+                arguments: SignInRouteArguments(
+                  email: state.registration.email,
+                  profileHint: BeneficiaryProfileHint.fromRegistration(
+                    state.registration,
+                  ),
+                ),
               ),
             ),
           ],

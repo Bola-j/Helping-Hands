@@ -6,14 +6,16 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_text_field.dart';
 import '../../../core/widgets/flow_screen_header.dart';
+import '../domain/beneficiary_profile_hint.dart';
 import '../../../l10n/generated/app_localizations.dart';
 import '../application/session_bloc.dart';
 import '../domain/session_failure.dart';
 
 class SignInPage extends StatefulWidget {
-  const SignInPage({super.key, this.initialEmail});
+  const SignInPage({super.key, this.initialEmail, this.profileHint});
 
   final String? initialEmail;
+  final BeneficiaryProfileHint? profileHint;
 
   @override
   State<SignInPage> createState() => _SignInPageState();
@@ -52,7 +54,12 @@ class _SignInPageState extends State<SignInPage> {
                     Navigator.pushReplacementNamed(
                       context,
                       AppRoutes.home,
-                      arguments: user,
+                      arguments: widget.profileHint?.belongsTo(user) == true
+                          ? BeneficiaryHomeRouteArguments(
+                              user,
+                              profileHint: widget.profileHint,
+                            )
+                          : user,
                     );
                   } else if (state is SessionSignedOut &&
                       state.failure == SessionFailureType.sessionExpired) {

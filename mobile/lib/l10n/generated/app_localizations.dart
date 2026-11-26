@@ -739,6 +739,282 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Request submission is not available in this build yet.'**
   String get supportSingleNeedUnavailable;
+
+  /// No description provided for @phaseSingleNeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Phase 1 · One need'**
+  String get phaseSingleNeed;
+
+  /// No description provided for @phaseConfirmRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Phase 1 · Confirmations'**
+  String get phaseConfirmRequest;
+
+  /// No description provided for @phaseSubmittingRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Phase 1 · Submission'**
+  String get phaseSubmittingRequest;
+
+  /// No description provided for @phaseReceipt.
+  ///
+  /// In en, this message translates to:
+  /// **'Phase 1 · Received'**
+  String get phaseReceipt;
+
+  /// No description provided for @singleNeedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the support you need'**
+  String get singleNeedTitle;
+
+  /// No description provided for @singleNeedSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Share only the information needed to understand your request. The service does not guarantee approval or delivery.'**
+  String get singleNeedSubtitle;
+
+  /// No description provided for @singleNeedDescriptionLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Request description'**
+  String get singleNeedDescriptionLabel;
+
+  /// No description provided for @singleNeedDescriptionHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the assistance you need'**
+  String get singleNeedDescriptionHint;
+
+  /// No description provided for @singleNeedDescriptionRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the assistance you need before continuing.'**
+  String get singleNeedDescriptionRequired;
+
+  /// No description provided for @singleNeedDescriptionTooLong.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the description within 4,000 characters.'**
+  String get singleNeedDescriptionTooLong;
+
+  /// No description provided for @singleNeedPrivacyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Avoid including unnecessary sensitive information.'**
+  String get singleNeedPrivacyNote;
+
+  /// No description provided for @continueToConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue to review'**
+  String get continueToConfirm;
+
+  /// No description provided for @cancelRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancelRequest;
+
+  /// No description provided for @confirmRequestTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm authority and information sharing'**
+  String get confirmRequestTitle;
+
+  /// No description provided for @confirmRequestSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review these confirmations before submitting your request.'**
+  String get confirmRequestSubtitle;
+
+  /// No description provided for @authorityConfirmationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'I confirm I am authorized to submit this request'**
+  String get authorityConfirmationTitle;
+
+  /// No description provided for @authorityConfirmationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'I am providing this request for myself or a person I am authorized to represent.'**
+  String get authorityConfirmationBody;
+
+  /// No description provided for @sharingConfirmationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'I agree to necessary sharing with participating charities'**
+  String get sharingConfirmationTitle;
+
+  /// No description provided for @sharingConfirmationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Only the information needed to coordinate a response may be shared with authorized participants.'**
+  String get sharingConfirmationBody;
+
+  /// No description provided for @confirmationRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm both statements to submit.'**
+  String get confirmationRequired;
+
+  /// No description provided for @submitRequestNow.
+  ///
+  /// In en, this message translates to:
+  /// **'Submit request'**
+  String get submitRequestNow;
+
+  /// No description provided for @submissionInProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitting your request…'**
+  String get submissionInProgress;
+
+  /// No description provided for @submissionWaitNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait while the service records your request.'**
+  String get submissionWaitNote;
+
+  /// No description provided for @submissionCheckSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Check connection'**
+  String get submissionCheckSuccess;
+
+  /// No description provided for @submissionUnknownTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t confirm the submission'**
+  String get submissionUnknownTitle;
+
+  /// No description provided for @submissionUnknownBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The service may have received your request. Check My requests before trying again to avoid creating a duplicate.'**
+  String get submissionUnknownBody;
+
+  /// No description provided for @submissionFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request wasn\'t confirmed'**
+  String get submissionFailedTitle;
+
+  /// No description provided for @submissionInvalidBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The service could not accept the request details. Review them and try again.'**
+  String get submissionInvalidBody;
+
+  /// No description provided for @submissionDeniedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This account is not allowed to submit this request.'**
+  String get submissionDeniedBody;
+
+  /// No description provided for @submissionProfileBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t identify one beneficiary profile for this account. No request was confirmed.'**
+  String get submissionProfileBody;
+
+  /// No description provided for @submissionConflictBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The service reported a conflict. Check My requests before submitting again.'**
+  String get submissionConflictBody;
+
+  /// No description provided for @submissionUnavailableBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The service is unavailable. We cannot confirm whether the request was recorded.'**
+  String get submissionUnavailableBody;
+
+  /// No description provided for @submissionUnexpectedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We could not confirm the request. Check My requests before trying again.'**
+  String get submissionUnexpectedBody;
+
+  /// No description provided for @submissionSuccessTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your request was submitted'**
+  String get submissionSuccessTitle;
+
+  /// No description provided for @submissionSuccessSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep this reference to follow the request status.'**
+  String get submissionSuccessSubtitle;
+
+  /// No description provided for @requestReferenceLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Reference number'**
+  String get requestReferenceLabel;
+
+  /// No description provided for @requestCurrentStatusLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current status'**
+  String get requestCurrentStatusLabel;
+
+  /// No description provided for @submissionReviewNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Participating charities review requests according to their priorities and capacity. A review is not proof of aid delivery.'**
+  String get submissionReviewNote;
+
+  /// No description provided for @viewMyRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to My requests'**
+  String get viewMyRequests;
+
+  /// No description provided for @backToHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Return to Home'**
+  String get backToHome;
+
+  /// No description provided for @submissionTryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Review and submit again'**
+  String get submissionTryAgain;
+
+  /// No description provided for @statusSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted'**
+  String get statusSubmitted;
+
+  /// No description provided for @statusOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get statusOpen;
+
+  /// No description provided for @statusInReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Under review'**
+  String get statusInReview;
+
+  /// No description provided for @statusUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Status: {status}'**
+  String statusUnknown(Object status);
+
+  /// No description provided for @noProfileForAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'No single matching beneficiary profile was found.'**
+  String get noProfileForAccount;
 }
 
 class _AppLocalizationsDelegate

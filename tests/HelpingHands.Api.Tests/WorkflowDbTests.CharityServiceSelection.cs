@@ -31,6 +31,11 @@ public sealed partial class WorkflowDbTests
             o.GetProperty("serviceVersionId").GetGuid() == service1.Id &&
             o.GetProperty("unitStandardId").GetGuid() == standard1.Id &&
             o.GetProperty("standardVersionId").GetGuid() == version1.Id);
+        var option = options.Single(o => o.GetProperty("standardVersionId").GetGuid() == version1.Id);
+        var component = Assert.Single(option.GetProperty("components").EnumerateArray());
+        Assert.Equal("Rice", component.GetProperty("name").GetString());
+        Assert.Equal(1m, component.GetProperty("quantity").GetDecimal());
+        Assert.Equal("kg", component.GetProperty("unit").GetString());
 
         // 2. Select two supported service + platform-unit version pairs
         using var firstPut = await PutWithAntiforgeryAsync(repClient, $"/api/v1/recipients/{recipientId}/services", new

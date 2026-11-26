@@ -27,7 +27,7 @@ export function CapacityList({ capacities, values, disabled, onChange, onSubmit 
 function CapacityRow({ item, value, disabled, onChange, onSubmit }) {
   const stale = item.isStale || item.status === 'Stale';
   const statusClass = stale ? 'capacity-stale' : item.status === 'Zero' ? 'capacity-zero' : 'capacity-current';
-  return <article className="charity-capacity-row">
+  return <article id={`capacity-${item.charityServiceId}`} className="charity-capacity-row">
     <div className="charity-services-heading"><h3>{item.serviceName} · {item.unitStandardName}</h3><span className={`charity-capacity-status ${statusClass}`}>{stale ? 'Stale — update needed' : item.status === 'Zero' ? 'Zero available' : 'Updated today'}</span></div>
     <p>Service v{item.serviceVersionNumber} · standard v{item.standardVersionNumber} · Cairo date {item.cairoDate}</p>
     <p><strong>Remaining units available now:</strong> {stale ? 'Not updated today' : `${item.available} units`}</p>

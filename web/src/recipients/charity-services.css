@@ -24,6 +24,10 @@
 .charity-services-option details { padding:.65rem; border-radius:5px; background:#f1f6f4; }
 .charity-services-option summary { cursor:pointer; font-weight:700; }
 .charity-services-option details ul { margin:.4rem 0; }
+.charity-capacity-task-list { display:grid; gap:.65rem; margin:1rem 0 0; padding:0; list-style:none; }
+.charity-capacity-task-list li { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:.8rem; border:1px solid #e2c47b; border-radius:6px; background:#fff8e6; }
+.charity-capacity-task-list li div { display:grid; }
+.charity-capacity-task-list a { flex:none; color:#14504d; font-weight:700; }
 .charity-capacity-status { flex:none; padding:.2rem .65rem; border-radius:999px; font-size:.88rem; font-weight:700; }
 .capacity-current { color:#135c3c; background:#dff4e8; }.capacity-zero { color:#674b00; background:#fff3ce; }.capacity-stale { color:#7a1a14; background:#fbe9e7; }
 .charity-capacity-form { display:flex; align-items:end; gap:.7rem; flex-wrap:wrap; }
@@ -32,4 +36,4 @@
 .charity-services-error,.charity-services-notice { margin:.8rem 0; padding:.75rem .9rem; border-radius:5px; }
 .charity-services-error { color:#7a1a14; background:#fbe9e7; }.charity-services-notice { color:#174e43; background:#e8f5ef; }
 .charity-services-page button:disabled { opacity:.55; cursor:wait; }
-@media(max-width:600px) { .charity-services-heading { align-items:flex-start; flex-direction:column; }.charity-capacity-form { align-items:stretch; flex-direction:column; }.charity-capacity-form input,.charity-capacity-form button,.charity-services-heading button { width:100%; } }
+@media(max-width:600px) { .charity-services-heading { align-items:flex-start; flex-direction:column; }.charity-capacity-task-list li { align-items:flex-start; flex-direction:column; }.charity-capacity-form { align-items:stretch; flex-direction:column; }.charity-capacity-form input,.charity-capacity-form button,.charity-services-heading button { width:100%; } }

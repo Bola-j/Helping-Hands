@@ -102,6 +102,8 @@ The `/requests/new` page is for signed-in beneficiaries. It loads the beneficiar
 
 The `/charity/services` page is for signed-in charity representatives. It lets them select published services and unit standards, view each standard's component contents, and enter direct available-now capacity. The page distinguishes a current zero balance from a stale service that needs today's update and displays the last update date.
 
+The charity services dashboard also lists each selected service and standard that needs today's capacity update. Saving capacity reloads the task list, so the task clears when the API confirms the update; a refresh control and visible error messages cover failed loads or updates.
+
 The session provider in `web/src/session` checks the current user on startup, obtains antiforgery tokens for writes, and sends same-origin cookies. Its queued writes cancel when the observed session changes; expired, denied and unavailable responses remain distinct. The `/demo` route mounts that provider. The web source is JavaScript; the earlier Expo/TypeScript prototype source has been removed. `npm run test:session` exercises this contract.
 
 The live browser tests in `web/tests/browser` run only against a disposable isolated stack with `SESSION_TEST_URL` and `SESSION_TEST_ALLOW_WRITE=isolated`; the environment flag does not itself establish isolation. `test_live_demo_flow.py` registers one fictional beneficiary, signs in, submits a single-need request and signs out through `/demo`.

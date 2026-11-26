@@ -62,6 +62,7 @@ export function LoginPage() {
         <FormAlert>{formError}</FormAlert>
         <div className="auth-actions">
           <a className="auth-button" href="/demo">Open the demo</a>
+          {state.user.roles.some(role => ['Coordinator', 'Administrator'].includes(role)) && <a className="auth-button auth-button-quiet" href="/coordinator/standards">Manage services and standards</a>}
           <button type="button" className="auth-button auth-button-quiet" onClick={onSignOut} disabled={busy}>
             {busy ? 'Signing out…' : 'Sign out'}
           </button>

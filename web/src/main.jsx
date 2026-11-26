@@ -6,6 +6,7 @@ import { DemoPage } from './DemoPage.jsx';
 import { BeneficiarySignupPage } from './auth/BeneficiarySignupPage.jsx';
 import { CharitySignupPage } from './auth/CharitySignupPage.jsx';
 import { LoginPage } from './auth/LoginPage.jsx';
+import { CoordinatorStandardsPage } from './coordinator/CoordinatorStandardsPage.jsx';
 
 function HomePage() {
   return (
@@ -51,6 +52,7 @@ function App() {
   if (path === '/register/beneficiary') return <BeneficiarySignupPage />;
   if (path === '/register/charity') return <CharitySignupPage />;
   if (path === '/login') return <SessionProvider><LoginPage /></SessionProvider>;
+  if (path === '/coordinator/standards') return <SessionProvider><CoordinatorStandardsPage /></SessionProvider>;
   return <HomePage />;
 }
 

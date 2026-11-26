@@ -62,6 +62,7 @@ export function LoginPage() {
         <FormAlert>{formError}</FormAlert>
         <div className="auth-actions">
           <a className="auth-button" href="/demo">Open the demo</a>
+          {state.user.roles.includes('Beneficiary') && <a className="auth-button auth-button-quiet" href="/requests/new">Make a support request</a>}
           {state.user.roles.some(role => ['Coordinator', 'Administrator'].includes(role)) && <a className="auth-button auth-button-quiet" href="/coordinator/standards">Manage services and standards</a>}
           {state.user.roles.includes('RecipientRepresentative') && <a className="auth-button auth-button-quiet" href="/charity/application">View charity application</a>}
           {state.user.roles.some(role => ['Coordinator', 'Administrator'].includes(role)) && <a className="auth-button auth-button-quiet" href="/coordinator/applications">Review charity applications</a>}

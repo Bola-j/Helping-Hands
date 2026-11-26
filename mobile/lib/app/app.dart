@@ -19,6 +19,17 @@ import '../features/auth/presentation/create_account_page.dart';
 import '../features/auth/presentation/sign_in_page.dart';
 import '../features/auth/presentation/session_expired_page.dart';
 import '../features/auth/presentation/profile_page.dart';
+import '../features/requests/application/requests_bloc.dart';
+import '../features/requests/data/requests_remote_data_source.dart';
+import '../features/requests/data/requests_repository_impl.dart';
+import '../features/requests/data/single_need_remote_data_source.dart';
+import '../features/requests/data/single_need_submission_repository_impl.dart';
+import '../features/requests/domain/requests_repository.dart';
+import '../features/requests/domain/single_need_submission.dart';
+import '../features/requests/application/single_need_submission_bloc.dart';
+import '../features/requests/presentation/single_need_request_page.dart';
+import '../features/requests/presentation/beneficiary_home_page.dart';
+import '../features/requests/presentation/my_requests_page.dart';
 import '../features/welcome/presentation/welcome_page.dart';
 import '../l10n/generated/app_localizations.dart';
 import 'app_routes.dart';
@@ -49,6 +60,18 @@ class HelpingHandsApp extends StatelessWidget {
             BeneficiaryRegistrationRemoteDataSource(context.read<Dio>()),
           ),
         ),
+        RepositoryProvider<RequestsRepository>(
+          create: (context) => RequestsRepositoryImpl(
+            RequestsRemoteDataSource(context.read<Dio>()),
+            context.read<SessionRepository>(),
+          ),
+        ),
+        RepositoryProvider<SingleNeedSubmissionRepository>(
+          create: (context) => SingleNeedSubmissionRepositoryImpl(
+            SingleNeedRemoteDataSource(context.read<Dio>()),
+            context.read<SessionRepository>(),
+          ),
+        ),
       ],
       child: BlocProvider(
         create: (_) => LocaleCubit(),
@@ -72,10 +95,7 @@ class HelpingHandsApp extends StatelessWidget {
               AppRoutes.signIn: (context) => BlocProvider(
                 create: (context) =>
                     SessionBloc(context.read<SessionRepository>()),
-                child: SignInPage(
-                  initialEmail:
-                      ModalRoute.of(context)?.settings.arguments as String?,
-                ),
+                child: _signInPage(context),
               ),
               AppRoutes.sessionExpired: (_) => const SessionExpiredPage(),
               AppRoutes.profile: (context) => BlocProvider(
@@ -87,10 +107,64 @@ class HelpingHandsApp extends StatelessWidget {
                 ),
                 child: const ProfilePage(),
               ),
+              AppRoutes.home: (context) =>
+                  _requestsPage(context, _homePage(context)),
+              AppRoutes.requests: (context) => _requestsPage(
+                context,
+                MyRequestsPage(
+                  user:
+                      ModalRoute.of(context)!.settings.arguments as SessionUser,
+                ),
+              ),
+              AppRoutes.singleNeed: (context) {
+                final arguments = _homeArguments(context);
+                return BlocProvider(
+                  create: (context) => SingleNeedSubmissionBloc(
+                    context.read<SingleNeedSubmissionRepository>(),
+                  ),
+                  child: SingleNeedRequestPage(
+                    user: arguments.user,
+                    profileHint: arguments.profileHint,
+                  ),
+                );
+              },
             },
           ),
         ),
       ),
     );
+  }
+
+  Widget _requestsPage(BuildContext context, Widget child) => BlocProvider(
+    create: (context) =>
+        RequestsBloc(context.read<RequestsRepository>())
+          ..add(const RequestsLoadRequested()),
+    child: child,
+  );
+
+  Widget _signInPage(BuildContext context) {
+    final argument = ModalRoute.of(context)?.settings.arguments;
+    final parameters = argument is SignInRouteArguments
+        ? argument
+        : SignInRouteArguments(email: argument as String?);
+    return SignInPage(
+      initialEmail: parameters.email,
+      profileHint: parameters.profileHint,
+    );
+  }
+
+  BeneficiaryHomePage _homePage(BuildContext context) {
+    final arguments = _homeArguments(context);
+    return BeneficiaryHomePage(
+      user: arguments.user,
+      profileHint: arguments.profileHint,
+    );
+  }
+
+  BeneficiaryHomeRouteArguments _homeArguments(BuildContext context) {
+    final argument = ModalRoute.of(context)!.settings.arguments;
+    return argument is BeneficiaryHomeRouteArguments
+        ? argument
+        : BeneficiaryHomeRouteArguments(argument as SessionUser);
   }
 }

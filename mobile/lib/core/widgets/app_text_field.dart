@@ -19,6 +19,9 @@ class AppTextField extends StatelessWidget {
     this.autocorrect = true,
     this.enableSuggestions = true,
     this.labelAbove = false,
+    this.minLines = 1,
+    this.maxLines = 1,
+    this.maxLength,
     super.key,
   });
 
@@ -37,6 +40,9 @@ class AppTextField extends StatelessWidget {
   final bool autocorrect;
   final bool enableSuggestions;
   final bool labelAbove;
+  final int minLines;
+  final int? maxLines;
+  final int? maxLength;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +54,9 @@ class AppTextField extends StatelessWidget {
         keyboardType: keyboardType,
         onChanged: onChanged,
         obscureText: obscureText,
+        minLines: minLines,
+        maxLines: maxLines,
+        maxLength: maxLength,
         validator: validator,
         textInputAction: textInputAction,
         autofillHints: autofillHints,
@@ -63,6 +72,7 @@ class AppTextField extends StatelessWidget {
           labelText: labelAbove ? null : label,
           hintText: hintText,
           errorText: errorText,
+          counterText: maxLength == null ? null : '',
           suffixIcon: suffixIcon,
           filled: true,
           fillColor: enabled ? AppColors.white : AppColors.canvas,

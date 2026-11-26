@@ -239,4 +239,284 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountNavigation => 'Account';
+
+  @override
+  String get beneficiaryGreeting => 'Hello';
+
+  @override
+  String get homeNewRequestLabel => 'New request';
+
+  @override
+  String get homeQuestion => 'Do you need to submit a request today?';
+
+  @override
+  String get homeQuestionBody =>
+      'Choose the type of support that best matches your current need. You can review the details before submitting.';
+
+  @override
+  String get singleNeedRequest => 'Request one need (Phase 1)';
+
+  @override
+  String get multipleNeedsRequest => 'Request multiple needs (Phase 2)';
+
+  @override
+  String get requestsTitle => 'My requests';
+
+  @override
+  String get requestsSubtitle => 'Your submitted requests only';
+
+  @override
+  String get viewAllRequests => 'View all';
+
+  @override
+  String requestMetadata(Object count, Object date, Object phase) {
+    return 'Phase $phase · $count need(s) · $date';
+  }
+
+  @override
+  String get requestStatusSubmitted => 'Submitted';
+
+  @override
+  String get requestStatusOpen => 'Open';
+
+  @override
+  String get requestStatusInReview => 'Under review';
+
+  @override
+  String get requestStatusClarification => 'Clarification requested';
+
+  @override
+  String get requestStatusAccepted => 'Accepted';
+
+  @override
+  String get requestStatusRejected => 'Rejected';
+
+  @override
+  String get requestStatusFullyAccepted => 'All needs accepted';
+
+  @override
+  String get requestStatusPartiallyAccepted => 'Partially accepted';
+
+  @override
+  String get requestStatusFullyRejected => 'All needs rejected';
+
+  @override
+  String get requestStatusCompleted => 'Closed';
+
+  @override
+  String requestStatusUnknown(Object status) {
+    return 'Status: $status';
+  }
+
+  @override
+  String get requestEmptyTitle => 'No requests yet';
+
+  @override
+  String get requestEmptyBody => 'Requests you submit will appear here.';
+
+  @override
+  String get requestEmptyAction => 'Go to Home to start a request';
+
+  @override
+  String get requestLoading => 'Loading your requests…';
+
+  @override
+  String get requestUnavailableTitle => 'Requests are temporarily unavailable';
+
+  @override
+  String get requestUnavailableBody =>
+      'We couldn\'t reach Helping Hands. Your requests have not been removed. Try again.';
+
+  @override
+  String get requestDeniedTitle => 'Requests are unavailable for this account';
+
+  @override
+  String get requestDeniedBody =>
+      'This account is not authorized to view beneficiary requests.';
+
+  @override
+  String get requestExpiredTitle => 'Your session has expired';
+
+  @override
+  String get requestExpiredBody => 'Sign in again to view your requests.';
+
+  @override
+  String get requestUnexpectedTitle => 'We couldn\'t load your requests';
+
+  @override
+  String get requestUnexpectedBody => 'Please try again.';
+
+  @override
+  String get tryAgain => 'Try again';
+
+  @override
+  String get loadMore => 'Load more';
+
+  @override
+  String get requestPrivacyNote =>
+      'Your requests are private and visible only to you and authorized project participants. Support is coordinated outside the app.';
+
+  @override
+  String get supportSingleNeedUnavailable =>
+      'Request submission is not available in this build yet.';
+
+  @override
+  String get phaseSingleNeed => 'Phase 1 · One need';
+
+  @override
+  String get phaseConfirmRequest => 'Phase 1 · Confirmations';
+
+  @override
+  String get phaseSubmittingRequest => 'Phase 1 · Submission';
+
+  @override
+  String get phaseReceipt => 'Phase 1 · Received';
+
+  @override
+  String get singleNeedTitle => 'Describe the support you need';
+
+  @override
+  String get singleNeedSubtitle =>
+      'Share only the information needed to understand your request. The service does not guarantee approval or delivery.';
+
+  @override
+  String get singleNeedDescriptionLabel => 'Request description';
+
+  @override
+  String get singleNeedDescriptionHint => 'Describe the assistance you need';
+
+  @override
+  String get singleNeedDescriptionRequired =>
+      'Describe the assistance you need before continuing.';
+
+  @override
+  String get singleNeedDescriptionTooLong =>
+      'Keep the description within 4,000 characters.';
+
+  @override
+  String get singleNeedPrivacyNote =>
+      'Avoid including unnecessary sensitive information.';
+
+  @override
+  String get continueToConfirm => 'Continue to review';
+
+  @override
+  String get cancelRequest => 'Cancel';
+
+  @override
+  String get confirmRequestTitle => 'Confirm authority and information sharing';
+
+  @override
+  String get confirmRequestSubtitle =>
+      'Review these confirmations before submitting your request.';
+
+  @override
+  String get authorityConfirmationTitle =>
+      'I confirm I am authorized to submit this request';
+
+  @override
+  String get authorityConfirmationBody =>
+      'I am providing this request for myself or a person I am authorized to represent.';
+
+  @override
+  String get sharingConfirmationTitle =>
+      'I agree to necessary sharing with participating charities';
+
+  @override
+  String get sharingConfirmationBody =>
+      'Only the information needed to coordinate a response may be shared with authorized participants.';
+
+  @override
+  String get confirmationRequired => 'Confirm both statements to submit.';
+
+  @override
+  String get submitRequestNow => 'Submit request';
+
+  @override
+  String get submissionInProgress => 'Submitting your request…';
+
+  @override
+  String get submissionWaitNote =>
+      'Please wait while the service records your request.';
+
+  @override
+  String get submissionCheckSuccess => 'Check connection';
+
+  @override
+  String get submissionUnknownTitle => 'We couldn\'t confirm the submission';
+
+  @override
+  String get submissionUnknownBody =>
+      'The service may have received your request. Check My requests before trying again to avoid creating a duplicate.';
+
+  @override
+  String get submissionFailedTitle => 'Your request wasn\'t confirmed';
+
+  @override
+  String get submissionInvalidBody =>
+      'The service could not accept the request details. Review them and try again.';
+
+  @override
+  String get submissionDeniedBody =>
+      'This account is not allowed to submit this request.';
+
+  @override
+  String get submissionProfileBody =>
+      'We couldn\'t identify one beneficiary profile for this account. No request was confirmed.';
+
+  @override
+  String get submissionConflictBody =>
+      'The service reported a conflict. Check My requests before submitting again.';
+
+  @override
+  String get submissionUnavailableBody =>
+      'The service is unavailable. We cannot confirm whether the request was recorded.';
+
+  @override
+  String get submissionUnexpectedBody =>
+      'We could not confirm the request. Check My requests before trying again.';
+
+  @override
+  String get submissionSuccessTitle => 'Your request was submitted';
+
+  @override
+  String get submissionSuccessSubtitle =>
+      'Keep this reference to follow the request status.';
+
+  @override
+  String get requestReferenceLabel => 'Reference number';
+
+  @override
+  String get requestCurrentStatusLabel => 'Current status';
+
+  @override
+  String get submissionReviewNote =>
+      'Participating charities review requests according to their priorities and capacity. A review is not proof of aid delivery.';
+
+  @override
+  String get viewMyRequests => 'Go to My requests';
+
+  @override
+  String get backToHome => 'Return to Home';
+
+  @override
+  String get submissionTryAgain => 'Review and submit again';
+
+  @override
+  String get statusSubmitted => 'Submitted';
+
+  @override
+  String get statusOpen => 'Open';
+
+  @override
+  String get statusInReview => 'Under review';
+
+  @override
+  String statusUnknown(Object status) {
+    return 'Status: $status';
+  }
+
+  @override
+  String get noProfileForAccount =>
+      'No single matching beneficiary profile was found.';
 }

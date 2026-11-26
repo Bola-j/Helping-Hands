@@ -38,6 +38,13 @@ beneficiary to the configured API, so run it only against an isolated disposable
 database and API with a test certificate trusted explicitly by the test client.
 TLS verification remains enabled.
 
+The request-list integration test is
+`integration_test/beneficiary_requests_api_test.dart`. It registers a fictional
+beneficiary, verifies the empty list, submits a fictional single-need request,
+and verifies the returned request through the same authenticated Dio client.
+Run it only against an isolated disposable API/database; configure
+`API_BASE_URL` and `API_CERTIFICATE_BASE64` with a trusted test endpoint.
+
 ## Verify
 
 ```sh
@@ -51,7 +58,10 @@ flutter test
 - `lib/core/`: shared theme, Dio configuration, and button, text-field, and card components. Buttons expose loading/disabled states, fields expose error/disabled states, and cards expose selection.
 - `lib/features/welcome/`: welcome feature; `application/` contains its locale Cubit and `presentation/` its UI.
 - `lib/features/auth/`: beneficiary registration DTOs, API data source, repository, BLoC and Create Account screen, alongside the session contract and API repository.
+- `lib/features/requests/`: typed request summaries, cursor-aware API repository/BLoC, Home and My Requests screens, and API-state rendering.
 - `lib/l10n/`: English and Arabic strings; Arabic uses RTL through Flutter localization.
 - `assets/icons/` and `assets/fonts/`: Figma-exported SVG assets and the Figma typography families, with their licenses.
 
-The Welcome & Language, beneficiary Create Account, Sign In, Session Expired, and Profile/Sign Out flows are implemented. Sign-in uses the API cookie session and verifies the returned current user has the Beneficiary role before opening the profile. The API must be reachable over HTTPS from the selected Android/iOS device, and its certificate must be trusted by that device. Never disable TLS verification or put credentials in source.
+The Welcome & Language, beneficiary Create Account, Sign In, Session Expired, Home, My Requests List, and Profile/Sign Out flows are implemented. Sign-in verifies the current user has the Beneficiary role before opening Home. Home and My Requests call `GET /api/v1/requests`; the API applies beneficiary authorization and returns an array plus optional `X-Next-Cursor`. The client requests 25 per page and distinguishes successful empty results from expired, denied, unavailable, and unexpected outcomes. Request status labels do not imply that aid was delivered. The API must be reachable over trusted HTTPS from the selected Android/iOS device. Never disable TLS verification or put credentials in source.
+
+The Phase 1 single-need entry point on Home remains for the separate single-need issue; the Phase 2 multi-need action is disabled in this Phase 1 client.

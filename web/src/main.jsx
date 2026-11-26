@@ -10,6 +10,8 @@ import { CoordinatorStandardsPage } from './coordinator/CoordinatorStandardsPage
 import { CharityApplicationPage } from './applications/CharityApplicationPage.jsx';
 import { CoordinatorApplicationsPage } from './applications/CoordinatorApplicationsPage.jsx';
 import './applications/applications.css';
+import { CoordinatorRequestReviewPage } from './requests/CoordinatorRequestReviewPage.jsx';
+import './requests/request-review.css';
 
 function HomePage() {
   return (
@@ -58,6 +60,7 @@ function App() {
   if (path === '/coordinator/standards') return <SessionProvider><CoordinatorStandardsPage /></SessionProvider>;
   if (path === '/charity/application') return <SessionProvider><CharityApplicationPage /></SessionProvider>;
   if (path === '/coordinator/applications') return <SessionProvider><CoordinatorApplicationsPage /></SessionProvider>;
+  if (path === '/coordinator/requests') return <SessionProvider><CoordinatorRequestReviewPage /></SessionProvider>;
   return <HomePage />;
 }
 

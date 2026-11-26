@@ -239,4 +239,124 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get accountNavigation => 'Account';
+
+  @override
+  String get beneficiaryGreeting => 'Hello';
+
+  @override
+  String get homeNewRequestLabel => 'New request';
+
+  @override
+  String get homeQuestion => 'Do you need to submit a request today?';
+
+  @override
+  String get homeQuestionBody =>
+      'Choose the type of support that best matches your current need. You can review the details before submitting.';
+
+  @override
+  String get singleNeedRequest => 'Request one need (Phase 1)';
+
+  @override
+  String get multipleNeedsRequest => 'Request multiple needs (Phase 2)';
+
+  @override
+  String get requestsTitle => 'My requests';
+
+  @override
+  String get requestsSubtitle => 'Your submitted requests only';
+
+  @override
+  String get viewAllRequests => 'View all';
+
+  @override
+  String requestMetadata(Object count, Object date, Object phase) {
+    return 'Phase $phase · $count need(s) · $date';
+  }
+
+  @override
+  String get requestStatusSubmitted => 'Submitted';
+
+  @override
+  String get requestStatusOpen => 'Open';
+
+  @override
+  String get requestStatusInReview => 'Under review';
+
+  @override
+  String get requestStatusClarification => 'Clarification requested';
+
+  @override
+  String get requestStatusAccepted => 'Accepted';
+
+  @override
+  String get requestStatusRejected => 'Rejected';
+
+  @override
+  String get requestStatusFullyAccepted => 'All needs accepted';
+
+  @override
+  String get requestStatusPartiallyAccepted => 'Partially accepted';
+
+  @override
+  String get requestStatusFullyRejected => 'All needs rejected';
+
+  @override
+  String get requestStatusCompleted => 'Closed';
+
+  @override
+  String requestStatusUnknown(Object status) {
+    return 'Status: $status';
+  }
+
+  @override
+  String get requestEmptyTitle => 'No requests yet';
+
+  @override
+  String get requestEmptyBody => 'Requests you submit will appear here.';
+
+  @override
+  String get requestEmptyAction => 'Go to Home to start a request';
+
+  @override
+  String get requestLoading => 'Loading your requests…';
+
+  @override
+  String get requestUnavailableTitle => 'Requests are temporarily unavailable';
+
+  @override
+  String get requestUnavailableBody =>
+      'We couldn\'t reach Helping Hands. Your requests have not been removed. Try again.';
+
+  @override
+  String get requestDeniedTitle => 'Requests are unavailable for this account';
+
+  @override
+  String get requestDeniedBody =>
+      'This account is not authorized to view beneficiary requests.';
+
+  @override
+  String get requestExpiredTitle => 'Your session has expired';
+
+  @override
+  String get requestExpiredBody => 'Sign in again to view your requests.';
+
+  @override
+  String get requestUnexpectedTitle => 'We couldn\'t load your requests';
+
+  @override
+  String get requestUnexpectedBody => 'Please try again.';
+
+  @override
+  String get tryAgain => 'Try again';
+
+  @override
+  String get loadMore => 'Load more';
+
+  @override
+  String get requestPrivacyNote =>
+      'Your requests are private and visible only to you and authorized project participants. Support is coordinated outside the app.';
+
+  @override
+  String get supportSingleNeedUnavailable =>
+      'Request submission is not available in this build yet.';
 }

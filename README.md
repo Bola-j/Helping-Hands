@@ -98,6 +98,8 @@ Open `http://localhost:8081`. Run `npm run build` and `npm run test:session` fro
 
 The `/demo` page lets a beneficiary register, sign in, submit a single-need request and see their own requests. It needs the API, so use the HTTPS container setup and open `https://localhost:8444/demo` for live sessions; at `http://localhost:8081` there is no API proxy and `/demo` shows a "session service is unavailable" message. The beneficiary route was exercised manually against a local Docker stack in PR #163. Other Phase 1 web screens are tracked in their own tickets.
 
+The `/requests/new` page is for signed-in beneficiaries. It loads the beneficiary's visible profile and current published catalog, allows up to 50 distinct standards with quantities in one request, and displays the generated request reference and status after the API accepts it.
+
 The session provider in `web/src/session` checks the current user on startup, obtains antiforgery tokens for writes, and sends same-origin cookies. Its queued writes cancel when the observed session changes; expired, denied and unavailable responses remain distinct. The `/demo` route mounts that provider. The web source is JavaScript; the earlier Expo/TypeScript prototype source has been removed. `npm run test:session` exercises this contract.
 
 The live browser tests in `web/tests/browser` run only against a disposable isolated stack with `SESSION_TEST_URL` and `SESSION_TEST_ALLOW_WRITE=isolated`; the environment flag does not itself establish isolation. `test_live_demo_flow.py` registers one fictional beneficiary, signs in, submits a single-need request and signs out through `/demo`.

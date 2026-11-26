@@ -2,7 +2,7 @@ import { ApiError } from './ApiError';
 import { fetchRequest } from './fetchRequest';
 import { currentSessionEpoch, invalidatePendingRequests, observeSession } from './sessionEpoch';
 
-export async function dispatchUnsafe(path: string, init: RequestInit, signal: AbortSignal, epoch: number): Promise<Response> {
+export async function dispatchUnsafe(path, init, signal, epoch) {
   if (signal.aborted) throw new ApiError('network', null);
   const response = await fetchRequest('/api/v1/auth/antiforgery', { signal });
   const token = await response.json().catch(() => null);

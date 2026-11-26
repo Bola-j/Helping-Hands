@@ -1,10 +1,9 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import { useCallback } from 'react';
 import { ApiError } from './ApiError';
 import { readUser } from './readUser';
-import { SessionState } from './sessionTypes';
 import { currentSessionEpoch } from './sessionEpoch';
 
-export function useRefreshSession(setState: Dispatch<SetStateAction<SessionState>>, generation: { current: number }) {
+export function useRefreshSession(setState, generation) {
   return useCallback(async () => {
     const current = ++generation.current;
     const epoch = currentSessionEpoch();

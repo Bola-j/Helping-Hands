@@ -1,13 +1,12 @@
-import { Dispatch, SetStateAction, useCallback } from 'react';
+import { useCallback } from 'react';
 import { ApiError, isSessionChanged } from './ApiError';
 import { apiFetch } from './api';
 import { readUser } from './readUser';
-import { SessionState } from './sessionTypes';
 import { withExpectedUser } from './expectedUser';
 import { currentSessionEpoch } from './sessionEpoch';
 
-export function useLogin(setState: Dispatch<SetStateAction<SessionState>>, generation: { current: number }) {
-  return useCallback(async (email: string, password: string) => {
+export function useLogin(setState, generation) {
+  return useCallback(async (email, password) => {
     await apiFetch('/api/v1/auth/login', {
       method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password }),
     });
@@ -22,7 +21,7 @@ export function useLogin(setState: Dispatch<SetStateAction<SessionState>>, gener
   }, [generation, setState]);
 }
 
-export function useLogout(setState: Dispatch<SetStateAction<SessionState>>, generation: { current: number }, state: { current: SessionState }) {
+export function useLogout(setState, generation, state) {
   return useCallback(async () => {
     const current = generation.current;
     try {

@@ -5,7 +5,7 @@ import { currentSessionEpoch, invalidatePendingRequests, observeSession } from '
 
 export { ApiError } from './ApiError';
 
-export async function apiFetch(path: string, init: RequestInit = {}): Promise<Response> {
+export async function apiFetch(path, init = {}) {
   const url = new URL(path, 'https://local.invalid');
   if (!path.startsWith('/') || path.startsWith('//') || url.origin !== 'https://local.invalid' || !/^\/api\/v1(?:\/|$)/.test(url.pathname)) {
     throw new ApiError('invalid', null);

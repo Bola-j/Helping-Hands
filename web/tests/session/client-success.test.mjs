@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { createRequire } from 'node:module';
-const { apiFetch } = createRequire(import.meta.url)('../../src/session/api.ts');
+const { apiFetch } = createRequire(import.meta.url)('../../src/session/api.js');
 
 test('safe requests use same-origin cookies without requesting antiforgery', async () => {
   const calls = [];

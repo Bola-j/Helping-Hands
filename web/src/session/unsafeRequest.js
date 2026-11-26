@@ -3,9 +3,9 @@ import { currentSessionEpoch, invalidatePendingRequests } from './sessionEpoch';
 import { boundedSignal } from './boundedSignal';
 import { dispatchUnsafe } from './dispatchUnsafe';
 
-let previous: Promise<void> = Promise.resolve();
+let previous = Promise.resolve();
 
-export function unsafeRequest(path: string, init: RequestInit): Promise<Response> {
+export function unsafeRequest(path, init) {
   const epoch = currentSessionEpoch();
   const endpoint = new URL(path, 'https://local.invalid').pathname;
   const operation = previous.then(async () => {

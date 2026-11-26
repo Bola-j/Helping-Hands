@@ -1,14 +1,13 @@
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SessionContext } from './SessionContext';
-import { SessionState } from './sessionTypes';
 import { useLogin, useLogout } from './useAuthActions';
 import { useRefreshSession } from './useRefreshSession';
 import { useSessionRequest } from './useSessionRequest';
 
 export { useSession } from './SessionContext';
 
-export function SessionProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<SessionState>({ status: 'loading' });
+export function SessionProvider({ children }) {
+  const [state, setState] = useState({ status: 'loading' });
   const currentState = useRef(state);
   currentState.current = state;
   const generation = useRef(0);

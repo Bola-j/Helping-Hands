@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useSession } from './SessionProvider';
-import { DemoRequest, BeneficiaryProfile, BeneficiarySignup } from './demoTypes';
 import { registerDemoBeneficiary } from './registerDemoBeneficiary';
 import { readDemoBeneficiary } from './readDemoBeneficiary';
 import { readDemoRequests } from './readDemoRequests';
@@ -10,9 +9,9 @@ import { demoErrorMessage } from './demoErrorMessage';
 export function useBeneficiaryDemo() {
   const session = useSession();
   const { request, login: signIn, logout: signOut } = session;
-  const [profile, setProfile] = useState<BeneficiaryProfile | null>(null);
-  const [requests, setRequests] = useState<DemoRequest[]>([]);
-  const [signup, setSignup] = useState<BeneficiarySignup | null>(null);
+  const [profile, setProfile] = useState(null);
+  const [requests, setRequests] = useState([]);
+  const [signup, setSignup] = useState(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
@@ -24,23 +23,23 @@ export function useBeneficiaryDemo() {
     setRequests(ownRequests);
   }, [request, session.state]);
   useEffect(() => { void reload().catch(cause => setError(demoErrorMessage(cause))); }, [reload]);
-  const run = useCallback(async (action: () => Promise<void>): Promise<boolean> => {
+  const run = useCallback(async (action) => {
     setBusy(true); setError(''); setNotice('');
     try { await action(); return true; } catch (cause) { setError(demoErrorMessage(cause)); return false; }
     finally { setBusy(false); }
   }, []);
-  const register = useCallback((name: string, email: string, password: string) => run(async () => {
+  const register = useCallback((name, email, password) => run(async () => {
     const result = await registerDemoBeneficiary(name, email, password);
     setSignup(result); setNotice(`Registration complete. Your beneficiary reference is ${result.reference}. Sign in to continue.`);
   }), [run]);
-  const login = useCallback((email: string, password: string) => run(async () => {
+  const login = useCallback((email, password) => run(async () => {
     await signIn(email, password);
     setSignup(null); setNotice('You are signed in. Your requests are shown below.');
   }), [run, signIn]);
   const logout = useCallback(() => run(async () => {
     await signOut(); setProfile(null); setRequests([]); setNotice('You are signed out.');
   }), [run, signOut]);
-  const submitRequest = useCallback((description: string): Promise<boolean> => run(async () => {
+  const submitRequest = useCallback((description) => run(async () => {
     if (!profile) throw new Error('Your beneficiary profile is not available. Refresh the page and sign in again.');
     const created = await createDemoRequest(request, profile.id, description);
     setNotice(`Request ${created.reference} submitted with status: ${created.status}.`);

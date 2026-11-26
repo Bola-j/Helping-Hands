@@ -1,8 +1,8 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { createDemoRequest } = require('../../src/session/createDemoRequest.ts');
-const { readDemoBeneficiary } = require('../../src/session/readDemoBeneficiary.ts');
-const { readDemoRequests } = require('../../src/session/readDemoRequests.ts');
+const { createDemoRequest } = require('../../src/session/createDemoRequest.js');
+const { readDemoBeneficiary } = require('../../src/session/readDemoBeneficiary.js');
+const { readDemoRequests } = require('../../src/session/readDemoRequests.js');
 
 test('single-need helper sends both required confirmations and returns generated reference and status', async () => {
   let sent;

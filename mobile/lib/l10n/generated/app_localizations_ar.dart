@@ -233,4 +233,124 @@ class AppLocalizationsAr extends AppLocalizations {
 
   @override
   String get accountNavigation => 'الحساب';
+
+  @override
+  String get beneficiaryGreeting => 'مرحباً،';
+
+  @override
+  String get homeNewRequestLabel => 'تقديم طلب جديد';
+
+  @override
+  String get homeQuestion => 'هل تحتاج إلى تسجيل طلب دعم؟';
+
+  @override
+  String get homeQuestionBody =>
+      'اختر نوع الدعم الذي يناسب احتياجك الحالي. يمكنك مراجعة التفاصيل قبل الإرسال.';
+
+  @override
+  String get singleNeedRequest => 'طلب احتياج واحد (المرحلة ١)';
+
+  @override
+  String get multipleNeedsRequest => 'طلب احتياجات متعددة (المرحلة ٢)';
+
+  @override
+  String get requestsTitle => 'طلباتي';
+
+  @override
+  String get requestsSubtitle => 'طلباتك المسجلة فقط';
+
+  @override
+  String get viewAllRequests => 'عرض الكل';
+
+  @override
+  String requestMetadata(Object count, Object date, Object phase) {
+    return 'المرحلة $phase · $count احتياجات · $date';
+  }
+
+  @override
+  String get requestStatusSubmitted => 'تم الإرسال';
+
+  @override
+  String get requestStatusOpen => 'مفتوح';
+
+  @override
+  String get requestStatusInReview => 'قيد المراجعة';
+
+  @override
+  String get requestStatusClarification => 'مطلوب توضيح';
+
+  @override
+  String get requestStatusAccepted => 'مقبول';
+
+  @override
+  String get requestStatusRejected => 'مرفوض';
+
+  @override
+  String get requestStatusFullyAccepted => 'تم قبول كل الاحتياجات';
+
+  @override
+  String get requestStatusPartiallyAccepted => 'مقبول جزئياً';
+
+  @override
+  String get requestStatusFullyRejected => 'تم رفض كل الاحتياجات';
+
+  @override
+  String get requestStatusCompleted => 'مغلق';
+
+  @override
+  String requestStatusUnknown(Object status) {
+    return 'الحالة: $status';
+  }
+
+  @override
+  String get requestEmptyTitle => 'لا توجد طلبات بعد';
+
+  @override
+  String get requestEmptyBody => 'ستظهر هنا الطلبات التي تسجلها.';
+
+  @override
+  String get requestEmptyAction => 'العودة للرئيسية لبدء طلب';
+
+  @override
+  String get requestLoading => 'جارٍ تحميل طلباتك…';
+
+  @override
+  String get requestUnavailableTitle => 'الطلبات غير متاحة مؤقتاً';
+
+  @override
+  String get requestUnavailableBody =>
+      'تعذر الاتصال بخدمة أيادي الخير. لم تُحذف طلباتك. حاول مجدداً.';
+
+  @override
+  String get requestDeniedTitle => 'الطلبات غير متاحة لهذا الحساب';
+
+  @override
+  String get requestDeniedBody =>
+      'هذا الحساب غير مصرح له بعرض طلبات المستفيدين.';
+
+  @override
+  String get requestExpiredTitle => 'انتهت صلاحية جلستك';
+
+  @override
+  String get requestExpiredBody => 'سجّل الدخول مجدداً لعرض طلباتك.';
+
+  @override
+  String get requestUnexpectedTitle => 'تعذر تحميل طلباتك';
+
+  @override
+  String get requestUnexpectedBody => 'يرجى المحاولة مجدداً.';
+
+  @override
+  String get tryAgain => 'حاول مجدداً';
+
+  @override
+  String get loadMore => 'تحميل المزيد';
+
+  @override
+  String get requestPrivacyNote =>
+      'طلباتك خاصة ولا يراها إلا أنت والمشاركون المصرح لهم في المشروع. يتم تنسيق الدعم خارج التطبيق.';
+
+  @override
+  String get supportSingleNeedUnavailable =>
+      'تسجيل الطلب غير متاح في هذا الإصدار بعد.';
 }

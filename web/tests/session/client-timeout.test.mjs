@@ -2,8 +2,8 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { test } from 'node:test';
 const require = createRequire(import.meta.url);
-const { apiFetch } = require('../../src/session/api.ts');
-const { REQUEST_TIMEOUT_MS } = require('../../src/session/boundedSignal.ts');
+const { apiFetch } = require('../../src/session/api.js');
+const { REQUEST_TIMEOUT_MS } = require('../../src/session/boundedSignal.js');
 
 test('a timed-out request releases the next queued action', async (context) => {
   context.mock.timers.enable({ apis: ['setTimeout'] });

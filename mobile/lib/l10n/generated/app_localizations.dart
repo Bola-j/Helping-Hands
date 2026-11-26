@@ -517,6 +517,228 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Account'**
   String get accountNavigation;
+
+  /// No description provided for @beneficiaryGreeting.
+  ///
+  /// In en, this message translates to:
+  /// **'Hello'**
+  String get beneficiaryGreeting;
+
+  /// No description provided for @homeNewRequestLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'New request'**
+  String get homeNewRequestLabel;
+
+  /// No description provided for @homeQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Do you need to submit a request today?'**
+  String get homeQuestion;
+
+  /// No description provided for @homeQuestionBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the type of support that best matches your current need. You can review the details before submitting.'**
+  String get homeQuestionBody;
+
+  /// No description provided for @singleNeedRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Request one need (Phase 1)'**
+  String get singleNeedRequest;
+
+  /// No description provided for @multipleNeedsRequest.
+  ///
+  /// In en, this message translates to:
+  /// **'Request multiple needs (Phase 2)'**
+  String get multipleNeedsRequest;
+
+  /// No description provided for @requestsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'My requests'**
+  String get requestsTitle;
+
+  /// No description provided for @requestsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your submitted requests only'**
+  String get requestsSubtitle;
+
+  /// No description provided for @viewAllRequests.
+  ///
+  /// In en, this message translates to:
+  /// **'View all'**
+  String get viewAllRequests;
+
+  /// No description provided for @requestMetadata.
+  ///
+  /// In en, this message translates to:
+  /// **'Phase {phase} · {count} need(s) · {date}'**
+  String requestMetadata(Object count, Object date, Object phase);
+
+  /// No description provided for @requestStatusSubmitted.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitted'**
+  String get requestStatusSubmitted;
+
+  /// No description provided for @requestStatusOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open'**
+  String get requestStatusOpen;
+
+  /// No description provided for @requestStatusInReview.
+  ///
+  /// In en, this message translates to:
+  /// **'Under review'**
+  String get requestStatusInReview;
+
+  /// No description provided for @requestStatusClarification.
+  ///
+  /// In en, this message translates to:
+  /// **'Clarification requested'**
+  String get requestStatusClarification;
+
+  /// No description provided for @requestStatusAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Accepted'**
+  String get requestStatusAccepted;
+
+  /// No description provided for @requestStatusRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'Rejected'**
+  String get requestStatusRejected;
+
+  /// No description provided for @requestStatusFullyAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'All needs accepted'**
+  String get requestStatusFullyAccepted;
+
+  /// No description provided for @requestStatusPartiallyAccepted.
+  ///
+  /// In en, this message translates to:
+  /// **'Partially accepted'**
+  String get requestStatusPartiallyAccepted;
+
+  /// No description provided for @requestStatusFullyRejected.
+  ///
+  /// In en, this message translates to:
+  /// **'All needs rejected'**
+  String get requestStatusFullyRejected;
+
+  /// No description provided for @requestStatusCompleted.
+  ///
+  /// In en, this message translates to:
+  /// **'Closed'**
+  String get requestStatusCompleted;
+
+  /// No description provided for @requestStatusUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Status: {status}'**
+  String requestStatusUnknown(Object status);
+
+  /// No description provided for @requestEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No requests yet'**
+  String get requestEmptyTitle;
+
+  /// No description provided for @requestEmptyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests you submit will appear here.'**
+  String get requestEmptyBody;
+
+  /// No description provided for @requestEmptyAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to Home to start a request'**
+  String get requestEmptyAction;
+
+  /// No description provided for @requestLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading your requests…'**
+  String get requestLoading;
+
+  /// No description provided for @requestUnavailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests are temporarily unavailable'**
+  String get requestUnavailableTitle;
+
+  /// No description provided for @requestUnavailableBody.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t reach Helping Hands. Your requests have not been removed. Try again.'**
+  String get requestUnavailableBody;
+
+  /// No description provided for @requestDeniedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests are unavailable for this account'**
+  String get requestDeniedTitle;
+
+  /// No description provided for @requestDeniedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This account is not authorized to view beneficiary requests.'**
+  String get requestDeniedBody;
+
+  /// No description provided for @requestExpiredTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has expired'**
+  String get requestExpiredTitle;
+
+  /// No description provided for @requestExpiredBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in again to view your requests.'**
+  String get requestExpiredBody;
+
+  /// No description provided for @requestUnexpectedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t load your requests'**
+  String get requestUnexpectedTitle;
+
+  /// No description provided for @requestUnexpectedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Please try again.'**
+  String get requestUnexpectedBody;
+
+  /// No description provided for @tryAgain.
+  ///
+  /// In en, this message translates to:
+  /// **'Try again'**
+  String get tryAgain;
+
+  /// No description provided for @loadMore.
+  ///
+  /// In en, this message translates to:
+  /// **'Load more'**
+  String get loadMore;
+
+  /// No description provided for @requestPrivacyNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Your requests are private and visible only to you and authorized project participants. Support is coordinated outside the app.'**
+  String get requestPrivacyNote;
+
+  /// No description provided for @supportSingleNeedUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Request submission is not available in this build yet.'**
+  String get supportSingleNeedUnavailable;
 }
 
 class _AppLocalizationsDelegate

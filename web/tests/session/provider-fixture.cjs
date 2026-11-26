@@ -1,6 +1,6 @@
 const React = require('react');
 const { create, act } = require('react-test-renderer');
-const { SessionProvider, useSession } = require('../../src/session/SessionProvider.tsx');
+const { SessionProvider, useSession } = require('../../src/session/SessionProvider.jsx');
 
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 const user = { id: '11111111-1111-4111-8111-111111111111', displayName: 'Example User', email: 'example@example.test', roles: ['Coordinator'] };

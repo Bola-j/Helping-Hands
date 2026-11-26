@@ -2,7 +2,7 @@ const assert = require('node:assert/strict');
 const React = require('react');
 const { create } = require('react-test-renderer');
 const { test } = require('node:test');
-const { SessionProvider, useSession } = require('../../src/session/SessionProvider.tsx');
+const { SessionProvider, useSession } = require('../../src/session/SessionProvider.jsx');
 const { act, token, user } = require('./provider-fixture.cjs');
 
 test('failed login does not discard an earlier pending refresh', async () => {

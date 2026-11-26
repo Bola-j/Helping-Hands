@@ -4,9 +4,19 @@ const esbuild = require('esbuild');
 
 const sourceDir = path.resolve(__dirname, '../../src/session');
 const names = ['ApiError', 'boundedSignal', 'sessionEpoch', 'fetchRequest', 'dispatchUnsafe', 'unsafeRequest', 'api', 'expectedUser'];
+function readSource(name) {
+  for (const extension of ['.js', '.ts']) {
+    const file = path.join(sourceDir, `${name}${extension}`);
+    if (fs.existsSync(file)) {
+      return { source: fs.readFileSync(file, 'utf8'), loader: extension === '.ts' ? 'ts' : 'js' };
+    }
+  }
+  throw new Error(`Session source not found: ${name}`);
+}
+
 const modules = names.map((name) => {
-  const source = fs.readFileSync(path.join(sourceDir, `${name}.ts`), 'utf8');
-  const code = esbuild.transformSync(source, { loader: 'ts', format: 'cjs', target: 'es2020' }).code;
+  const { source, loader } = readSource(name);
+  const code = esbuild.transformSync(source, { loader, format: 'cjs', target: 'es2020' }).code;
   return `${JSON.stringify('./' + name)}: function(module, exports, require) {\n${code}\n}`;
 });
 

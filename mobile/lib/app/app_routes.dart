@@ -4,4 +4,6 @@ abstract final class AppRoutes {
   static const signIn = '/sign-in';
   static const sessionExpired = '/session-expired';
   static const profile = '/profile';
+  static const home = '/home';
+  static const requests = '/requests';
 }

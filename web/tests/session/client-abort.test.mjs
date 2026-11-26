@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { test } from 'node:test';
-const { apiFetch } = createRequire(import.meta.url)('../../src/session/api.ts');
+const { apiFetch } = createRequire(import.meta.url)('../../src/session/api.js');
 
 test('an aborted queued action does not fetch a token or send a write', async () => {
   const calls = [];

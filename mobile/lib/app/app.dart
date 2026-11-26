@@ -19,6 +19,12 @@ import '../features/auth/presentation/create_account_page.dart';
 import '../features/auth/presentation/sign_in_page.dart';
 import '../features/auth/presentation/session_expired_page.dart';
 import '../features/auth/presentation/profile_page.dart';
+import '../features/requests/application/requests_bloc.dart';
+import '../features/requests/data/requests_remote_data_source.dart';
+import '../features/requests/data/requests_repository_impl.dart';
+import '../features/requests/domain/requests_repository.dart';
+import '../features/requests/presentation/beneficiary_home_page.dart';
+import '../features/requests/presentation/my_requests_page.dart';
 import '../features/welcome/presentation/welcome_page.dart';
 import '../l10n/generated/app_localizations.dart';
 import 'app_routes.dart';
@@ -47,6 +53,12 @@ class HelpingHandsApp extends StatelessWidget {
         RepositoryProvider<BeneficiaryRegistrationRepository>(
           create: (context) => BeneficiaryRegistrationRepositoryImpl(
             BeneficiaryRegistrationRemoteDataSource(context.read<Dio>()),
+          ),
+        ),
+        RepositoryProvider<RequestsRepository>(
+          create: (context) => RequestsRepositoryImpl(
+            RequestsRemoteDataSource(context.read<Dio>()),
+            context.read<SessionRepository>(),
           ),
         ),
       ],
@@ -87,10 +99,31 @@ class HelpingHandsApp extends StatelessWidget {
                 ),
                 child: const ProfilePage(),
               ),
+              AppRoutes.home: (context) => _requestsPage(
+                context,
+                BeneficiaryHomePage(
+                  user:
+                      ModalRoute.of(context)!.settings.arguments as SessionUser,
+                ),
+              ),
+              AppRoutes.requests: (context) => _requestsPage(
+                context,
+                MyRequestsPage(
+                  user:
+                      ModalRoute.of(context)!.settings.arguments as SessionUser,
+                ),
+              ),
             },
           ),
         ),
       ),
     );
   }
+
+  Widget _requestsPage(BuildContext context, Widget child) => BlocProvider(
+    create: (context) =>
+        RequestsBloc(context.read<RequestsRepository>())
+          ..add(const RequestsLoadRequested()),
+    child: child,
+  );
 }

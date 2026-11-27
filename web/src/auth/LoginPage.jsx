@@ -66,8 +66,11 @@ export function LoginPage() {
           {state.user.roles.some(role => ['Coordinator', 'Administrator'].includes(role)) && <a className="auth-button auth-button-quiet" href="/coordinator/standards">Manage services and standards</a>}
           {state.user.roles.includes('RecipientRepresentative') && <a className="auth-button auth-button-quiet" href="/charity/application">View charity application</a>}
           {state.user.roles.includes('RecipientRepresentative') && <a className="auth-button auth-button-quiet" href="/charity/services">Manage services and capacity</a>}
+          {state.user.roles.includes('RecipientRepresentative') && <a className="auth-button auth-button-quiet" href="/charity/referrals">Review assigned referrals</a>}
           {state.user.roles.some(role => ['Coordinator', 'Administrator'].includes(role)) && <a className="auth-button auth-button-quiet" href="/coordinator/applications">Review charity applications</a>}
           {state.user.roles.some(role => ['Coordinator', 'Administrator'].includes(role)) && <a className="auth-button auth-button-quiet" href="/coordinator/requests">Review assistance requests</a>}
+          {state.user.roles.some(role => ['Coordinator', 'Administrator'].includes(role)) && <a className="auth-button auth-button-quiet" href="/coordinator/matching">Match and refer</a>}
+          {state.user.roles.some(role => ['Coordinator', 'Administrator'].includes(role)) && <a className="auth-button auth-button-quiet" href="/coordinator/follow-up">Follow-up and closure</a>}
           <button type="button" className="auth-button auth-button-quiet" onClick={onSignOut} disabled={busy}>
             {busy ? 'Signing out…' : 'Sign out'}
           </button>

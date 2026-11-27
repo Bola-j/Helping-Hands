@@ -35,6 +35,7 @@ public sealed partial class WorkflowDbTests
         using var coordinator = await fixture.LoginAsync("Coordinator");
         var own = await RequestProgressAsync(beneficiary, seed.RequestId, HttpStatusCode.OK);
         Assert.Equal(2, own.GetProperty("needs").GetArrayLength());
+        AssertProgressEvidenceHidden(own);
         var rep = await RequestProgressAsync(representative, seed.RequestId, HttpStatusCode.OK);
         AssertRepresentativeProgress(rep, seed);
         var otherCharity = await RequestProgressAsync(unrelated, seed.RequestId, HttpStatusCode.OK);
@@ -52,4 +53,9 @@ public sealed partial class WorkflowDbTests
         Assert.Equal(status, response.StatusCode);
         return status == HttpStatusCode.OK ? await response.Content.ReadFromJsonAsync<JsonElement>() : default;
     }
+
+    private static void AssertProgressEvidenceHidden(JsonElement progress) =>
+        Assert.All(progress.GetProperty("needs").EnumerateArray().SelectMany(need => need.GetProperty("assignments").EnumerateArray())
+            .SelectMany(assignment => assignment.GetProperty("outcomes").EnumerateArray()), outcome =>
+            Assert.Empty(outcome.GetProperty("evidence").EnumerateArray()));
 }

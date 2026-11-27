@@ -20,7 +20,7 @@ public sealed partial class WorkflowDbTests
         var outcomeIds = await CreateProgressOutcomesAsync(db, referrals[0].Id);
         await db.SaveChangesAsync();
         return new ProgressSeed(request.Id, needs[0].Id, needs[1].Id, referrals[0].Id, referrals[1].Id,
-            outcomeIds.Accepted, outcomeIds.Clarification, outcomeIds.Unresolved);
+            outcomeIds.Accepted, outcomeIds.Clarification, outcomeIds.Unresolved, outcomeIds.EvidenceAttachment);
     }
 
     private async Task<Recipient[]> CreateProgressCharitiesAsync(HelpingHandsDbContext db)
@@ -37,7 +37,7 @@ public sealed partial class WorkflowDbTests
         return recipients;
     }
 
-    private async Task<(Guid Accepted, Guid Clarification, Guid Unresolved)> CreateProgressOutcomesAsync(
+    private async Task<(Guid Accepted, Guid Clarification, Guid Unresolved, Guid EvidenceAttachment)> CreateProgressOutcomesAsync(
         HelpingHandsDbContext db, Guid referralId)
     {
         var reviews = new[] { ("Accepted", "Internal acceptance note"),
@@ -53,6 +53,13 @@ public sealed partial class WorkflowDbTests
                 Decision = decision, Reason = reason });
         }
         db.Outcomes.AddRange(outcomes);
-        return (outcomes[0].Id, outcomes[1].Id, outcomes[2].Id);
+        var evidence = new EvidenceAttachment
+        {
+            OutcomeId = outcomes[0].Id, UploadedByUserId = fixture.UserIds["RecipientRepresentative"],
+            StorageKey = $"fictional/{Guid.NewGuid():N}.pdf", OriginalName = "fictional receipt.pdf",
+            MediaType = "application/pdf", SizeBytes = 4096,
+        };
+        db.EvidenceAttachments.Add(evidence);
+        return (outcomes[0].Id, outcomes[1].Id, outcomes[2].Id, evidence.Id);
     }
 }

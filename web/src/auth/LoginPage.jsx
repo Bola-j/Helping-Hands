@@ -87,7 +87,7 @@ export function LoginPage() {
           </p>
         )}
         <FormAlert>{formError}</FormAlert>
-        <Field id="email" type="email" label="Email" autoComplete="username"
+        <Field id="email" type="email" label="Email" autoComplete="username" required
           value={email} error={errors.email}
           onChange={v => { setEmail(v); setErrors(e => ({ ...e, email: '' })); }} />
         <PasswordField id="password" label="Password" autoComplete="current-password"

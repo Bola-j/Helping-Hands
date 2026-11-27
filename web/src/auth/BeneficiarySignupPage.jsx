@@ -47,7 +47,7 @@ export function BeneficiarySignupPage() {
           <FormAlert>{formError}</FormAlert>
           <Field id="displayName" label="Your name" autoComplete="name"
             value={values.displayName} error={errors.displayName} onChange={v => setValue('displayName', v)} />
-          <Field id="email" type="email" label="Email" autoComplete="email"
+          <Field id="email" type="email" label="Email" autoComplete="email" required
             value={values.email} error={errors.email} onChange={v => setValue('email', v)} />
           <PasswordField id="password" label="Password" autoComplete="new-password"
             hint={`At least ${PASSWORD_MIN} characters.`}

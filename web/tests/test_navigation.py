@@ -112,7 +112,7 @@ class EmailValidationTests(unittest.TestCase):
         try:
             page.goto(self.base + path, wait_until='networkidle')
             for label, value in setup_values:
-                locator = page.get_by_role('textbox', name=label) if label == 'Password' else page.get_by_label(label)
+                locator = page.get_by_role('textbox', name=label) if label == 'Password' else page.get_by_label(label, exact=True)
                 locator.fill(value)
 
             if path == '/register/beneficiary':
@@ -122,7 +122,7 @@ class EmailValidationTests(unittest.TestCase):
                 registration_information = page.get_by_label('Registration information')
                 self.assertEqual(registration_information.evaluate('(element) => element.tagName'), 'TEXTAREA')
 
-            field = page.get_by_label(email_label)
+            field = page.get_by_label(email_label, exact=True)
             expect(field).to_be_visible()
             self.assertEqual(field.get_attribute('type'), 'email')
             self.assertIsNotNone(field.get_attribute('required'))

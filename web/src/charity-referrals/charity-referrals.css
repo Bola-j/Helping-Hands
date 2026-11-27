@@ -1,0 +1,42 @@
+.charity-referrals-page { min-height:100vh; color:#173a3d; background:#f2f6f4; font-family:"Segoe UI",system-ui,sans-serif; line-height:1.5; }
+.charity-referrals-page * { box-sizing:border-box; }
+.charity-referrals-page :focus-visible { outline:3px solid #256b66; outline-offset:2px; }
+.charity-referrals-topbar,.charity-referrals-content { max-width:1320px; margin:auto; padding:1rem clamp(1rem,4vw,3rem); }
+.charity-referrals-topbar,.charity-referrals-topbar nav { display:flex; justify-content:space-between; gap:1rem; }
+.charity-referrals-brand { color:inherit; font:700 1.35rem Georgia,serif; text-decoration:none; }
+.charity-referrals-heading { display:flex; justify-content:space-between; align-items:end; gap:1.5rem; margin:1rem 0; }
+.charity-referrals-heading h1 { margin:.2rem 0; font-size:clamp(2rem,4vw,3rem); }
+.charity-referrals-heading p:last-child,.charity-referrals-heading > span { color:#53666a; }
+.charity-referrals-eyebrow { margin:0; color:#1d6a66; font-size:.78rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+.charity-referrals-nav { display:flex; flex-wrap:wrap; gap:.6rem; margin:1.25rem 0; }
+.charity-referrals-nav a { padding:.48rem .75rem; border:1px solid #c7d7d2; border-radius:999px; color:#215d54; background:white; font-size:.82rem; font-weight:700; text-decoration:none; }
+.charity-referrals-layout { display:grid; grid-template-columns:minmax(250px,330px) minmax(0,1fr); gap:1rem; align-items:start; }
+.charity-referrals-queue,.charity-referrals-card { min-width:0; padding:1rem; border:1px solid #ccd9d5; border-radius:10px; background:white; }
+.charity-referrals-queue { position:sticky; top:1rem; }
+.charity-referrals-queue-heading,.charity-referrals-summary { display:flex; justify-content:space-between; align-items:center; gap:.7rem; }
+.charity-referrals-queue-heading h2,.charity-referrals-card h2 { margin:.15rem 0 .65rem; }
+.charity-referrals-queue button,.charity-referrals-form button,.charity-referrals-submit button { padding:.58rem .85rem; border:1px solid #1d6a66; border-radius:6px; color:white; background:#1d6a66; font:inherit; font-weight:700; cursor:pointer; }
+.charity-referrals-queue button:disabled,.charity-referrals-form button:disabled,.charity-referrals-submit button:disabled { opacity:.55; cursor:wait; }
+.charity-referrals-queue ul { display:grid; gap:.55rem; margin:.75rem 0 0; padding:0; list-style:none; }
+.charity-referrals-queue li button { display:grid; width:100%; gap:.15rem; padding:.75rem; color:inherit; background:#fbfdfc; text-align:left; }
+.charity-referrals-queue li button[aria-current="true"] { border-color:#39846b; background:#eff7f3; }
+.charity-referrals-queue li button span,.charity-referrals-queue li button small { color:#52666a; }
+.charity-referrals-detail { display:grid; min-width:0; gap:.8rem; }
+.charity-referrals-card h2 { font-size:1.2rem; }
+.charity-referrals-summary { justify-content:flex-start; flex-wrap:wrap; margin:.75rem 0; }
+.charity-referrals-summary span { display:flex; gap:.35rem; padding:.5rem .7rem; border-radius:6px; background:#eff6f3; }
+.charity-referrals-outcome { display:grid; gap:.2rem; margin-top:.7rem; padding:.7rem; border-left:3px solid #76a69d; background:#f8fbfa; }
+.charity-referrals-outcome p { margin:0; white-space:pre-wrap; }
+.charity-referrals-help { color:#53666a; font-size:.9rem; }
+.charity-referrals-form { display:grid; gap:.85rem; }
+.charity-referrals-form label { display:grid; gap:.35rem; font-weight:650; }
+.charity-referrals-form input:not([type="file"]),.charity-referrals-form textarea,.charity-referrals-form input[type="file"] { width:100%; min-width:0; padding:.65rem; border:1px solid #aabdb7; border-radius:6px; font:inherit; }
+.charity-referrals-form textarea { resize:vertical; }
+.charity-referrals-form p { margin:0; }
+.charity-referrals-submit { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:.4rem; }
+.charity-referrals-submit p { color:#53666a; }
+.charity-referrals-alert,.charity-referrals-notice { padding:.8rem .95rem; border-radius:7px; }
+.charity-referrals-alert { color:#7a1a14; background:#fbe9e7; }
+.charity-referrals-notice { color:#174e43; background:#e8f5ef; }
+@media(max-width:800px) { .charity-referrals-layout { grid-template-columns:1fr; }.charity-referrals-queue { position:static; } }
+@media(max-width:540px) { .charity-referrals-heading { align-items:flex-start; flex-direction:column; }.charity-referrals-summary { align-items:stretch; flex-direction:column; }.charity-referrals-submit { align-items:stretch; flex-direction:column; }.charity-referrals-submit button { width:100%; } }

@@ -4,7 +4,7 @@ import { BeneficiaryRequestWorkspace } from './BeneficiaryRequestWorkspace.jsx';
 export function BeneficiaryRequestPage() {
   const { state, request } = useSession();
   return <main className="beneficiary-request-page">
-    <header className="beneficiary-request-topbar"><a className="beneficiary-request-brand" href="/">Helping Hands</a><a href="/login">Account</a></header>
+    <header className="beneficiary-request-topbar"><a className="beneficiary-request-brand" href="/">Helping Hands</a><nav><a href="/requests/progress">My request progress</a><a href="/login">Account</a></nav></header>
     <section className="beneficiary-request-content">
       {state.status === 'loading' && <p role="status">Checking your session…</p>}
       {state.status === 'unavailable' && <p role="alert" className="beneficiary-request-error">The service is unavailable. Check that the local services are running, then try again.</p>}

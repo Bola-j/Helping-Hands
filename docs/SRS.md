@@ -52,7 +52,7 @@ The current forecast targets 12 November 2026 for the Phase 1 API, PostgreSQL mi
 
 | ID | Mandatory system requirement | Priority | Actor | Source | Verification | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| FR-001 | The system shall accept charity applications containing organization name, contact details and registration information or supporting documentation. | Core | R | BRule-10 | TC-001 | Confirmed |
+| FR-001 | The system shall accept charity applications containing organization name, a syntactically valid organization contact email, and registration information or supporting documentation. | Core | R | BRule-10 | TC-001 | Confirmed |
 | FR-002 | The system shall record an application as pending until an authorized coordinator makes a decision. | Core | C | BRule-01 | TC-001 | Confirmed |
 | FR-003 | The system shall allow an authorized coordinator to approve or reject a charity application and record the decision. | Core | C | BR-01 | TC-001 | Confirmed |
 | FR-004 | The system shall activate a charity account on approval and prevent pending or rejected charities from receiving referrals. | Core | C | BRule-01 | TC-001 | Confirmed |
@@ -90,7 +90,7 @@ The current forecast targets 12 November 2026 for the Phase 1 API, PostgreSQL mi
 | FR-036 | The system shall restrict beneficiary details and evidence according to role and involvement, including recipient assignment and requester relationship. | Core | U | BRule-07, BRule-12 | TC-007 | Confirmed |
 | FR-037 | The system shall reject unauthorized read or mutation attempts without disclosing restricted information. | Core | U | BR-08 | TC-007 | Proposed |
 | FR-038 | The system shall allow a coordinator to record a follow-up action for an unresolved or declined referral. | Core | C | BRD §8 | TC-008 | Confirmed |
-| FR-042 | The system shall provide separate beneficiary and charity signup routes. Beneficiary signup creates an account with the `Beneficiary` role and a linked beneficiary profile; charity signup creates an account with the `RecipientRepresentative` role, membership and a pending inactive charity application. Both use globally unique email, antiforgery protection, UUID identities and server-generated profile/application references; registration does not sign the user in or verify email. | Core | B, R | UR-009; IS-01–02 | TC-010 | Confirmed |
+| FR-042 | The system shall provide separate beneficiary and charity signup routes. Beneficiary signup creates an account with the `Beneficiary` role and a linked beneficiary profile; charity signup creates an account with the `RecipientRepresentative` role, membership and a pending inactive charity application. Beneficiary and charity representative account email, login email, and charity organization contact email shall be non-empty and syntactically valid; account email remains globally unique. All affected routes use antiforgery protection, UUID identities and server-generated profile/application references; registration does not sign the user in or verify email. Coordinator and Administrator emails are seeded directly for Phase 1 and are outside runtime signup validation. Optional beneficiary `contactDetails` and charity `registrationInformation` remain free-form supporting fields. | Core | B, R | UR-009; IS-01–02 | TC-010 | Confirmed |
 
 ### Phase 1 functional elaboration (planned)
 
@@ -238,7 +238,7 @@ Alternatives: An unrelated or unauthorized user is denied access without disclos
 **UC-001 — Charity application and review**  
 Purpose: establish eligibility for charity referrals. Actors: charity representative and coordinator. Preconditions: applicant can access signup; coordinator is authorized. Trigger: applicant submits the charity signup route.
 
-1. Applicant enters representative account details, organization name, contact details and optional registration information and submits the charity signup route.
+1. Applicant enters representative account details, organization name, a valid organization contact email and optional registration information and submits the charity signup route.
 2. The system creates the account, `RecipientRepresentative` role, membership and application together; the application remains pending and inactive.
 3. The coordinator reviews the application and supplied information.
 4. The coordinator approves it; the system records the decision and activates the charity.
@@ -249,7 +249,7 @@ Alternatives: Invalid registration or duplicate email creates no partial account
 Purpose: create the correct account and business profile at signup. Actors: beneficiary and charity representative. Preconditions: applicant can access the public signup route and has an antiforgery token. Trigger: applicant selects the appropriate signup flow.
 
 1. A beneficiary submits display name, email, password, optional contact details and family flag to `/api/v1/auth/register/beneficiary`; the system creates the `Beneficiary` account and linked profile in one transaction and returns both UUIDs and the `BEN` reference.
-2. A charity representative submits representative name, email, password, organization name, contact details and optional registration information to `/api/v1/auth/register/charity`; the system creates the `RecipientRepresentative` account, membership and pending inactive charity application in one transaction and returns the account/application UUIDs and `REC` reference.
+2. A charity representative submits representative name, valid email, password, organization name, valid organization contact email and optional registration information to `/api/v1/auth/register/charity`; the system creates the `RecipientRepresentative` account, membership and pending inactive charity application in one transaction and returns the account/application UUIDs and `REC` reference.
 3. The applicant signs in separately. Charity review and activation follow UC-001; signup itself does not grant referral eligibility.
 
 Alternatives: Invalid fields, weak password, duplicate/case-variant email, concurrent duplicate signup, invalid antiforgery token or failed related-record creation returns a safe error without credentials or partial business records. Email verification and third-party requester signup are outside this increment. Requirements: FR-042, NFR-001–003.

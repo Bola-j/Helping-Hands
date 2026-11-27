@@ -59,7 +59,7 @@ export function BeneficiaryRequestWorkspace({ request, user }) {
     <p className="beneficiary-request-lead">Choose the services and quantities you need. The coordinator will review your request.</p>
     <p className="beneficiary-request-signed">Signed in as {user.displayName}{profile ? ` · beneficiary ${profile.reference}` : ''}</p>
     {error && <p role="alert" className="beneficiary-request-error">{error}</p>}
-    {created && <section className="beneficiary-request-success" role="status"><h2>Request submitted</h2><p>Your reference is <strong>{created.reference}</strong>. Keep it to check with your coordinator.</p><p>Status: {created.status}</p></section>}
+    {created && <section className="beneficiary-request-success" role="status"><h2>Request submitted</h2><p>Your reference is <strong>{created.reference}</strong>. Keep it to check with your coordinator.</p><p>Status: {created.status}</p><a href="/requests/progress">View request progress</a></section>}
     <RequestForm catalog={catalog} needs={needs} description={description} authority={confirmedAuthority} sharing={agreedSharing} busy={busy} onNeed={updateNeed} onAdd={() => setNeeds(current => current.length < 50 ? [...current, emptyNeed()] : current)} onRemove={index => setNeeds(current => current.filter((_, i) => i !== index))} onDescription={setDescription} onAuthority={setConfirmedAuthority} onSharing={setAgreedSharing} onSubmit={onSubmit} />
   </>;
 }

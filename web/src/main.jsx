@@ -18,6 +18,8 @@ import { CharityServicesPage } from './recipients/CharityServicesPage.jsx';
 import './recipients/charity-services.css';
 import { CoordinatorMatchingPage } from './referrals/CoordinatorMatchingPage.jsx';
 import './referrals/matching.css';
+import { BeneficiaryRequestProgressPage } from './progress/BeneficiaryRequestProgressPage.jsx';
+import './progress/request-progress.css';
 
 function HomePage() {
   return (
@@ -69,6 +71,7 @@ function App() {
   if (path === '/coordinator/requests') return <SessionProvider><CoordinatorRequestReviewPage /></SessionProvider>;
   if (path === '/coordinator/matching') return <SessionProvider><CoordinatorMatchingPage /></SessionProvider>;
   if (path === '/requests/new') return <SessionProvider><BeneficiaryRequestPage /></SessionProvider>;
+  if (path === '/requests/progress') return <SessionProvider><BeneficiaryRequestProgressPage /></SessionProvider>;
   if (path === '/charity/services') return <SessionProvider><CharityServicesPage /></SessionProvider>;
   return <HomePage />;
 }

@@ -178,7 +178,7 @@ class RoleWorkflowBrowserTests(unittest.TestCase):
         page.get_by_role("button", name="Accept reported quantity").click()
         expect(page.get_by_text("Ready to close")).to_be_visible()
         page.get_by_role("button", name="Close request").click()
-        expect(page.get_by_text("Already completed")).to_be_visible()
+        expect(page.get_by_text("Already completed", exact=True)).to_be_visible()
         review = next(item for item in api.calls if item["method"] == "POST" and item["path"].endswith("/reviews"))
         close = next(item for item in api.calls if item["method"] == "POST" and item["path"].endswith("/closure"))
         self.assertEqual(review["body"]["decision"], "Accepted")

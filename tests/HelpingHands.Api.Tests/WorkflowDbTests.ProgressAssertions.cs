@@ -17,6 +17,7 @@ public sealed partial class WorkflowDbTests
         Assert.Equal(1m, need.GetProperty("acceptedQuantity").GetDecimal());
         Assert.Equal(1, need.GetProperty("assignments").GetArrayLength());
         Assert.Equal(3, need.GetProperty("assignments")[0].GetProperty("outcomes").GetArrayLength());
+        AssertProgressEvidenceHidden(progress);
         AssertRepresentativeHistory(progress.GetProperty("history"), seed);
     }
 
@@ -43,5 +44,15 @@ public sealed partial class WorkflowDbTests
             item.GetProperty("entityId").GetGuid() == seed.UnresolvedOutcomeId).GetProperty("reason").GetString());
         Assert.All(history.Where(item => item.GetProperty("entityType").GetString() == "Outcome"),
             item => Assert.NotEqual(JsonValueKind.Null, item.GetProperty("actorUserId").ValueKind));
+        var acceptedOutcome = progress.GetProperty("needs").EnumerateArray()
+            .SelectMany(need => need.GetProperty("assignments").EnumerateArray())
+            .SelectMany(assignment => assignment.GetProperty("outcomes").EnumerateArray())
+            .Single(item => item.GetProperty("id").GetGuid() == seed.AcceptedOutcomeId);
+        Assert.NotEqual(Guid.Empty, acceptedOutcome.GetProperty("version").GetGuid());
+        var evidence = Assert.Single(acceptedOutcome.GetProperty("evidence").EnumerateArray());
+        Assert.Equal(seed.EvidenceAttachmentId, evidence.GetProperty("id").GetGuid());
+        Assert.Equal("fictional receipt.pdf", evidence.GetProperty("originalName").GetString());
+        Assert.Equal("application/pdf", evidence.GetProperty("mediaType").GetString());
+        Assert.Equal(4096, evidence.GetProperty("sizeBytes").GetInt64());
     }
 }

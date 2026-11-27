@@ -7,16 +7,32 @@ namespace HelpingHands.Api.Features;
 
 public static partial class DemoEndpoints
 {
+    private sealed record EvidenceAttachmentRow(Guid OutcomeId, EvidenceAttachmentProgressView Evidence);
+
     private static async Task<IReadOnlyList<NeedProgressView>> NeedProgressAsync(HelpingHandsDbContext database,
-        AssistanceRequest request, IReadOnlyList<Referral> referrals, NeedVersionService versions, CancellationToken cancellationToken)
+        AssistanceRequest request, IReadOnlyList<Referral> referrals, NeedVersionService versions, bool includeEvidence,
+        CancellationToken cancellationToken)
     {
         var referralIds = referrals.Select(item => item.Id).ToArray();
         var outcomes = await database.Outcomes.AsNoTracking().Where(item => referralIds.Contains(item.ReferralId)).ToListAsync(cancellationToken);
+        var outcomeIds = outcomes.Select(item => item.Id).ToArray();
+        List<EvidenceAttachmentRow> evidenceRows = includeEvidence
+            ? await database.EvidenceAttachments.AsNoTracking()
+                .Where(item => outcomeIds.Contains(item.OutcomeId))
+                .OrderBy(item => item.UploadedAt)
+                .Select(item => new EvidenceAttachmentRow(item.OutcomeId, new EvidenceAttachmentProgressView(item.Id,
+                    item.OriginalName, item.MediaType, item.SizeBytes, item.UploadedAt)))
+                .ToListAsync(cancellationToken)
+            : [];
+        var evidenceByOutcome = evidenceRows.GroupBy(item => item.OutcomeId)
+            .ToDictionary(group => group.Key, group => (IReadOnlyList<EvidenceAttachmentProgressView>)group
+                .Select(item => item.Evidence).ToList());
         var accepted = outcomes.Where(item => item.Status == "Accepted").GroupBy(item => item.ReferralId)
             .ToDictionary(group => group.Key, group => group.Sum(item => item.ReportedQuantity));
         var outcomesByReferral = outcomes.GroupBy(item => item.ReferralId).ToDictionary(group => group.Key,
             group => (IReadOnlyList<OutcomeProgressView>)group.Select(item => new OutcomeProgressView(item.Id, item.Reference,
-                item.ReportedQuantity, item.Status, item.SubmittedAt)).ToList());
+                item.ReportedQuantity, item.Description, item.Status, item.SubmittedAt, item.Version,
+                evidenceByOutcome.GetValueOrDefault(item.Id) ?? [])).ToList());
         var needs = request.IsMultiNeed ? await versions.GetRecordedNeedsAsync(request.Id, cancellationToken) : [];
         var view = needs.Select(item => BuildNeedProgressView(item.Id, item.ServiceName, item.StandardName, item.Quantity,
             item.Status, referrals.Where(referral => referral.NeedId == item.Id), accepted, outcomesByReferral)).ToList();

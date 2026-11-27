@@ -48,9 +48,19 @@ Run it only against an isolated disposable API/database; configure
 ## Verify
 
 ```sh
+dart format --output=none --set-exit-if-changed lib test integration_test
 flutter analyze
 flutter test
+flutter build apk --debug
+# macOS with Xcode:
+flutter build ios --no-codesign
 ```
+
+GitHub Actions runs the formatting, analysis, unit/widget test, and Android APK
+checks on pushes and pull requests. An unsigned iOS build runs on a GitHub-hosted
+macOS runner. The `integration_test/` cases write fictional accounts and requests;
+run them only against an isolated disposable API/database with the test certificate
+explicitly trusted, never against a shared or production service.
 
 ## Structure
 

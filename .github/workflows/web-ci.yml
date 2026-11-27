@@ -42,5 +42,6 @@ jobs:
             sleep 1
           done
           WEB_TEST_URL=http://127.0.0.1:8081 python -m unittest discover -s tests -p test_navigation.py
+          WEB_TEST_URL=http://127.0.0.1:8081 python -m unittest discover -s tests -p test_role_workflows.py
       - name: Check container build and same-origin proxy
         run: python -m unittest discover -s tests -p test_proxy_integration.py

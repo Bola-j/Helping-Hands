@@ -74,7 +74,7 @@ export function CoordinatorFollowUpClosureWorkspace({ request, user }) {
   }
 
   async function closeRequest() {
-    if (!details || !closureReadiness(progress).ready) return;
+    if (!details || !closureReadiness(progress, details.status).ready) return;
     if (!window.confirm(`Close request ${details.reference}? This records a coordinator closure in the request history.`)) return;
     setBusy(true); setError(''); setNotice('');
     try {

@@ -16,7 +16,7 @@ function validate(values) {
     email: validEmail(values.email),
     password: validPassword(values.password),
     organizationName: required(values.organizationName, 'Enter the name of your organization.'),
-    contactDetails: required(values.contactDetails, 'Enter contact details for the organization.'),
+    contactDetails: validEmail(values.contactDetails),
   };
 }
 
@@ -55,7 +55,7 @@ export function CharitySignupPage() {
           <Field id="representativeDisplayName" label="Your name" autoComplete="name"
             value={values.representativeDisplayName} error={errors.representativeDisplayName}
             onChange={v => setValue('representativeDisplayName', v)} />
-          <Field id="email" type="email" label="Email" autoComplete="email"
+          <Field id="email" type="email" label="Email" autoComplete="email" required
             value={values.email} error={errors.email} onChange={v => setValue('email', v)} />
           <PasswordField id="password" label="Password" autoComplete="new-password"
             hint={`At least ${PASSWORD_MIN} characters.`}
@@ -63,8 +63,8 @@ export function CharitySignupPage() {
           <Field id="organizationName" label="Organization name" autoComplete="organization"
             value={values.organizationName} error={errors.organizationName}
             onChange={v => setValue('organizationName', v)} />
-          <Field id="contactDetails" label="Organization contact details" multiline
-            hint="A phone number, address or another way to reach the organization."
+          <Field id="contactDetails" type="email" label="Organization contact email" autoComplete="email" required
+            hint="Use an email address where a coordinator can reach the organization."
             value={values.contactDetails} error={errors.contactDetails}
             onChange={v => setValue('contactDetails', v)} />
           <Field id="registrationInformation" label="Registration information" optional multiline

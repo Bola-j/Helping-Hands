@@ -112,7 +112,8 @@ class EmailValidationTests(unittest.TestCase):
         try:
             page.goto(self.base + path, wait_until='networkidle')
             for label, value in setup_values:
-                page.get_by_label(label).fill(value)
+                locator = page.get_by_role('textbox', name=label) if label == 'Password' else page.get_by_label(label)
+                locator.fill(value)
 
             if path == '/register/beneficiary':
                 contact_details = page.get_by_label('Contact details')

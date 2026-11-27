@@ -4,7 +4,7 @@ import { CoordinatorRequestReviewWorkspace } from './CoordinatorRequestReviewWor
 export function CoordinatorRequestReviewPage() {
   const { state, request } = useSession();
   return <main className="request-review-page">
-    <header className="request-review-topbar"><a href="/" className="request-review-brand">Helping Hands</a><nav><a href="/coordinator/matching">Match &amp; refer</a> · <a href="/coordinator/follow-up">Follow-up &amp; closure</a> · <a href="/login">Account</a></nav></header>
+    <header className="request-review-topbar"><a href="/" className="request-review-brand">Helping Hands</a><nav aria-label="Coordinator navigation"><a href="/coordinator/standards">Service standards</a><a href="/coordinator/matching">Match &amp; refer</a><a href="/coordinator/applications">Charity applications</a><a href="/coordinator/follow-up">Follow-up &amp; closure</a><a href="/login">Account</a></nav></header>
     <section className="request-review-content">
       {state.status === 'loading' && <p role="status">Checking your session…</p>}
       {state.status === 'unavailable' && <p role="alert" className="request-review-error">The session service is unavailable. Try again when it is running.</p>}

@@ -80,7 +80,7 @@ export function CoordinatorMatchingWorkspace({ request, user }) {
 
   return <>
     <header className="matching-page-heading"><div><p className="matching-eyebrow">Coordinator workspace</p><h1>Match &amp; refer</h1><p>Choose an accepted need, compare charities using its exact recorded versions, then allocate all or part of its remaining quantity.</p></div><span className="matching-user">Signed in as {user.displayName}</span></header>
-    <nav className="matching-workspace-nav" aria-label="Coordinator workspaces"><a href="/coordinator/requests">Review requests</a><a href="/coordinator/standards">Service standards</a><a href="/coordinator/applications">Charity applications</a></nav>
+    <nav className="matching-workspace-nav" aria-label="Coordinator workspaces"><a href="/coordinator/requests">Review requests</a><a href="/coordinator/standards">Service standards</a><a href="/coordinator/applications">Charity applications</a><a href="/coordinator/follow-up">Follow-up and closure</a></nav>
     {error && <p role="alert" className="matching-error">{error}</p>}
     {notice && <p role="status" className="matching-success">{notice}</p>}
     <div className="matching-layout">

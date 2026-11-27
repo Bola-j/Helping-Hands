@@ -4,7 +4,7 @@ import { CharityServicesWorkspace } from './CharityServicesWorkspace.jsx';
 export function CharityServicesPage() {
   const { state, request } = useSession();
   return <main className="charity-services-page">
-    <header className="charity-services-topbar"><a href="/" className="charity-services-brand">Helping Hands</a><nav><a href="/charity/referrals">Assigned referrals</a><a href="/login">Account</a></nav></header>
+    <header className="charity-services-topbar"><a href="/" className="charity-services-brand">Helping Hands</a><nav aria-label="Charity navigation"><a href="/charity/application">Your application</a><a href="/charity/referrals">Assigned referrals</a><a href="/login">Account</a></nav></header>
     <section className="charity-services-content">
       {state.status === 'loading' && <p role="status">Checking your session…</p>}
       {state.status === 'unavailable' && <p role="alert" className="charity-services-error">The session service is unavailable. Try again when it is running.</p>}

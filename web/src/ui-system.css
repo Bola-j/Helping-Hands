@@ -1,0 +1,365 @@
+:root {
+  color-scheme: light;
+  --ui-ink: #173238;
+  --ui-muted: #5a6f72;
+  --ui-canvas: #f3f7f6;
+  --ui-surface: #ffffff;
+  --ui-surface-soft: #f7faf9;
+  --ui-line: #d8e3e1;
+  --ui-line-strong: #b9cbc7;
+  --ui-accent: #14766f;
+  --ui-accent-dark: #105f59;
+  --ui-accent-soft: #e6f4f1;
+  --ui-warning: #9b6500;
+  --ui-warning-soft: #fff5df;
+  --ui-danger: #a63a32;
+  --ui-danger-soft: #fff0ee;
+  --ui-shadow: 0 12px 32px rgb(19 50 56 / 7%);
+  --ui-shadow-hover: 0 16px 36px rgb(19 50 56 / 11%);
+  --ui-radius: 14px;
+  --ui-radius-small: 9px;
+  font-family: Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--ui-ink);
+  background: var(--ui-canvas);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+body { color: var(--ui-ink); background: var(--ui-canvas); }
+button, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, summary:focus-visible {
+  outline: 3px solid #39a99d;
+  outline-offset: 3px;
+}
+
+:is(.page, .auth-page, .application-page, .catalog-page, .beneficiary-request-page, .request-review-page, .follow-up-page, .matching-page, .charity-referrals-page, .charity-services-page, .request-progress-page) {
+  color: var(--ui-ink);
+  background: var(--ui-canvas);
+  font-family: inherit;
+}
+
+:is(.topbar, .auth-topbar, .application-topbar, .catalog-topbar, .beneficiary-request-topbar, .request-review-topbar, .follow-up-topbar, .matching-topbar, .charity-referrals-topbar, .charity-services-topbar, .request-progress-topbar) {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .8rem 1.5rem;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: .8rem max(calc((100vw - 1440px) / 2), clamp(1rem, 4vw, 3rem));
+  color: var(--ui-ink);
+  background: rgb(255 255 255 / 94%);
+  border-bottom: 1px solid var(--ui-line);
+  box-shadow: 0 2px 8px rgb(19 50 56 / 3%);
+}
+
+:is(.brand, .auth-brand, .application-brand, .catalog-brand, .beneficiary-request-brand, .request-review-brand, .follow-up-brand, .matching-brand, .charity-referrals-brand, .charity-services-brand, .request-progress-brand) {
+  flex: none;
+  color: var(--ui-ink) !important;
+  font-family: inherit;
+  font-size: 1.16rem;
+  font-weight: 800;
+  letter-spacing: -.035em;
+  text-decoration: none;
+}
+
+:is(.topbar nav, .auth-topbar nav, .application-topbar nav, .catalog-topbar nav, .beneficiary-request-topbar nav, .request-review-topbar nav, .follow-up-topbar nav, .matching-topbar nav, .charity-referrals-topbar nav, .charity-services-topbar nav, .request-progress-topbar nav) {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: .35rem;
+  max-width: 100%;
+}
+
+:is(.topbar nav, .auth-topbar nav, .application-topbar nav, .catalog-topbar nav, .beneficiary-request-topbar nav, .request-review-topbar nav, .follow-up-topbar nav, .matching-topbar nav, .charity-referrals-topbar nav, .charity-services-topbar nav, .request-progress-topbar nav) a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.35rem;
+  padding: .45rem .72rem;
+  border-radius: 999px;
+  color: var(--ui-muted);
+  font-size: .88rem;
+  font-weight: 650;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: color 150ms ease, background-color 150ms ease, transform 150ms ease;
+}
+
+:is(.topbar nav, .auth-topbar nav, .application-topbar nav, .catalog-topbar nav, .beneficiary-request-topbar nav, .request-review-topbar nav, .follow-up-topbar nav, .matching-topbar nav, .charity-referrals-topbar nav, .charity-services-topbar nav, .request-progress-topbar nav) a:hover {
+  color: var(--ui-accent-dark);
+  background: var(--ui-accent-soft);
+  text-decoration: none;
+}
+
+:is(.hero, .content, .auth-main, .application-content, .catalog-content, .beneficiary-request-content, .request-review-content, .follow-up-content, .matching-content, .charity-referrals-content, .charity-services-content, .request-progress-content) {
+  color: var(--ui-ink);
+}
+
+:is(.application-content, .catalog-content, .beneficiary-request-content, .request-review-content, .follow-up-content, .matching-content, .charity-referrals-content, .charity-services-content, .request-progress-content) {
+  padding-top: clamp(1.5rem, 3.5vw, 3rem);
+  padding-bottom: clamp(2.5rem, 6vw, 5rem);
+}
+
+:is(.application-content, .catalog-content, .beneficiary-request-content, .request-review-content, .follow-up-content, .matching-content, .charity-referrals-content, .charity-services-content, .request-progress-content) h1 {
+  max-width: 900px;
+  margin: .25rem 0 .55rem;
+  color: var(--ui-ink);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 760;
+  line-height: 1.12;
+  letter-spacing: -.045em;
+}
+
+:is(.application-eyebrow, .catalog-eyebrow, .beneficiary-request-eyebrow, .request-review-eyebrow, .follow-up-eyebrow, .matching-eyebrow, .charity-referrals-eyebrow, .charity-services-eyebrow, .request-progress-eyebrow, .eyebrow) {
+  color: var(--ui-accent-dark);
+  font-size: .76rem;
+  font-weight: 800;
+  letter-spacing: .09em;
+  line-height: 1.35;
+}
+
+:is(.application-lead, .application-muted, .catalog-lead, .beneficiary-request-lead, .beneficiary-request-signed, .request-review-lead, .request-review-signed, .follow-up-lead, .follow-up-signed, .matching-page-heading > div > p:last-child, .matching-user, .charity-referrals-heading p:last-child, .charity-referrals-heading > span, .charity-services-lead, .charity-services-signed, .request-progress-description, .request-progress-muted) {
+  color: var(--ui-muted);
+}
+
+:is(.application-card, .catalog-card, .beneficiary-request-form, .beneficiary-request-need, .request-review-card, .request-review-need, .follow-up-card, .follow-up-need, .follow-up-outcome, .matching-card, .matching-candidate, .charity-referrals-card, .charity-referrals-queue, .charity-services-card, .charity-services-option, .charity-capacity-row, .request-progress-sidebar, .request-progress-card, .request-progress-need, .demo-card, .auth-card) {
+  border: 1px solid var(--ui-line);
+  border-radius: var(--ui-radius);
+  background: var(--ui-surface);
+  box-shadow: var(--ui-shadow);
+}
+
+:is(.application-card, .catalog-card, .beneficiary-request-form, .request-review-card, .follow-up-card, .matching-card, .charity-referrals-card, .charity-referrals-queue, .charity-services-card, .request-progress-sidebar, .request-progress-card, .demo-card, .auth-card) {
+  padding: clamp(1rem, 2.4vw, 1.45rem);
+}
+
+:is(.catalog-grid, .matching-layout, .application-layout, .request-review-layout, .follow-up-layout, .charity-referrals-layout, .request-progress-layout) { gap: clamp(.9rem, 2vw, 1.3rem); }
+:is(.catalog-card, .application-card, .request-review-card, .follow-up-card, .matching-card, .charity-referrals-card, .charity-services-card, .request-progress-card) { min-width: 0; }
+
+:is(.workspace-nav, .matching-workspace-nav, .charity-referrals-nav) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .45rem;
+  margin: 1.1rem 0 1.35rem;
+}
+
+:is(.workspace-nav, .matching-workspace-nav, .charity-referrals-nav) a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: .5rem .85rem;
+  border: 1px solid var(--ui-line);
+  border-radius: 999px;
+  color: var(--ui-accent-dark);
+  background: var(--ui-surface);
+  font-size: .86rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 150ms ease, border-color 150ms ease, transform 150ms ease;
+}
+
+:is(.workspace-nav, .matching-workspace-nav, .charity-referrals-nav) a:hover {
+  border-color: var(--ui-line-strong);
+  background: var(--ui-accent-soft);
+  transform: translateY(-1px);
+}
+
+:is(.application-page, .catalog-page, .beneficiary-request-page, .request-review-page, .follow-up-page, .matching-page, .charity-referrals-page, .charity-services-page, .request-progress-page, .auth-page) input:not([type="checkbox"]):not([type="radio"]):not([type="file"]),
+:is(.application-page, .catalog-page, .beneficiary-request-page, .request-review-page, .follow-up-page, .matching-page, .charity-referrals-page, .charity-services-page, .request-progress-page, .auth-page) select,
+:is(.application-page, .catalog-page, .beneficiary-request-page, .request-review-page, .follow-up-page, .matching-page, .charity-referrals-page, .charity-services-page, .request-progress-page, .auth-page) textarea,
+.demo-card input:not([type="checkbox"]), .demo-card textarea {
+  min-height: 2.75rem;
+  padding: .68rem .8rem;
+  border: 1px solid var(--ui-line-strong);
+  border-radius: var(--ui-radius-small);
+  color: var(--ui-ink);
+  background: var(--ui-surface);
+  box-shadow: inset 0 1px 2px rgb(19 50 56 / 3%);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+:is(.application-page, .catalog-page, .beneficiary-request-page, .request-review-page, .follow-up-page, .matching-page, .charity-referrals-page, .charity-services-page, .request-progress-page, .auth-page) input:focus,
+:is(.application-page, .catalog-page, .beneficiary-request-page, .request-review-page, .follow-up-page, .matching-page, .charity-referrals-page, .charity-services-page, .request-progress-page, .auth-page) select:focus,
+:is(.application-page, .catalog-page, .beneficiary-request-page, .request-review-page, .follow-up-page, .matching-page, .charity-referrals-page, .charity-services-page, .request-progress-page, .auth-page) textarea:focus,
+.demo-card input:focus, .demo-card textarea:focus {
+  border-color: var(--ui-accent);
+  box-shadow: 0 0 0 3px rgb(20 118 111 / 13%);
+  outline: 0;
+}
+
+:is(.catalog-form, .application-form, .request-review-form, .follow-up-review, .matching-candidate label, .matching-scope, .charity-referrals-form, .charity-capacity-form, .beneficiary-request-label, .auth-field, .demo-card label) label,
+:is(.catalog-form, .application-form, .request-review-form, .follow-up-review, .matching-candidate label, .matching-scope, .charity-referrals-form, .charity-capacity-form, .beneficiary-request-label, .auth-field, .demo-card label) {
+  color: var(--ui-ink);
+}
+
+:is(.auth-page, .application-page, .catalog-page, .beneficiary-request-page, .request-review-page, .follow-up-page, .matching-page, .charity-referrals-page, .charity-services-page, .request-progress-page, .page) button,
+.button {
+  border-radius: var(--ui-radius-small);
+  transition: color 150ms ease, background-color 150ms ease, border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+:is(.catalog-form button:not(.catalog-secondary), .request-review-heading button, .request-review-actions button:not(.request-review-secondary), .follow-up-heading button, .follow-up-actions button:not(.follow-up-secondary), .follow-up-close, .matching-panel-title button, .matching-submit-row button, .charity-referrals-form button, .charity-referrals-submit button, .charity-services-heading button, .charity-capacity-form button, .beneficiary-request-heading button, .beneficiary-request-submit, .application-form button:not(.button-reject), .request-progress-list-heading button, .request-progress-error-box button, .request-progress-action, .demo-card button, .auth-page .auth-button:not(.auth-button-quiet), .button:not(.button-secondary)) {
+  border: 1px solid var(--ui-accent);
+  border-radius: var(--ui-radius-small);
+  color: #fff;
+  background: var(--ui-accent);
+  box-shadow: 0 2px 5px rgb(15 95 89 / 12%);
+  font-weight: 720;
+}
+
+:is(.catalog-form button:not(.catalog-secondary), .request-review-heading button, .request-review-actions button:not(.request-review-secondary), .follow-up-heading button, .follow-up-actions button:not(.follow-up-secondary), .follow-up-close, .matching-panel-title button, .matching-submit-row button, .charity-referrals-form button, .charity-referrals-submit button, .charity-services-heading button, .charity-capacity-form button, .beneficiary-request-heading button, .beneficiary-request-submit, .application-form button:not(.button-reject), .request-progress-list-heading button, .request-progress-error-box button, .request-progress-action, .demo-card button, .auth-page .auth-button:not(.auth-button-quiet), .button:not(.button-secondary)):hover:not(:disabled) {
+  border-color: var(--ui-accent-dark);
+  color: #fff;
+  background: var(--ui-accent-dark);
+  box-shadow: 0 5px 12px rgb(15 95 89 / 18%);
+  transform: translateY(-1px);
+}
+
+:is(.catalog-small-button, .catalog-secondary, .request-review-secondary, .request-review-list button, .follow-up-list button, .matching-queue li button, .matching-needs button, .charity-referrals-queue li button, .request-progress-list button, .application-list button, .application-form button.button-reject, .beneficiary-request-remove, .button-secondary, .auth-page .auth-button-quiet) {
+  border: 1px solid var(--ui-line-strong);
+  border-radius: var(--ui-radius-small);
+  color: var(--ui-accent-dark);
+  background: var(--ui-surface);
+  box-shadow: none;
+}
+
+:is(.catalog-small-button, .catalog-secondary, .request-review-secondary, .request-review-list button, .follow-up-list button, .matching-queue li button, .matching-needs button, .charity-referrals-queue li button, .request-progress-list button, .application-list button, .application-form button.button-reject, .beneficiary-request-remove, .button-secondary, .auth-page .auth-button-quiet):hover:not(:disabled) {
+  border-color: var(--ui-accent);
+  color: var(--ui-accent-dark);
+  background: var(--ui-accent-soft);
+  transform: translateY(-1px);
+}
+
+:is(.catalog-small-button, .catalog-secondary, .request-review-secondary, .follow-up-secondary, .request-review-actions button.request-review-danger, .follow-up-actions button.follow-up-danger, .application-form button.button-reject, .beneficiary-request-remove) {
+  color: var(--ui-danger);
+  border-color: #e6c2bf;
+  background: #fff;
+}
+
+:is(.catalog-small-button, .catalog-form button, .request-review-heading button, .request-review-actions button, .follow-up-heading button, .follow-up-actions button, .follow-up-close, .matching-panel-title button, .matching-submit-row button, .charity-referrals-queue button, .charity-referrals-form button, .charity-referrals-submit button, .charity-services-heading button, .charity-capacity-form button, .beneficiary-request-heading button, .beneficiary-request-submit, .beneficiary-request-remove, .application-form button, .request-progress-list-heading button, .request-progress-error-box button, .request-progress-action, .demo-card button, .auth-page .auth-button) {
+  min-height: 2.65rem;
+  padding: .58rem .9rem;
+  cursor: pointer;
+}
+
+:is(.application-page, .catalog-page, .beneficiary-request-page, .request-review-page, .follow-up-page, .matching-page, .charity-referrals-page, .charity-services-page, .request-progress-page, .auth-page, .page) button:disabled {
+  opacity: .58;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+:is(.catalog-error, .application-error, .beneficiary-request-error, .request-review-error, .follow-up-error, .matching-error, .charity-referrals-alert, .charity-services-error, .request-progress-error, .demo-error, .auth-alert, .auth-notice, .application-notice, .catalog-notice, .beneficiary-request-help, .beneficiary-request-success, .request-review-notice, .follow-up-notice, .matching-success, .matching-explain, .charity-referrals-notice, .charity-services-notice, .demo-notice) {
+  border: 1px solid var(--ui-line);
+  border-radius: var(--ui-radius-small);
+  padding: .8rem 1rem;
+}
+
+:is(.catalog-error, .application-error, .beneficiary-request-error, .request-review-error, .follow-up-error, .matching-error, .charity-referrals-alert, .charity-services-error, .request-progress-error, .demo-error, .auth-alert) {
+  color: #8b2b24;
+  background: var(--ui-danger-soft);
+  border-color: #f0d1cd;
+}
+
+:is(.application-notice, .catalog-notice, .beneficiary-request-success, .request-review-notice, .follow-up-notice, .matching-success, .charity-referrals-notice, .charity-services-notice, .demo-notice) {
+  color: #175d54;
+  background: var(--ui-accent-soft);
+  border-color: #c8e6df;
+}
+
+:is(.beneficiary-request-help, .request-review-help, .follow-up-help, .matching-explain, .request-progress-privacy, .catalog-help, .catalog-footnote) {
+  color: var(--ui-muted);
+  background: var(--ui-surface-soft);
+  border-color: var(--ui-line);
+}
+
+:is(.application-list button, .catalog-list li, .catalog-components-list li, .request-review-list button, .follow-up-list button, .matching-queue li button, .matching-needs button, .charity-referrals-queue li button, .request-progress-list button) {
+  border-color: var(--ui-line);
+  border-radius: var(--ui-radius-small);
+}
+
+:is(.application-list button.is-selected, .catalog-list li.is-selected, .catalog-version-choice.is-selected, .request-review-list button[aria-current="true"], .follow-up-list button[aria-current="true"], .matching-queue li button[aria-current="true"], .matching-needs button[aria-current="true"], .charity-referrals-queue li button[aria-current="true"], .request-progress-list button.is-selected) {
+  border-color: #8fc8ba;
+  color: var(--ui-ink);
+  background: var(--ui-accent-soft);
+  box-shadow: inset 3px 0 var(--ui-accent);
+}
+
+:is(.application-status, .request-review-pill, .follow-up-pill, .matching-pill, .charity-capacity-status, .request-progress-status, .auth-badge) {
+  border-radius: 999px;
+  padding: .28rem .7rem;
+  font-size: .82rem;
+  font-weight: 750;
+}
+
+:is(.request-review-history li, .follow-up-history li, .application-history li, .request-progress-portions li) {
+  border-radius: 0 var(--ui-radius-small) var(--ui-radius-small) 0;
+  border-color: #8fc8ba;
+  background: var(--ui-surface-soft);
+}
+
+:is(.catalog-empty, .request-progress-empty, .charity-referrals-card, .demo-card) p { line-height: 1.6; }
+:is(.catalog-empty, .request-progress-empty) { color: var(--ui-muted); }
+
+/* Public entry pages guide a first-time visitor toward the right workflow. */
+.page { min-height: 100vh; }
+.hero {
+  max-width: none;
+  margin: 0;
+  padding: clamp(4.5rem, 10vw, 8rem) max(calc((100vw - 1180px) / 2), clamp(1.25rem, 6vw, 5rem)) clamp(3rem, 7vw, 5rem);
+  background: radial-gradient(circle at 88% 20%, rgb(193 232 219 / 48%), transparent 23rem), linear-gradient(135deg, #edf7f3 0%, #f9fbfa 70%);
+  border-bottom: 1px solid var(--ui-line);
+}
+.hero h1 { max-width: 780px; margin: .9rem 0 1.1rem; color: var(--ui-ink); font-size: clamp(2.65rem, 7vw, 5rem); font-weight: 780; line-height: 1.02; letter-spacing: -.06em; }
+.hero > p:not(.eyebrow) { max-width: 660px; margin: 0; color: var(--ui-muted); font-size: clamp(1.08rem, 2vw, 1.28rem); line-height: 1.65; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: .65rem; margin-top: 1.7rem; }
+.hero-actions .button { margin: 0; }
+.button { min-height: 2.9rem; padding: .78rem 1.1rem; border-radius: var(--ui-radius-small); text-align: center; }
+.home-paths { max-width: 1180px; margin: 0 auto; padding: clamp(2.8rem, 6vw, 4.6rem) clamp(1.25rem, 5vw, 3rem) 5rem; }
+.home-section-heading { max-width: 700px; margin-bottom: 1.5rem; }
+.home-section-heading .eyebrow { margin-bottom: .55rem; }
+.home-section-heading h2 { margin: 0; color: var(--ui-ink); font-size: clamp(1.7rem, 3vw, 2.3rem); letter-spacing: -.04em; }
+.home-section-heading > p:last-child { margin: .55rem 0 0; color: var(--ui-muted); }
+.home-path-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.home-path-card { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; min-height: 230px; padding: 1.35rem; border: 1px solid var(--ui-line); border-radius: var(--ui-radius); background: var(--ui-surface); box-shadow: var(--ui-shadow); transition: transform 160ms ease, box-shadow 160ms ease; }
+.home-path-card:hover { transform: translateY(-3px); box-shadow: var(--ui-shadow-hover); }
+.home-path-number { color: var(--ui-accent); font-size: .78rem; font-weight: 850; letter-spacing: .08em; }
+.home-path-card h3 { margin: .8rem 0 .35rem; color: var(--ui-ink); font-size: 1.12rem; }
+.home-path-card p { margin: 0 0 1.1rem; color: var(--ui-muted); font-size: .94rem; line-height: 1.6; }
+.home-path-card a { display: inline-flex; gap: .35rem; align-items: center; margin-top: auto; color: var(--ui-accent-dark); font-weight: 750; text-decoration: none; }
+.home-path-card a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.content { max-width: 1180px; padding: clamp(2.5rem, 6vw, 4rem) clamp(1.25rem, 5vw, 3rem); }
+.content h1 { max-width: 800px; font-size: clamp(2.5rem, 6vw, 4rem); }
+.content > p:not(.eyebrow) { max-width: 720px; color: var(--ui-muted); line-height: 1.65; }
+.process-steps { display: grid; gap: .8rem; max-width: 850px; margin: 2rem 0 0; padding: 0; list-style: none; }
+.process-steps li { display: grid; grid-template-columns: 3rem minmax(0, 1fr); align-items: start; gap: 1rem; padding: 1.1rem 1.2rem; border: 1px solid var(--ui-line); border-radius: var(--ui-radius); background: #fff; box-shadow: var(--ui-shadow); }
+.process-steps li > span { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border-radius: 50%; color: var(--ui-accent-dark); background: var(--ui-accent-soft); font-size: .82rem; font-weight: 800; }
+.process-steps h2 { margin: .1rem 0 .25rem; font-size: 1.05rem; }
+.process-steps p { margin: 0; color: var(--ui-muted); line-height: 1.55; }
+
+@media (max-width: 800px) {
+  .home-path-grid { grid-template-columns: 1fr; }
+  .home-path-card { min-height: 0; }
+  :is(.topbar, .auth-topbar, .application-topbar, .catalog-topbar, .beneficiary-request-topbar, .request-review-topbar, .follow-up-topbar, .matching-topbar, .charity-referrals-topbar, .charity-services-topbar, .request-progress-topbar) { align-items: flex-start; }
+  :is(.topbar nav, .auth-topbar nav, .application-topbar nav, .catalog-topbar nav, .beneficiary-request-topbar nav, .request-review-topbar nav, .follow-up-topbar nav, .matching-topbar nav, .charity-referrals-topbar nav, .charity-services-topbar nav, .request-progress-topbar nav) { justify-content: flex-start; }
+  .auth-main { gap: 1.25rem; }
+}
+
+@media (max-width: 560px) {
+  :is(.topbar, .auth-topbar, .application-topbar, .catalog-topbar, .beneficiary-request-topbar, .request-review-topbar, .follow-up-topbar, .matching-topbar, .charity-referrals-topbar, .charity-services-topbar, .request-progress-topbar) { padding: .75rem 1rem; }
+  :is(.topbar nav, .auth-topbar nav, .application-topbar nav, .catalog-topbar nav, .beneficiary-request-topbar nav, .request-review-topbar nav, .follow-up-topbar nav, .matching-topbar nav, .charity-referrals-topbar nav, .charity-services-topbar nav, .request-progress-topbar nav) { gap: .15rem; }
+  :is(.topbar nav, .auth-topbar nav, .application-topbar nav, .catalog-topbar nav, .beneficiary-request-topbar nav, .request-review-topbar nav, .follow-up-topbar nav, .matching-topbar nav, .charity-referrals-topbar nav, .charity-services-topbar nav, .request-progress-topbar nav) a { min-height: 2.2rem; padding: .4rem .55rem; font-size: .82rem; }
+  .home-paths { padding-bottom: 3rem; }
+  .hero { padding-top: 4rem; }
+  .hero-actions { align-items: stretch; flex-direction: column; max-width: 24rem; }
+  .process-steps li { grid-template-columns: 2.5rem minmax(0, 1fr); gap: .75rem; padding: .9rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}

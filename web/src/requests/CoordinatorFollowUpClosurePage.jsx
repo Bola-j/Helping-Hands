@@ -5,7 +5,7 @@ export function CoordinatorFollowUpClosurePage() {
   const { state, request } = useSession();
   const coordinator = state.status === 'authenticated' && state.user.roles.some(role => ['Coordinator', 'Administrator'].includes(role));
   return <main className="follow-up-page">
-    <header className="follow-up-topbar"><a href="/" className="follow-up-brand">Helping Hands</a><nav><a href="/coordinator/requests">Review requests</a> · <a href="/login">Account</a></nav></header>
+    <header className="follow-up-topbar"><a href="/" className="follow-up-brand">Helping Hands</a><nav aria-label="Coordinator navigation"><a href="/coordinator/requests">Review requests</a><a href="/coordinator/standards">Service standards</a><a href="/coordinator/matching">Match and refer</a><a href="/coordinator/applications">Charity applications</a><a href="/login">Account</a></nav></header>
     <section className="follow-up-content">
       {state.status === 'loading' && <p role="status">Checking your session…</p>}
       {state.status === 'unavailable' && <p role="alert" className="follow-up-error">The session service is unavailable. Try again when it is running.</p>}

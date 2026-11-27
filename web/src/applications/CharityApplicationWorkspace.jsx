@@ -17,7 +17,7 @@ export function CharityApplicationWorkspace({ request, user }) {
     catch (error) { data.setError(await applicationError(error, 'The document could not be uploaded. Check the file and try again.')); }
     finally { setBusy(false); }
   }
-  return <ApplicationShell><p className="application-eyebrow">Charity account</p><h1>Your application</h1><p className="application-lead">Signed in as {user.displayName}. Documents are visible only to your organization and authorized staff.</p>
+  return <ApplicationShell workspace="charity"><p className="application-eyebrow">Charity account</p><h1>Your application</h1><p className="application-lead">Signed in as {user.displayName}. Documents are visible only to your organization and authorized staff.</p>
     {data.loading && <p role="status">Loading your application…</p>}{data.error && <p className="application-error" role="alert">{data.error}</p>}{notice && <p className="application-notice" role="status">{notice}</p>}
     {data.application && <><ApplicationDetails application={data.application} />{data.application.approvalStatus === 'Pending' && <form className="application-card application-form" onSubmit={submitFile}>
       <h2>Add a supporting document</h2><p>Accepted: PDF, JPEG or PNG, up to 10 MiB.</p><label htmlFor="application-document">Choose a document</label><input id="application-document" name="document" type="file" accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" />

@@ -1,5 +1,8 @@
-export function ApplicationShell({ children }) {
-  return <main className="application-page"><header className="application-topbar"><a href="/" className="application-brand">Helping Hands</a><a href="/login">Account</a></header><section className="application-content">{children}</section></main>;
+export function ApplicationShell({ children, workspace }) {
+  const links = workspace === 'coordinator'
+    ? [['/coordinator/requests', 'Review requests'], ['/coordinator/standards', 'Service standards'], ['/coordinator/matching', 'Match and refer'], ['/coordinator/follow-up', 'Follow-up and closure']]
+    : workspace === 'charity' ? [['/charity/services', 'Services and capacity'], ['/charity/referrals', 'Assigned referrals']] : [];
+  return <main className="application-page"><header className="application-topbar"><a href="/" className="application-brand">Helping Hands</a><nav aria-label="Workspace navigation">{links.map(([href, label]) => <a href={href} key={href}>{label}</a>)}<a href="/login">Account</a></nav></header><section className="application-content">{children}</section></main>;
 }
 
 export function ApplicationGate({ state, allowedRoles, children, prompt }) {

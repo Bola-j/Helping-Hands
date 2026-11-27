@@ -16,6 +16,7 @@ export function CoordinatorStandardsWorkspace({ request, user }) {
       <section className="catalog-content">
         <p className="catalog-eyebrow">Coordinator workspace</p><h1>Services and standards</h1>
         <p className="catalog-lead">Create service categories, define unit standards and keep earlier published versions available for history.</p>
+        <nav className="workspace-nav" aria-label="Coordinator workspaces"><a href="/coordinator/requests">Review requests</a><a href="/coordinator/matching">Match and refer</a><a href="/coordinator/applications">Charity applications</a><a href="/coordinator/follow-up">Follow-up and closure</a></nav>
         <div className="catalog-grid">
           <CatalogCategoryPanel request={request} selected={category?.id} onSelect={item => { setCategory(item); setService(null); setStandard(null); setVersion(null); }} />
           {category && <CatalogServicePanel key={category.id} request={request} category={category} selected={service?.id} onSelect={item => { setService(item); setStandard(null); setVersion(null); }} />}

@@ -15,7 +15,7 @@ export function CoordinatorApplicationsWorkspace({ request, user }) {
     catch (error) { data.setError(await applicationError(error, 'The decision could not be saved. Refresh and try again.')); }
     finally { setBusy(false); }
   }
-  return <ApplicationShell><p className="application-eyebrow">Coordinator workspace</p><h1>Charity applications</h1><p className="application-lead">Review submitted details and documents, then record an approval or a reasoned rejection.</p>
+  return <ApplicationShell workspace="coordinator"><p className="application-eyebrow">Coordinator workspace</p><h1>Charity applications</h1><p className="application-lead">Review submitted details and documents, then record an approval or a reasoned rejection.</p>
     {data.error && <p className="application-error" role="alert">{data.error}</p>}{data.loading && <p role="status">Loading applications…</p>}
     <div className="application-layout"><nav className="application-card" aria-label="Applications"><h2>Applications</h2>{data.items.length === 0 && !data.loading && <p>No applications to review.</p>}
       <ul className="application-list">{data.items.map(item => <li key={item.id}><button className={item.id === data.selectedId ? 'is-selected' : ''} onClick={() => { data.setSelectedId(item.id); data.setError(''); }}>

@@ -20,6 +20,8 @@ import { CoordinatorMatchingPage } from './referrals/CoordinatorMatchingPage.jsx
 import './referrals/matching.css';
 import { BeneficiaryRequestProgressPage } from './progress/BeneficiaryRequestProgressPage.jsx';
 import './progress/request-progress.css';
+import { CharityReferralPage } from './charity-referrals/CharityReferralPage.jsx';
+import './charity-referrals/charity-referrals.css';
 
 function HomePage() {
   return (
@@ -72,6 +74,7 @@ function App() {
   if (path === '/coordinator/matching') return <SessionProvider><CoordinatorMatchingPage /></SessionProvider>;
   if (path === '/requests/new') return <SessionProvider><BeneficiaryRequestPage /></SessionProvider>;
   if (path === '/requests/progress') return <SessionProvider><BeneficiaryRequestProgressPage /></SessionProvider>;
+  if (path === '/charity/referrals') return <SessionProvider><CharityReferralPage /></SessionProvider>;
   if (path === '/charity/services') return <SessionProvider><CharityServicesPage /></SessionProvider>;
   return <HomePage />;
 }

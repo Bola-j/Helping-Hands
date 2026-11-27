@@ -15,7 +15,7 @@ public static partial class DemoEndpoints
         var referrals = await VisibleProgressReferrals(database, request.Id, user).ToListAsync(cancellationToken);
         if (user.IsInRole("RecipientRepresentative") && referrals.Count == 0) return Results.NotFound();
         var history = await ProgressHistoryAsync(database, request, referrals, user, cancellationToken);
-        var needs = await NeedProgressAsync(database, request, referrals, versions, cancellationToken);
+        var needs = await NeedProgressAsync(database, request, referrals, versions, Staff(user), cancellationToken);
         if (user.IsInRole("RecipientRepresentative"))
             needs = needs.Where(item => item.Assignments.Count > 0).Select(item => item with
             { RequiredQuantity = null, Status = null, RemainingQuantity = null }).ToArray();

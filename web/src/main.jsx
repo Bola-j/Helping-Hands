@@ -12,6 +12,8 @@ import { CoordinatorApplicationsPage } from './applications/CoordinatorApplicati
 import './applications/applications.css';
 import { CoordinatorRequestReviewPage } from './requests/CoordinatorRequestReviewPage.jsx';
 import './requests/request-review.css';
+import { CoordinatorFollowUpClosurePage } from './requests/CoordinatorFollowUpClosurePage.jsx';
+import './requests/follow-up-closure.css';
 import { BeneficiaryRequestPage } from './requests/BeneficiaryRequestPage.jsx';
 import './requests/beneficiary-request.css';
 import { CharityServicesPage } from './recipients/CharityServicesPage.jsx';
@@ -71,6 +73,7 @@ function App() {
   if (path === '/charity/application') return <SessionProvider><CharityApplicationPage /></SessionProvider>;
   if (path === '/coordinator/applications') return <SessionProvider><CoordinatorApplicationsPage /></SessionProvider>;
   if (path === '/coordinator/requests') return <SessionProvider><CoordinatorRequestReviewPage /></SessionProvider>;
+  if (path === '/coordinator/follow-up') return <SessionProvider><CoordinatorFollowUpClosurePage /></SessionProvider>;
   if (path === '/coordinator/matching') return <SessionProvider><CoordinatorMatchingPage /></SessionProvider>;
   if (path === '/requests/new') return <SessionProvider><BeneficiaryRequestPage /></SessionProvider>;
   if (path === '/requests/progress') return <SessionProvider><BeneficiaryRequestProgressPage /></SessionProvider>;

@@ -10,8 +10,11 @@ public sealed record NeedProgressView(Guid? NeedId, string? Service, string? Sta
 public sealed record AssignmentProgressView(Guid Id, string Reference, string ScopeDescription,
     decimal AssignedQuantity, decimal AcceptedQuantity, string Status, IReadOnlyList<OutcomeProgressView> Outcomes);
 
-public sealed record OutcomeProgressView(Guid Id, string Reference, decimal ReportedQuantity, string Status,
-    DateTimeOffset? SubmittedAt);
+public sealed record OutcomeProgressView(Guid Id, string Reference, decimal ReportedQuantity, string Description,
+    string Status, DateTimeOffset? SubmittedAt, Guid Version, IReadOnlyList<EvidenceAttachmentProgressView> Evidence);
+
+public sealed record EvidenceAttachmentProgressView(Guid Id, string OriginalName, string MediaType,
+    long SizeBytes, DateTimeOffset UploadedAt);
 
 public sealed record ProgressHistoryEvent(string EntityType, Guid EntityId, string Action,
     DateTimeOffset OccurredAt, Guid? ActorUserId, string? Reason);

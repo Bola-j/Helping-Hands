@@ -45,6 +45,10 @@ and verifies the returned request through the same authenticated Dio client.
 Run it only against an isolated disposable API/database; configure
 `API_BASE_URL` and `API_CERTIFICATE_BASE64` with a trusted test endpoint.
 
+## Phase 1 demo
+
+See [`docs/phase-1-demo-guide.md`](docs/phase-1-demo-guide.md) for isolated API setup, Android/iOS launch instructions, the fictional beneficiary walkthrough, and course evidence checklist.
+
 ## Verify
 
 ```sh
